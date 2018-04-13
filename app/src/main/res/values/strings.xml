@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Advent</string>
+    <string name="login">Login</string>
+    <string name="home_page">Home</string>
+    <string name="no_account_yet">No account yet? Create one</string>
+    <string name="logout">Logout</string>
+    <string name="yourName">TextView</string>
+    <string name="text_your_photo">Your Photo</string>
+    <string name="text_check_in">Check In</string>
+    <string name="text_check_out">Check Out</string>
+    <string name="text_time">hh:mm AM/PM</string>
+    <string name="text_today_date">Today Date</string>
+    <string name="text_welcome_check_in">Welcome to Amaze Check In</string>
+    <string name="text_ok_button">OK</string>
+</resources>
