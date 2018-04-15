@@ -67,7 +67,7 @@
             android:id="@+id/gridLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="18dp"
 
             android:layout_marginEnd="38dp"
             android:layout_marginStart="18dp"
@@ -76,10 +76,10 @@
             android:rowCount="5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_text_your_name"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.106">
 
             <TextView
                 android:layout_column="0"
@@ -148,19 +148,23 @@
         </GridLayout>
 
         <Button
-            android:id="@+id/btn_check_in_out"
+            android:id="@+id/btn_check_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_margin="15dp"
             android:text="@string/text_check_in"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gridLayout"
-            app:layout_constraintVertical_bias="1.0" />
+            android:onClick="btnCheckInOnClick"
+            app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+
+        <Button
+            android:id="@+id/btn_check_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="@string/text_check_out"
+            android:onClick="btnCheckOutOnClick"
+            app:layout_constraintTop_toBottomOf="@id/btn_check_in"
+            app:layout_goneMarginTop="5dp" />
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

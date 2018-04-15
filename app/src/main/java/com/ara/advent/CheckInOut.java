@@ -2,11 +2,13 @@ package com.ara.advent;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Icon;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -17,13 +19,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.ara.advent.http.HttpCaller;
+import com.ara.advent.http.HttpRequest;
+import com.ara.advent.http.HttpResponse;
 import com.ara.advent.models.Attendance;
 import com.ara.advent.models.User;
 import com.ara.advent.utils.AppConstants;
@@ -40,17 +47,21 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.CHECK_IN_TIME;
 import static com.ara.advent.utils.AppConstants.MY_CAMERA_REQUEST_CODE;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 import static com.ara.advent.utils.AppConstants.REQUEST_IMAGE_CAPTURE;
+import static com.ara.advent.utils.AppConstants.timeAsString;
+import static com.ara.advent.utils.AppConstants.user;
 
 public class CheckInOut extends AppCompatActivity {
 
@@ -71,6 +82,19 @@ public class CheckInOut extends AppCompatActivity {
 
     @BindView(R.id.input_view_date)
     TextView input_view_date;
+
+    @BindView(R.id.input_view_check_in)
+    TextView input_view_checkIn;
+
+    @BindView(R.id.input_view_check_out)
+    TextView input_view_checkOut;
+
+
+    @BindView(R.id.btn_check_in)
+    Button btn_check_in;
+
+    @BindView(R.id.btn_check_out)
+    Button btn_check_out;
 
     @BindView(R.id.view_scroll_root)
     ScrollView scrollView;
@@ -93,9 +117,13 @@ public class CheckInOut extends AppCompatActivity {
             User user = new User();
             user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
             user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, null));
+            if (sharedPreferences.contains(CHECK_IN_TIME)) {
+                String time = sharedPreferences.getString(CHECK_IN_TIME, null);
+                attendance.setCheckInTime(AppConstants.timeStringToCalendar(time));
+                attendance.setAlreadyCheckedIn(true);
+            }
             AppConstants.setUser(user);
-            input_yout_name.setText(user.getUserName());
-            input_view_date.setText(AppConstants.todayAsString());
+            updateDetails();
             requestGPSPermission(true);
 
         } else {
@@ -118,15 +146,46 @@ public class CheckInOut extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            imageBitmap = AppConstants.compressImage(imageBitmap, attendance);
             imageViewAvatar.setImageBitmap(imageBitmap);
+
+            updateDetails();
         } else if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                input_yout_name.setText(AppConstants.getUser().getUserName());
+                updateDetails();
                 requestGPSPermission(true);
             }
         } else if (requestCode == GPS_REQUEST_RESULT) {
             requestGPSPermission(false);
         }
+    }
+
+    private void updateDetails() {
+
+
+        attendance.setUser(AppConstants.getUser());
+        input_yout_name.setText(attendance.getUser().getUserName());
+
+
+        attendance.setAttendanceDate(Calendar.getInstance());
+        input_view_date.setText(AppConstants.calendarAsString(attendance.getAttendanceDate()));
+
+        if (!attendance.hasCheckedIn()) {
+            attendance.setCheckInTime(Calendar.getInstance());
+            input_view_checkIn.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
+            changeButtonState(btn_check_in, true);
+
+        } else {
+            if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckInTime())) {
+                changeButtonState(btn_check_in, false);
+            } else {
+                changeButtonState(btn_check_in, true);
+            }
+            changeButtonState(btn_check_out, true);
+            input_view_checkOut.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
+        }
+
     }
 
     @Override
@@ -140,7 +199,7 @@ public class CheckInOut extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     dispatchTakePictureIntent();
                 } else {
-                    showSnackbar("This App needs Camera",true);
+                    showSnackbar("This App needs Camera", true);
                 }
             }
             break;
@@ -150,7 +209,7 @@ public class CheckInOut extends AppCompatActivity {
                     mLocationPermissionGranted = true;
                     updateLocationFromHistory();
                 } else {
-                    showSnackbar("Location Service is required to use this App.",true);
+                    showSnackbar("Location Service is required to use this App.", true);
                 }
 
                 break;
@@ -174,7 +233,7 @@ public class CheckInOut extends AppCompatActivity {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CAMERA)) {
-                showSnackbar("This App needs Camera",true);
+                showSnackbar("This App needs Camera", true);
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
@@ -186,6 +245,9 @@ public class CheckInOut extends AppCompatActivity {
         }
     }
 
+    private void showSnackbar(String message) {
+        showSnackbar(message, false);
+    }
 
     private void showSnackbar(String message, final boolean finishApp) {
         final Snackbar snackbar = Snackbar.make(scrollView, message,
@@ -194,7 +256,7 @@ public class CheckInOut extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 snackbar.dismiss();
-                if(finishApp)
+                if (finishApp)
                     finish();
             }
         });
@@ -217,7 +279,7 @@ public class CheckInOut extends AppCompatActivity {
         if (!hasGoogleService()) {
             //TODO: Need to provide option to install the Google Services.
             Log.e(TAG, "Google Play Service is required to use this App.");
-            showSnackbar("Google Play Server is required.",true);
+            showSnackbar("Google Play Server is required.", true);
             return;
         }
 
@@ -233,7 +295,7 @@ public class CheckInOut extends AppCompatActivity {
             if (isFirstTime) {
                 showEnableGPSAlertToUser();
             } else {
-                showSnackbar("You must enable the Location Service!",true);
+                showSnackbar("You must enable the Location Service!", true);
             }
         }
     }
@@ -299,6 +361,16 @@ public class CheckInOut extends AppCompatActivity {
 
     }
 
+    private void changeButtonState(Button btnControl, boolean state) {
+        btnControl.setEnabled(state);
+        if (state) {
+            //Enable state
+            btnControl.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.primary_dark, null));
+        } else {
+            btnControl.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.gray, null));
+        }
+    }
+
     private boolean canStartLocationService() {
         if (!mLocationPermissionGranted)
             return false;
@@ -325,7 +397,7 @@ public class CheckInOut extends AppCompatActivity {
 
         } catch (SecurityException securityException) {
             Log.e(TAG, securityException.getMessage());
-            showSnackbar("Something went wrong, contact Support",true);
+            showSnackbar("Something went wrong, contact Support", true);
         }
     }
 
@@ -387,11 +459,16 @@ public class CheckInOut extends AppCompatActivity {
     private void updateAddress(Location location) {
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        attendance.setLatitude(latitude);
+        attendance.setLongitude(longitude);
+
         try {
 
             addresses = geocoder.getFromLocation(
-                    location.getLatitude(),
-                    location.getLongitude(),
+                    latitude,
+                    longitude,
                     // In this sample, get just a single address.
                     2);
 
@@ -422,5 +499,148 @@ public class CheckInOut extends AppCompatActivity {
 
     }
 
+    private boolean validate(boolean checkOut) {
+        if (attendance == null) {
+            showSnackbar("Check In entry not found", false);
+            return false;
+        }
+        if (attendance.getBitmap() == null) {
+            showSnackbar("Photo not updated.", false);
+            return false;
+        }
+        if (attendance.getCheckInAddress() == null) {
+            showSnackbar("Address not updated.", false);
+            return false;
+        }
+        if (attendance.getCheckInTime() == null) {
+            showSnackbar("Check-In time not found", false);
+            return false;
+        }
+        if (checkOut) {
+            if (attendance.getCheckOutAddress() == null) {
+                showSnackbar("Check-Out address not found", false);
+                return false;
+            }
+            if (attendance.getCheckOutTime() == null)
+                showSnackbar("Check-Out time not found", false);
+            return false;
+        }
+        return true;
+    }
 
+    private void showAlertDialog(final boolean isCheckIn) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("You have already checked In, do want to overwrite the exiting check-in?")
+                .setCancelable(false)
+                .setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                pushToServer(isCheckIn);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    public void btnCheckInOnClick(View view) {
+        if (!validate(false)) {
+            Log.i(TAG, "Validation Failed");
+            return;
+        }
+        if (attendance.hasCheckedIn()) {
+            showAlertDialog(true);
+        } else {
+            pushToServer(true);
+        }
+
+    }
+
+    private void pushToServer(final boolean isCheckIn) {
+
+        HttpRequest httpRequest = new HttpRequest(AppConstants.getSaveAction());
+        httpRequest.setRequestBody(attendance.toMultiPartBody(false));
+        try {
+            new HttpCaller(this, "Checking In") {
+                @Override
+                public void onResponse(HttpResponse response) {
+                    super.onResponse(response);
+                    if (response.getStatus() == HttpResponse.ERROR) {
+                        onFailed(response);
+                    } else {
+
+                        onSuccess(response, isCheckIn);
+                    }
+                }
+            }.execute(httpRequest);
+
+        } catch (Exception exception) {
+            Log.e(TAG, exception.getMessage(), exception);
+            showSnackbar("Something went wrong, contact Ara software", false);
+        }
+    }
+
+
+    private void onSuccess(HttpResponse response, boolean isCheckIn) {
+        try {
+            String message = response.getMesssage();
+            if (message.compareToIgnoreCase(AppConstants.SUCCESS_MESSAGE) != 0) {
+                showSnackbar(response.getMesssage(), false);
+                return;
+            }
+            Log.i(TAG, response.getMesssage());
+
+
+            SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+            if (isCheckIn) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(PARAM_USER_ID, user.getId());
+                editor.putString(CHECK_IN_TIME, timeAsString(attendance.getCheckInTime()));
+                editor.putString(PARAM_USER_NAME, user.getUserName());
+                editor.commit();
+                attendance.setAlreadyCheckedIn(true);
+                imageViewAvatar.setImageResource(R.drawable.camera_icon);
+                attendance.setImage(null);
+                showSnackbar("Checked In Successfully.");
+            } else {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(PARAM_USER_ID, user.getId());
+                editor.putString(PARAM_USER_NAME, user.getUserName());
+                editor.commit();
+                showSnackbar("Checked Out Successfully.");
+                attendance.setAlreadyCheckedIn(false);
+                attendance.setCheckInTime(null);
+                attendance.setCheckOutTime(null);
+                changeButtonState(btn_check_out, false);
+                changeButtonState(btn_check_in, true);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            showSnackbar("Something went wrong, contact support");
+        }
+    }
+
+    private void onFailed(HttpResponse response) {
+        if (response != null) {
+            showSnackbar("Something went wrong, Check Network connection!");
+            Log.e(TAG, response.getMesssage());
+        }
+    }
+
+    public void btnCheckOutOnClick(View view) {
+        if (!validate(true)) {
+            Log.i(TAG, "Validation Failed");
+            return;
+        }
+        pushToServer(false);
+
+
+    }
 }
