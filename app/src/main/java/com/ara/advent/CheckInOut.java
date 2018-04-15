@@ -1,12 +1,16 @@
 package com.ara.advent;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -21,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ara.advent.models.Attendance;
+import com.ara.advent.models.User;
 import com.ara.advent.utils.AppConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -29,6 +34,9 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +47,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.ara.advent.utils.AppConstants.MY_CAMERA_REQUEST_CODE;
+import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
+import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
+import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 import static com.ara.advent.utils.AppConstants.REQUEST_IMAGE_CAPTURE;
 
 public class CheckInOut extends AppCompatActivity {
@@ -47,18 +58,25 @@ public class CheckInOut extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
     private static final int REQUEST_CHECK_SETTINGS = 102;
+    private static final int GPS_REQUEST_RESULT = 104;
 
     @BindView(R.id.input_your_avatar)
     ImageView imageViewAvatar;
 
+    @BindView(R.id.input_text_your_name)
+    TextView input_yout_name;
+
     @BindView(R.id.input_view_place)
     TextView input_place;
 
+    @BindView(R.id.input_view_date)
+    TextView input_view_date;
 
     @BindView(R.id.view_scroll_root)
     ScrollView scrollView;
     private LocationCallback mLocationCallback;
-    private boolean mLocationPermissionGrandted = false;
+    private boolean mLocationPermissionGranted = false;
+    private boolean mLocationHistoryGranted = false;
     private FusedLocationProviderClient mFusedLocationClient;
     private Attendance attendance;
 
@@ -68,9 +86,22 @@ public class CheckInOut extends AppCompatActivity {
         setContentView(R.layout.activity_check_in_out);
         attendance = new Attendance();
         ButterKnife.bind(this);
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
 
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        if (sharedPreferences.contains(PARAM_USER_NAME)) {
+            User user = new User();
+            user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
+            user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, null));
+            AppConstants.setUser(user);
+            input_yout_name.setText(user.getUserName());
+            input_view_date.setText(AppConstants.todayAsString());
+            requestGPSPermission(true);
+
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
+        }
     }
 
 
@@ -90,11 +121,11 @@ public class CheckInOut extends AppCompatActivity {
             imageViewAvatar.setImageBitmap(imageBitmap);
         } else if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                if (checkGoogleService()) {
-                    checkLocationPermission();
-                }
-                requestPermissionForCamera();
+                input_yout_name.setText(AppConstants.getUser().getUserName());
+                requestGPSPermission(true);
             }
+        } else if (requestCode == GPS_REQUEST_RESULT) {
+            requestGPSPermission(false);
         }
     }
 
@@ -109,14 +140,19 @@ public class CheckInOut extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     dispatchTakePictureIntent();
                 } else {
-                    showSnackbar("This App needs Camera");
+                    showSnackbar("This App needs Camera",true);
                 }
             }
             break;
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
-                Log.e(TAG, "Location Permission");
-                mLocationPermissionGrandted = true;
-                startLocationUpdates();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e(TAG, "Location Permitted.");
+                    mLocationPermissionGranted = true;
+                    updateLocationFromHistory();
+                } else {
+                    showSnackbar("Location Service is required to use this App.",true);
+                }
+
                 break;
         }
 
@@ -124,7 +160,7 @@ public class CheckInOut extends AppCompatActivity {
 
 
     public void addPhoto_OnClick(View view) {
-
+        requestPermissionForCamera();
     }
 
 
@@ -138,7 +174,7 @@ public class CheckInOut extends AppCompatActivity {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CAMERA)) {
-                showSnackbar("This App needs Camera");
+                showSnackbar("This App needs Camera",true);
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
@@ -151,13 +187,15 @@ public class CheckInOut extends AppCompatActivity {
     }
 
 
-    private void showSnackbar(String message) {
+    private void showSnackbar(String message, final boolean finishApp) {
         final Snackbar snackbar = Snackbar.make(scrollView, message,
                 Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(R.string.text_ok_button, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 snackbar.dismiss();
+                if(finishApp)
+                    finish();
             }
         });
         snackbar.show();
@@ -166,23 +204,117 @@ public class CheckInOut extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (checkGoogleService()) {
-            if (mLocationPermissionGrandted) {
-                startLocationUpdates();
-            }
-        }
+        startLocationUpdates();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mLocationPermissionGrandted) {
-            stopLocationUpdates();
+        stopLocationUpdates();
+    }
+
+    public void requestGPSPermission(boolean isFirstTime) {
+        if (!hasGoogleService()) {
+            //TODO: Need to provide option to install the Google Services.
+            Log.e(TAG, "Google Play Service is required to use this App.");
+            showSnackbar("Google Play Server is required.",true);
+            return;
+        }
+
+        if (hasLocationEnabled()) {
+            if (hasLocationPermission()) {
+                Log.i(TAG, "Permission Granted.");
+                mLocationPermissionGranted = true;
+                updateLocationFromHistory();
+            } else {
+                requestLocationPermission();
+            }
+        } else {
+            if (isFirstTime) {
+                showEnableGPSAlertToUser();
+            } else {
+                showSnackbar("You must enable the Location Service!",true);
+            }
         }
     }
 
-    private void startLocationUpdates() {
+    public boolean hasLocationEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    private void showEnableGPSAlertToUser() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?" +
+                "system Need GPS To Open This Application")
+                .setCancelable(false)
+                .setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivityForResult(callGPSSettingIntent, GPS_REQUEST_RESULT);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    private void updateLocationFromHistory() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         try {
+            Task<Location> locationTask = mFusedLocationClient.getLastLocation();
+            locationTask.addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    Log.i(TAG, (location == null) + "");
+                    if (location == null) {
+                        mLocationHistoryGranted = false;
+                        startLocationUpdates();
+                    } else {
+                        mLocationHistoryGranted = true;
+                        updateAddress(location);
+                    }
+                }
+            });
+            locationTask.addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(TAG, e.getMessage(), e);
+
+                }
+            });
+        } catch (SecurityException securityException) {
+            Log.e(TAG, securityException.getMessage(), securityException);
+            startLocationUpdates();
+        }
+
+    }
+
+    private boolean canStartLocationService() {
+        if (!mLocationPermissionGranted)
+            return false;
+        if (mLocationHistoryGranted)
+            return false;
+        return true;
+    }
+
+    private void startLocationUpdates() {
+        if (!canStartLocationService()) {
+            return;
+        }
+
+        initiateLocationServices();
+        try {
+
             LocationRequest mLocationRequest = LocationRequest.create();
             mLocationRequest.setInterval(10000);
             mLocationRequest.setFastestInterval(5000);
@@ -190,16 +322,21 @@ public class CheckInOut extends AppCompatActivity {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                     mLocationCallback,
                     null /* Looper */);
+
         } catch (SecurityException securityException) {
             Log.e(TAG, securityException.getMessage());
+            showSnackbar("Something went wrong, contact Support",true);
         }
     }
 
     private void stopLocationUpdates() {
+        if (!mLocationPermissionGranted || mLocationHistoryGranted) {
+            return;
+        }
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
-    private boolean checkGoogleService() {
+    private boolean hasGoogleService() {
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
         int apiAvailableStatusCode = googleApiAvailability.isGooglePlayServicesAvailable(this);
         if (apiAvailableStatusCode == ConnectionResult.SUCCESS) {
@@ -213,27 +350,20 @@ public class CheckInOut extends AppCompatActivity {
         return false;
     }
 
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission Granted.");
-            mLocationPermissionGrandted = true;
-
-            initLocationPermission();
-            startLocationUpdates();
-
-        } else {
-            Log.e(TAG, "This App requires Location Service.");
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-
-            }, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
+    private boolean hasLocationPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED;
     }
 
-    private void initLocationPermission() {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    private void requestLocationPermission() {
+        Log.e(TAG, "This App requires Location Service.");
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        }, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+    }
+
+    private void initiateLocationServices() {
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -285,8 +415,8 @@ public class CheckInOut extends AppCompatActivity {
             for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
             }
-            attendance.setAddressFraments(addressFragments);
-            input_place.setText(attendance.getAddressAsString());
+            attendance.setCheckInAddress(AppConstants.getAddressAsString(addressFragments));
+            input_place.setText(attendance.getCheckInAddress());
 
         }
 

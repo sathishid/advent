@@ -1,9 +1,6 @@
 package com.ara.advent.models;
 
-import android.os.Environment;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class Attendance {
     private float longitude;
@@ -11,21 +8,23 @@ public class Attendance {
     private String checkInPlace;
     private String checkOutPlace;
     private String User;
-    private ArrayList<String> addressFraments;
+    private String checkInAddress;
+    private String checkOutAddress;
 
-    public ArrayList<String> getAddressFraments() {
-        return addressFraments;
+    public String getCheckOutAddress() {
+        return checkOutAddress;
     }
 
-    public void setAddressFraments(ArrayList<String> addressFraments) {
-        this.addressFraments = addressFraments;
+    public void setCheckOutAddress(String checkOutAddress) {
+        this.checkOutAddress = checkOutAddress;
     }
-    public String getAddressAsString(){
-        String strAdddress="";
-        for (String address:addressFraments) {
-            strAdddress+=address+"\n\r";
-        }
-        return strAdddress;
+
+    public String getCheckInAddress() {
+        return checkInAddress;
+    }
+
+    public void setCheckInAddress(String checkInAddress) {
+        this.checkInAddress = checkInAddress;
     }
 
     public float getLongitude() {

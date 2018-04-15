@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
             }
-            attendance.setAddressFraments(addressFragments);
+            attendance.setCheckInAddress(AppConstants.getAddressAsString(addressFragments));
 
         }
 
