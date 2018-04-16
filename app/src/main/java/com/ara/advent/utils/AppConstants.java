@@ -52,6 +52,7 @@ public class AppConstants {
     public static final String PARAM_TYPE = "type";
 
     public static final String CHECK_IN_TIME = "CheckInTime";
+    public static final String CHECK_IN_DATE = "CheckInDate";
 
 
     public static User user;
@@ -78,9 +79,36 @@ public class AppConstants {
 
     public static String timeAsString(Calendar calendar) {
         String am_pm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
-        int hour=Math.abs(12-calendar.get(Calendar.HOUR));
+        int hour = calendar.get(Calendar.HOUR);
+        if (calendar.get(Calendar.HOUR_OF_DAY) == 24) {
+            hour = Math.abs(12 - hour);
+        }
         return hour + ":" +
                 calendar.get(Calendar.MINUTE) + " " + am_pm;
+
+    }
+
+    public static Calendar calendarStringAsCalendar(String date) {
+        String[] dayMonthYear = date.split("/");
+        int day = Integer.parseInt(dayMonthYear[0]);
+        int month = Integer.parseInt(dayMonthYear[1]);
+        int year = Integer.parseInt(dayMonthYear[2]);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, day);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        return calendar;
+    }
+
+    public static boolean isToday(Calendar attendanceDate) {
+        Calendar today = Calendar.getInstance();
+        if (today.get(Calendar.DATE) != attendanceDate.get(Calendar.DATE))
+            return false;
+        if (today.get(Calendar.MONTH) != attendanceDate.get(Calendar.MONTH))
+            return false;
+        if (today.get(Calendar.YEAR) != attendanceDate.get(Calendar.YEAR))
+            return false;
+        return true;
 
     }
 
@@ -138,6 +166,8 @@ public class AppConstants {
             am_pm = Calendar.PM;
         }
         Calendar calendar = Calendar.getInstance();
+        if (calendar.get(Calendar.HOUR_OF_DAY) == 24)
+            hours += 12;
         calendar.set(Calendar.HOUR, hours);
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.AM_PM, am_pm);

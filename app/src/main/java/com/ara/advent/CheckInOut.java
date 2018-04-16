@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Icon;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -22,6 +21,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,12 +56,14 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.CHECK_IN_DATE;
 import static com.ara.advent.utils.AppConstants.CHECK_IN_TIME;
 import static com.ara.advent.utils.AppConstants.MY_CAMERA_REQUEST_CODE;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 import static com.ara.advent.utils.AppConstants.REQUEST_IMAGE_CAPTURE;
+import static com.ara.advent.utils.AppConstants.calendarAsString;
 import static com.ara.advent.utils.AppConstants.timeAsString;
 import static com.ara.advent.utils.AppConstants.user;
 
@@ -111,7 +115,6 @@ public class CheckInOut extends AppCompatActivity {
         attendance = new Attendance();
         ButterKnife.bind(this);
 
-
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         if (sharedPreferences.contains(PARAM_USER_NAME)) {
             User user = new User();
@@ -120,7 +123,13 @@ public class CheckInOut extends AppCompatActivity {
             if (sharedPreferences.contains(CHECK_IN_TIME)) {
                 String time = sharedPreferences.getString(CHECK_IN_TIME, null);
                 attendance.setCheckInTime(AppConstants.timeStringToCalendar(time));
-                attendance.setAlreadyCheckedIn(true);
+                String date = sharedPreferences.getString(CHECK_IN_DATE, null);
+                attendance.setAttendanceDate(AppConstants.calendarStringAsCalendar(date));
+                if (AppConstants.isToday(attendance.getAttendanceDate())) {
+                    attendance.setAlreadyCheckedIn(true);
+                } else {
+                    attendance.setAlreadyCheckedIn(false);
+                }
             }
             AppConstants.setUser(user);
             updateDetails();
@@ -171,19 +180,21 @@ public class CheckInOut extends AppCompatActivity {
         attendance.setAttendanceDate(Calendar.getInstance());
         input_view_date.setText(AppConstants.calendarAsString(attendance.getAttendanceDate()));
 
-        if (!attendance.hasCheckedIn()) {
-            attendance.setCheckInTime(Calendar.getInstance());
-            input_view_checkIn.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
-            changeButtonState(btn_check_in, true);
-
-        } else {
+        if (attendance.hasCheckedIn()) {
             if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckInTime())) {
                 changeButtonState(btn_check_in, false);
             } else {
                 changeButtonState(btn_check_in, true);
             }
             changeButtonState(btn_check_out, true);
-            input_view_checkOut.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
+            input_view_checkIn.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
+            attendance.setCheckOutTime(Calendar.getInstance());
+            input_view_checkOut.setText(AppConstants.timeAsString(attendance.getCheckOutTime()));
+        } else {
+            attendance.setCheckInTime(Calendar.getInstance());
+            input_view_checkIn.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
+            changeButtonState(btn_check_in, true);
+            changeButtonState(btn_check_out, false);
         }
 
     }
@@ -521,9 +532,10 @@ public class CheckInOut extends AppCompatActivity {
                 showSnackbar("Check-Out address not found", false);
                 return false;
             }
-            if (attendance.getCheckOutTime() == null)
+            if (attendance.getCheckOutTime() == null) {
                 showSnackbar("Check-Out time not found", false);
-            return false;
+                return false;
+            }
         }
         return true;
     }
@@ -535,6 +547,7 @@ public class CheckInOut extends AppCompatActivity {
                 .setPositiveButton("yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                attendance.setCheckInTime(Calendar.getInstance());
                                 pushToServer(isCheckIn);
                             }
                         });
@@ -586,6 +599,34 @@ public class CheckInOut extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_logout_id:
+                logout();
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    private void logout() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+        finish();
+    }
 
     private void onSuccess(HttpResponse response, boolean isCheckIn) {
         try {
@@ -602,11 +643,13 @@ public class CheckInOut extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt(PARAM_USER_ID, user.getId());
                 editor.putString(CHECK_IN_TIME, timeAsString(attendance.getCheckInTime()));
+                editor.putString(CHECK_IN_DATE, calendarAsString(Calendar.getInstance()));
                 editor.putString(PARAM_USER_NAME, user.getUserName());
                 editor.commit();
                 attendance.setAlreadyCheckedIn(true);
                 imageViewAvatar.setImageResource(R.drawable.camera_icon);
                 attendance.setImage(null);
+                updateDetails();
                 showSnackbar("Checked In Successfully.");
             } else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -619,6 +662,9 @@ public class CheckInOut extends AppCompatActivity {
                 attendance.setCheckOutTime(null);
                 changeButtonState(btn_check_out, false);
                 changeButtonState(btn_check_in, true);
+
+                imageViewAvatar.setImageResource(R.drawable.camera_icon);
+                attendance.setImage(null);
             }
 
         } catch (Exception e) {

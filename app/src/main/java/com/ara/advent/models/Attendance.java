@@ -1,5 +1,7 @@
 package com.ara.advent.models;
 
+import android.util.Base64;
+
 import java.util.Calendar;
 
 import okhttp3.MediaType;
@@ -115,8 +117,9 @@ public class Attendance {
         builder.setType(MultipartBody.FORM);
 
         MediaType mediaType = MediaType.parse("image/jpeg");
-
-        builder.addFormDataPart(PARAM_IMAGE, getImageFileName(), RequestBody.create(mediaType, image));
+        //Base64.encode(image, Base64.NO_WRAP)
+        builder.addFormDataPart(PARAM_IMAGE, getImageFileName(),
+                RequestBody.create(mediaType, image));
         builder.addFormDataPart(PARAM_ID, user.getId() + "");
         if (isCheckOut) {
             builder.addFormDataPart(PARAM_LOCATION, getCheckOutAddress());
