@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -47,6 +48,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -144,6 +148,7 @@ public class CheckInOut extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
@@ -155,8 +160,10 @@ public class CheckInOut extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-
             imageBitmap = AppConstants.compressImage(imageBitmap, attendance);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            attendance.setImage(outputStream.toByteArray());
             imageViewAvatar.setImageBitmap(imageBitmap);
 
             updateDetails();
@@ -168,6 +175,26 @@ public class CheckInOut extends AppCompatActivity {
         } else if (requestCode == GPS_REQUEST_RESULT) {
             requestGPSPermission(false);
         }
+    }
+
+    public File compressImageFile(Bitmap bitmap) {
+
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+
+
+            File file = new File(this.getApplicationContext().getFilesDir(), "user.jpg");
+            String imageFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/user.jpg";
+            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+            byte[] array = outputStream.toByteArray();
+            fileOutputStream.write(array);
+            fileOutputStream.close();
+            return new File(imageFile);
+        } catch (Exception exception) {
+            Log.e(TAG, exception.getMessage(), exception);
+        }
+        return null;
     }
 
     private void updateDetails() {
@@ -193,7 +220,7 @@ public class CheckInOut extends AppCompatActivity {
         } else {
             attendance.setCheckInTime(Calendar.getInstance());
             input_view_checkIn.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
-            changeButtonState(btn_check_in, true);
+
             changeButtonState(btn_check_out, false);
         }
 
@@ -248,7 +275,9 @@ public class CheckInOut extends AppCompatActivity {
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
+                        new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE},
                         MY_CAMERA_REQUEST_CODE);
             }
         } else {
@@ -318,7 +347,8 @@ public class CheckInOut extends AppCompatActivity {
     }
 
     private void showEnableGPSAlertToUser() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,
+                R.style.AppTheme_Dark_Dialog);
         alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?" +
                 "system Need GPS To Open This Application")
                 .setCancelable(false)
@@ -515,7 +545,7 @@ public class CheckInOut extends AppCompatActivity {
             showSnackbar("Check In entry not found", false);
             return false;
         }
-        if (attendance.getBitmap() == null) {
+        if (attendance.getImage() == null) {
             showSnackbar("Photo not updated.", false);
             return false;
         }
@@ -541,7 +571,8 @@ public class CheckInOut extends AppCompatActivity {
     }
 
     private void showAlertDialog(final boolean isCheckIn) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,
+                R.style.AppTheme_Dark_Dialog);
         alertDialogBuilder.setMessage("You have already checked In, do want to overwrite the exiting check-in?")
                 .setCancelable(false)
                 .setPositiveButton("yes",
@@ -660,6 +691,7 @@ public class CheckInOut extends AppCompatActivity {
                 attendance.setAlreadyCheckedIn(false);
                 attendance.setCheckInTime(null);
                 attendance.setCheckOutTime(null);
+                attendance.setImage(null);
                 changeButtonState(btn_check_out, false);
                 changeButtonState(btn_check_in, true);
 

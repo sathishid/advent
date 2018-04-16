@@ -27,16 +27,17 @@ public class Attendance {
     private Calendar checkInTime;
     private Calendar checkOutTime;
     private byte[] image;
+
     private boolean hasAlreadyCheckIn;
 
-    public byte[] getBitmap() {
+    public byte[] getImage() {
         return image;
     }
+
 
     public void setImage(byte[] image) {
         this.image = image;
     }
-
 
     public boolean hasCheckedIn() {
         return hasAlreadyCheckIn;
@@ -117,9 +118,10 @@ public class Attendance {
         builder.setType(MultipartBody.FORM);
 
         MediaType mediaType = MediaType.parse("image/jpeg");
-        //Base64.encode(image, Base64.NO_WRAP)
+
+        String base64Image = Base64.encodeToString(getImage(), Base64.DEFAULT);
         builder.addFormDataPart(PARAM_IMAGE, getImageFileName(),
-                RequestBody.create(mediaType, image));
+                RequestBody.create(mediaType, base64Image));
         builder.addFormDataPart(PARAM_ID, user.getId() + "");
         if (isCheckOut) {
             builder.addFormDataPart(PARAM_LOCATION, getCheckOutAddress());

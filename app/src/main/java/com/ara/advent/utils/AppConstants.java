@@ -2,6 +2,7 @@ package com.ara.advent.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 
 import com.ara.advent.models.Attendance;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -149,12 +151,31 @@ public class AppConstants {
             byte[] imageAsArray = outputStream.toByteArray();
             attendance.setImage(imageAsArray);
             imageBitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(outputStream.toByteArray()));
+
             return imageBitmap;
         } catch (Exception exception) {
             Log.e("AppConstants", exception.getMessage(), exception);
         }
         return imageBitmap;
     }
+
+    public static File createImageFile() {
+        return new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/user.jpg");
+//        return new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/userFile.jpg");
+//        try {
+//            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//            String imageFileName = "JPEG_" + timeStamp + "_";
+//            File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
+//            File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+//            String mCurrentPhotoPath = imageFile.getAbsolutePath();
+//            Log.e("Create File", "save a path is :--" + mCurrentPhotoPath);
+//            return imageFile;
+//        } catch (Exception exception) {
+//            Log.e("Create File", exception.getMessage(), exception);
+//            return null;
+//        }
+    }
+
 
     public static Calendar timeStringToCalendar(String time) {
         String[] hrsMin = time.split(":");

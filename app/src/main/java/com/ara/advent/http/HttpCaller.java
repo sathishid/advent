@@ -79,7 +79,6 @@ public class HttpCaller extends AsyncTask<HttpRequest, String, HttpResponse> {
         progressDialog.dismiss();
         onResponse(response);
         context = null;
-
     }
 
     public void onResponse(HttpResponse response) {
