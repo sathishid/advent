@@ -1,7 +1,6 @@
 package com.ara.advent.models;
 
-import android.util.Base64;
-
+import java.io.File;
 import java.util.Calendar;
 
 import okhttp3.MediaType;
@@ -26,18 +25,17 @@ public class Attendance {
 
     private Calendar checkInTime;
     private Calendar checkOutTime;
-    private byte[] image;
+
+
+    private String imageFileName;
+
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
+    }
 
     private boolean hasAlreadyCheckIn;
 
-    public byte[] getImage() {
-        return image;
-    }
-
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
 
     public boolean hasCheckedIn() {
         return hasAlreadyCheckIn;
@@ -113,22 +111,23 @@ public class Attendance {
         this.user = user;
     }
 
-    public MultipartBody toMultiPartBody(boolean isCheckOut) {
+    public MultipartBody toMultiPartBody(boolean isCheckIn) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
 
         MediaType mediaType = MediaType.parse("image/jpeg");
 
-        String base64Image = Base64.encodeToString(getImage(), Base64.DEFAULT);
+        // String base64Image = Base64.encodeToString(getImage(), Base64.DEFAULT);
         builder.addFormDataPart(PARAM_IMAGE, getImageFileName(),
-                RequestBody.create(mediaType, base64Image));
+                RequestBody.create(mediaType, new File(getImageFileName())));
         builder.addFormDataPart(PARAM_ID, user.getId() + "");
-        if (isCheckOut) {
-            builder.addFormDataPart(PARAM_LOCATION, getCheckOutAddress());
-            builder.addFormDataPart(PARAM_TYPE, CHECK_OUT + "");
-        } else {
+        if (isCheckIn) {
             builder.addFormDataPart(PARAM_LOCATION, getCheckInAddress());
             builder.addFormDataPart(PARAM_TYPE, CHECK_IN + "");
+
+        } else {
+            builder.addFormDataPart(PARAM_LOCATION, getCheckOutAddress());
+            builder.addFormDataPart(PARAM_TYPE, CHECK_OUT + "");
         }
 
         builder.addFormDataPart(PARAM_LATTITUDE, latitude + "");
@@ -138,8 +137,8 @@ public class Attendance {
         return multipartBody;
     }
 
-    private String getImageFileName() {
-        return getUser().getUserName() + checkInTime + ".jpeg";
+    public String getImageFileName() {
+        return imageFileName;
     }
 
 }

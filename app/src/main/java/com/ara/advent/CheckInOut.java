@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -19,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,8 +55,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,13 +66,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.ara.advent.utils.AppConstants.CHECK_IN_DATE;
-import static com.ara.advent.utils.AppConstants.CHECK_IN_TIME;
 import static com.ara.advent.utils.AppConstants.MY_CAMERA_REQUEST_CODE;
+import static com.ara.advent.utils.AppConstants.PARAM_CHECK_IN;
+import static com.ara.advent.utils.AppConstants.PARAM_CHECK_OUT;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 import static com.ara.advent.utils.AppConstants.REQUEST_IMAGE_CAPTURE;
 import static com.ara.advent.utils.AppConstants.calendarAsString;
+import static com.ara.advent.utils.AppConstants.isToday;
 import static com.ara.advent.utils.AppConstants.timeAsString;
 import static com.ara.advent.utils.AppConstants.user;
 
@@ -119,38 +126,72 @@ public class CheckInOut extends AppCompatActivity {
         attendance = new Attendance();
         ButterKnife.bind(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-        if (sharedPreferences.contains(PARAM_USER_NAME)) {
-            User user = new User();
-            user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
-            user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, null));
-            if (sharedPreferences.contains(CHECK_IN_TIME)) {
-                String time = sharedPreferences.getString(CHECK_IN_TIME, null);
-                attendance.setCheckInTime(AppConstants.timeStringToCalendar(time));
-                String date = sharedPreferences.getString(CHECK_IN_DATE, null);
-                attendance.setAttendanceDate(AppConstants.calendarStringAsCalendar(date));
-                if (AppConstants.isToday(attendance.getAttendanceDate())) {
-                    attendance.setAlreadyCheckedIn(true);
-                } else {
-                    attendance.setAlreadyCheckedIn(false);
-                }
-            }
-            AppConstants.setUser(user);
+        if (updateFromPreference()) {
             updateDetails();
             requestGPSPermission(true);
-
         } else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
         }
     }
 
+    private boolean updateFromPreference() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        if (sharedPreferences.contains(PARAM_USER_NAME)) {
+            User user = new User();
+            user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
+            user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, null));
+            String date = sharedPreferences.getString(CHECK_IN_DATE, null);
+            if (date != null && isToday(date)) {
+                if (sharedPreferences.contains(PARAM_CHECK_IN)) {
+                    String time = sharedPreferences.getString(PARAM_CHECK_IN, null);
+                    attendance.setCheckInTime(AppConstants.timeStringToCalendar(time));
+
+                    if (sharedPreferences.contains(PARAM_CHECK_OUT)) {
+                        time = sharedPreferences.getString(PARAM_CHECK_OUT, null);
+                        attendance.setCheckOutTime(AppConstants.timeStringToCalendar(time));
+                    }
+                    attendance.setAttendanceDate(AppConstants.calendarStringAsCalendar(date));
+                    if (AppConstants.isToday(attendance.getAttendanceDate())) {
+                        attendance.setAlreadyCheckedIn(true);
+                    } else {
+                        attendance.setAlreadyCheckedIn(false);
+                    }
+                }
+            } else {
+                attendance.setCheckOutTime(null);
+                attendance.setCheckInTime(null);
+                attendance.setAlreadyCheckedIn(false);
+                changeButtonState(btn_check_out, false);
+            }
+            AppConstants.setUser(user);
+            return true;
+        }
+        return false;
+    }
+
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
+        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.e(TAG, ex.getMessage(), ex);
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.ara.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
         }
     }
 
@@ -158,17 +199,18 @@ public class CheckInOut extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageBitmap = AppConstants.compressImage(imageBitmap, attendance);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            attendance.setImage(outputStream.toByteArray());
-            imageViewAvatar.setImageBitmap(imageBitmap);
+//            Bundle extras = data.getExtras();
+//            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+            imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));
 
             updateDetails();
         } else if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+                updateFromPreference();
                 updateDetails();
                 requestGPSPermission(true);
             }
@@ -206,16 +248,26 @@ public class CheckInOut extends AppCompatActivity {
 
         attendance.setAttendanceDate(Calendar.getInstance());
         input_view_date.setText(AppConstants.calendarAsString(attendance.getAttendanceDate()));
-
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        boolean hasAlreadyCheckedOut = sharedPreferences.contains(PARAM_CHECK_OUT);
         if (attendance.hasCheckedIn()) {
             if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckInTime())) {
                 changeButtonState(btn_check_in, false);
             } else {
                 changeButtonState(btn_check_in, true);
             }
-            changeButtonState(btn_check_out, true);
+            if (hasAlreadyCheckedOut) {
+                if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckOutTime())) {
+                    changeButtonState(btn_check_out, false);
+                } else {
+                    changeButtonState(btn_check_out, true);
+                }
+            } else {
+                attendance.setCheckOutTime(Calendar.getInstance());
+                changeButtonState(btn_check_out, true);
+            }
             input_view_checkIn.setText(AppConstants.timeAsString(attendance.getCheckInTime()));
-            attendance.setCheckOutTime(Calendar.getInstance());
+
             input_view_checkOut.setText(AppConstants.timeAsString(attendance.getCheckOutTime()));
         } else {
             attendance.setCheckInTime(Calendar.getInstance());
@@ -545,7 +597,7 @@ public class CheckInOut extends AppCompatActivity {
             showSnackbar("Check In entry not found", false);
             return false;
         }
-        if (attendance.getImage() == null) {
+        if (attendance.getImageFileName() == null) {
             showSnackbar("Photo not updated.", false);
             return false;
         }
@@ -609,7 +661,7 @@ public class CheckInOut extends AppCompatActivity {
     private void pushToServer(final boolean isCheckIn) {
 
         HttpRequest httpRequest = new HttpRequest(AppConstants.getSaveAction());
-        httpRequest.setRequestBody(attendance.toMultiPartBody(false));
+        httpRequest.setRequestBody(attendance.toMultiPartBody(isCheckIn));
         try {
             new HttpCaller(this, "Checking In") {
                 @Override
@@ -659,6 +711,27 @@ public class CheckInOut extends AppCompatActivity {
         finish();
     }
 
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" +
+                "" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        String mCurrentPhotoPath;
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        attendance.setImageFileName(mCurrentPhotoPath);
+
+
+        return image;
+    }
+
     private void onSuccess(HttpResponse response, boolean isCheckIn) {
         try {
             String message = response.getMesssage();
@@ -673,30 +746,32 @@ public class CheckInOut extends AppCompatActivity {
             if (isCheckIn) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt(PARAM_USER_ID, user.getId());
-                editor.putString(CHECK_IN_TIME, timeAsString(attendance.getCheckInTime()));
+                editor.putString(PARAM_CHECK_IN, timeAsString(attendance.getCheckInTime()));
                 editor.putString(CHECK_IN_DATE, calendarAsString(Calendar.getInstance()));
                 editor.putString(PARAM_USER_NAME, user.getUserName());
                 editor.commit();
                 attendance.setAlreadyCheckedIn(true);
                 imageViewAvatar.setImageResource(R.drawable.camera_icon);
-                attendance.setImage(null);
+                attendance.setImageFileName(null);
                 updateDetails();
                 showSnackbar("Checked In Successfully.");
             } else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt(PARAM_USER_ID, user.getId());
                 editor.putString(PARAM_USER_NAME, user.getUserName());
+                editor.putString(PARAM_CHECK_OUT, timeAsString(attendance.getCheckOutTime()));
                 editor.commit();
                 showSnackbar("Checked Out Successfully.");
                 attendance.setAlreadyCheckedIn(false);
                 attendance.setCheckInTime(null);
                 attendance.setCheckOutTime(null);
-                attendance.setImage(null);
+                attendance.setImageFileName(null);
                 changeButtonState(btn_check_out, false);
-                changeButtonState(btn_check_in, true);
+                changeButtonState(btn_check_in, false);
 
                 imageViewAvatar.setImageResource(R.drawable.camera_icon);
-                attendance.setImage(null);
+                attendance.setImageFileName(null);
+
             }
 
         } catch (Exception e) {

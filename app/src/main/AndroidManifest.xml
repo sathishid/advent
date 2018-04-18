@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
@@ -30,6 +30,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Dark">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.ara.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/home_page">
@@ -37,7 +47,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/login" >
+            android:label="@string/login">
 
         </activity>
         <activity android:name=".CheckInOut">

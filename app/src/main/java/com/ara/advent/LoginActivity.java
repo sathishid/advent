@@ -25,12 +25,18 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.CHECK_IN_DATE;
+import static com.ara.advent.utils.AppConstants.PARAM_CHECK_IN;
+import static com.ara.advent.utils.AppConstants.PARAM_CHECK_OUT;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
+import static com.ara.advent.utils.AppConstants.toAppTimeFormation;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -144,6 +150,15 @@ public class LoginActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(PARAM_USER_ID, user.getId());
             editor.putString(PARAM_USER_NAME, user.getUserName());
+            String timeInString = toAppTimeFormation(jsonObject.getString(PARAM_CHECK_IN));
+            if (timeInString != null) {
+                editor.putString(PARAM_CHECK_IN, timeInString);
+                editor.putString(CHECK_IN_DATE, AppConstants.calendarAsString(Calendar.getInstance()));
+            }
+            timeInString = toAppTimeFormation(jsonObject.getString(PARAM_CHECK_OUT));
+            if (timeInString != null)
+                editor.putString(PARAM_CHECK_OUT, timeInString);
+
             editor.commit();
 
             Intent result = new Intent();

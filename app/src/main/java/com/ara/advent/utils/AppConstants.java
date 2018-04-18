@@ -41,6 +41,7 @@ public class AppConstants {
     public static final String PARAM_PASSWORD = "password";
     public static final String LOGIN_RESULT = "login";
     public static String SUCCESS_MESSAGE = "success";
+    private static final String PARAMA_CHECK_IN_TIME = "checkin_time";
 
     public static final int CHECK_IN = 1;
     public static final int CHECK_OUT = 2;
@@ -52,8 +53,9 @@ public class AppConstants {
     public static final String PARAM_LATTITUDE = "lattitude";
     public static final String PARAM_LONGITUDE = "langitude";
     public static final String PARAM_TYPE = "type";
+    public static final String PARAM_CHECK_IN = "checkin";
+    public static final String PARAM_CHECK_OUT = "checkout";
 
-    public static final String CHECK_IN_TIME = "CheckInTime";
     public static final String CHECK_IN_DATE = "CheckInDate";
 
 
@@ -79,14 +81,22 @@ public class AppConstants {
         return user;
     }
 
+    public static boolean isToday(String date) {
+        return isToday(calendarStringAsCalendar(date));
+    }
+
     public static String timeAsString(Calendar calendar) {
         String am_pm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
         int hour = calendar.get(Calendar.HOUR);
         if (calendar.get(Calendar.HOUR_OF_DAY) == 24) {
             hour = Math.abs(12 - hour);
         }
-        return hour + ":" +
-                calendar.get(Calendar.MINUTE) + " " + am_pm;
+        int minutes = calendar.get(Calendar.MINUTE);
+        String strMinutes = minutes + "";
+        if (minutes < 10)
+            strMinutes = "0" + strMinutes;
+        return hour + ":" + strMinutes
+                + " " + am_pm;
 
     }
 
@@ -149,7 +159,7 @@ public class AppConstants {
 
             imageBitmap = null;
             byte[] imageAsArray = outputStream.toByteArray();
-            attendance.setImage(imageAsArray);
+            // attendance.setImage(imageAsArray);
             imageBitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(outputStream.toByteArray()));
 
             return imageBitmap;
@@ -183,7 +193,7 @@ public class AppConstants {
         String[] minAm_Pm = hrsMin[1].split(" ");
         int minutes = Integer.parseInt(minAm_Pm[0]);
         int am_pm = Calendar.AM;
-        if (minAm_Pm[1] == "PM") {
+        if (minAm_Pm[1].compareToIgnoreCase("PM") == 0) {
             am_pm = Calendar.PM;
         }
         Calendar calendar = Calendar.getInstance();
@@ -196,4 +206,24 @@ public class AppConstants {
         return calendar;
 
     }
+
+    public static String toAppTimeFormation(String time) {
+        if (time.isEmpty() ||
+                time.compareToIgnoreCase("null") == 0 ||
+                time.compareToIgnoreCase("00:00:00") == 0)
+            return null;
+
+        String[] timeSplit = time.split(":");
+        int hour = Integer.parseInt(timeSplit[0]);
+        int minutes = Integer.parseInt(timeSplit[1]);
+        String am_pm = "AM";
+        if (hour > 12) {
+            if (hour != 12)
+                hour = hour - 12;
+            am_pm = "PM";
+        }
+        return hour + ":" + minutes + " " + am_pm;
+    }
+
+
 }
