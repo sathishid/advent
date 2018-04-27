@@ -10,6 +10,12 @@
     <string name="text_check_out">Check Out</string>
     <string name="text_time">hh:mm AM/PM</string>
     <string name="text_today_date">Today Date</string>
+    <string name="text_date">Date</string>
+    <string name="text_dateFormat">DD/MM/YYYY</string>
     <string name="text_welcome_check_in">Welcome to Amaze Advent</string>
     <string name="text_ok_button">OK</string>
+    <string name="text_Tripsheet">Contract Trip Sheet</string>
+    <string name="text_choose_a_vehicle_type">Choose a Vehicle Type</string>
+    <string name="text_Choose_a_Customer">Choose a Customer</string>
+    <string name="text_right_arrow">Right Arrow</string>
 </resources>

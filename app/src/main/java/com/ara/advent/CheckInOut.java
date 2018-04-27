@@ -125,14 +125,15 @@ public class CheckInOut extends AppCompatActivity {
         setContentView(R.layout.activity_check_in_out);
         attendance = new Attendance();
         ButterKnife.bind(this);
-
+/*
         if (updateFromPreference()) {
             updateDetails();
             requestGPSPermission(true);
         } else {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
-        }
+        }*/
+
     }
 
     private boolean updateFromPreference() {
@@ -795,5 +796,11 @@ public class CheckInOut extends AppCompatActivity {
         pushToServer(false);
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(CheckInOut.this,MainActivity.class));
+        finish();
     }
 }
