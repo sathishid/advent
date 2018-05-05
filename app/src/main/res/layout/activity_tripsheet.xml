@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:shadowColor="@color/iron"
-            android:text="Choose a customer"
+            android:text="Choose a Customer"
             android:textSize="13sp" />
 
         <Spinner
@@ -97,12 +97,11 @@
 
             <TextView
                 android:id="@+id/input_date"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:background="@color/ediitext_background"
                 android:gravity="center"
+                android:background="@color/ediitext_background"
                 android:text="Starting Date"
                 android:textSize="14sp" />
 
@@ -117,7 +116,7 @@
 
             <TextView
                 android:id="@+id/input_default_date"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
@@ -148,13 +147,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/amaze_logo_space"
+            android:layout_height="55dp"
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:weightSum="3">
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1">
@@ -163,14 +162,14 @@
                     android:id="@+id/input_start_km"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="starting"
+                    android:hint="Starting"
                     android:inputType="number"
                     android:shadowColor="@color/iron"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1">
@@ -188,7 +187,7 @@
 
             <TextView
                 android:id="@+id/input_total_km"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="10dp"
@@ -218,10 +217,8 @@
                 android:id="@+id/input_start_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="2"
-                android:background="@color/ediitext_background"
                 android:clickable="false"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
@@ -261,9 +258,7 @@
                 android:id="@+id/input_closing_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:layout_weight="2"
-                android:background="@color/ediitext_background"
                 android:clickable="false"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
@@ -303,8 +298,6 @@
                 android:id="@+id/input_total_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
                 android:layout_weight="2"
                 android:background="@color/ediitext_background"
                 android:gravity="center"
