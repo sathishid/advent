@@ -141,4 +141,15 @@ public class Attendance {
         return imageFileName;
     }
 
+
+    public String getImageFilePath() {
+        return imageFilePath;
+    }
+
+    public void setImageFilePath(String imageFilePath) {
+        this.imageFilePath = imageFilePath;
+    }
+
+    private String imageFilePath;
+
 }

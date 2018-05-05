@@ -58,6 +58,23 @@ public class AppConstants {
 
     public static final String CHECK_IN_DATE = "CheckInDate";
 
+    public static final String CUSTOMER_URL = URL + "customerList";
+    public static final String VEHICLENO_URL = URL + "";
+    public static final  String VEHICLETYPE_URL = URL + "vehiclelist";
+    public static final  String PLACE_YRL = URL + "";
+    public static  final String BOOKING_URL = URL + "tripsheetentry";
+    public static final  String PARAM_CUSTOMERID = "custid";
+    public static final  String PARAM_VEHICLETYPE = "vehicletype";
+    public static final  String PARAM_VEHICELNO = "vehicle_no";
+    public static final  String PARAM_ROUTE = "route";
+    public static  final String PARAM_STARTDATE = "start_date";
+    public static final  String PARAM_CLOSEDATE = "close_date";
+    public static final  String PARAM_STARTKM = "startkm";
+    public static final  String PARAM_ENDKM = "endkm";
+    public static  final String PARAM_TOTALKM = "totalkm";
+    public static final  String PARAM_STARTTIME = "starttime";
+    public static  final String PARAM_CLOSETIME = "endtime";
+    public static  final String PARAM_TOTALTIME = "totaltime";
 
     public static User user;
 

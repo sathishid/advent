@@ -80,39 +80,30 @@ import static com.ara.advent.utils.AppConstants.user;
 
 public class CheckInOut extends AppCompatActivity {
 
+    static final int REQUEST_TAKE_PHOTO = 1;
     private final static String TAG = "CheckInOut";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-
     private static final int REQUEST_CHECK_SETTINGS = 102;
     private static final int GPS_REQUEST_RESULT = 104;
-
     @BindView(R.id.input_your_avatar)
     ImageView imageViewAvatar;
-
     @BindView(R.id.input_text_your_name)
     TextView input_yout_name;
-
     @BindView(R.id.input_view_place)
     TextView input_place;
-
     @BindView(R.id.input_view_date)
     TextView input_view_date;
-
     @BindView(R.id.input_view_check_in)
     TextView input_view_checkIn;
-
     @BindView(R.id.input_view_check_out)
     TextView input_view_checkOut;
-
-
     @BindView(R.id.btn_check_in)
     Button btn_check_in;
-
     @BindView(R.id.btn_check_out)
     Button btn_check_out;
-
     @BindView(R.id.view_scroll_root)
     ScrollView scrollView;
+    SharedPreferences sharedPreferences;
     private LocationCallback mLocationCallback;
     private boolean mLocationPermissionGranted = false;
     private boolean mLocationHistoryGranted = false;
@@ -125,6 +116,11 @@ public class CheckInOut extends AppCompatActivity {
         setContentView(R.layout.activity_check_in_out);
         attendance = new Attendance();
         ButterKnife.bind(this);
+        sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        User user = new User();
+        user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
+        user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, null));
+        AppConstants.setUser(user);
 /*
         if (updateFromPreference()) {
             updateDetails();
@@ -134,10 +130,13 @@ public class CheckInOut extends AppCompatActivity {
             startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
         }*/
 
+        requestGPSPermission(true);
+
+
     }
 
     private boolean updateFromPreference() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+
         if (sharedPreferences.contains(PARAM_USER_NAME)) {
             User user = new User();
             user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
@@ -171,8 +170,6 @@ public class CheckInOut extends AppCompatActivity {
         return false;
     }
 
-    static final int REQUEST_TAKE_PHOTO = 1;
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -205,6 +202,13 @@ public class CheckInOut extends AppCompatActivity {
 //
 //            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 //            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+            /*Bitmap bm = BitmapFactory.decodeFile(attendance.getImageFilePath());
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.PNG,0,bos);
+            attendance.setImageFileName(attendance.getImageFilePath());
+            imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));*/
+
 
             imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));
 
@@ -245,7 +249,6 @@ public class CheckInOut extends AppCompatActivity {
 
         attendance.setUser(AppConstants.getUser());
         input_yout_name.setText(attendance.getUser().getUserName());
-
 
         attendance.setAttendanceDate(Calendar.getInstance());
         input_view_date.setText(AppConstants.calendarAsString(attendance.getAttendanceDate()));
@@ -351,6 +354,7 @@ public class CheckInOut extends AppCompatActivity {
                 snackbar.dismiss();
                 if (finishApp)
                     finish();
+
             }
         });
         snackbar.show();
@@ -682,7 +686,7 @@ public class CheckInOut extends AppCompatActivity {
             showSnackbar("Something went wrong, contact Ara software", false);
         }
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -710,7 +714,7 @@ public class CheckInOut extends AppCompatActivity {
         editor.clear();
         editor.commit();
         finish();
-    }
+    }*/
 
 
     private File createImageFile() throws IOException {
@@ -800,7 +804,7 @@ public class CheckInOut extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(CheckInOut.this,MainActivity.class));
+        startActivity(new Intent(CheckInOut.this, MainActivity.class));
         finish();
     }
 }

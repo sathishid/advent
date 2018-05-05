@@ -8,12 +8,14 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 
 import com.ara.advent.utils.AppConstants;
-import com.ara.advent.utils.TripsheetActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkAvailable()) {
 
         } else {
-            Snackbar bar = Snackbar.make(rootLayout, "Something went wrong, Check Network connection!", Snackbar.LENGTH_LONG)
+            Snackbar bar = Snackbar.make(rootLayout, "Something went wrong , Check Network connection!", Snackbar.LENGTH_LONG)
                     .setAction("Dismiss", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -77,17 +79,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /* @Override
-     protected void onResume() {
-         super.onResume();
-
-     }
-
-     @Override
-     protected void onPause() {
-         super.onPause();
-
-     }
 
 
      @Override
@@ -98,14 +89,16 @@ public class MainActivity extends AppCompatActivity {
      }
 
      private void logout() {
-         //TODO: Logout logic goes here.
+         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+         SharedPreferences.Editor editor = sharedPreferences.edit();
+         editor.clear();
+         editor.commit();
          finish();
      }
 
      @Override
      public boolean onOptionsItemSelected(MenuItem item) {
          switch (item.getItemId()) {
-             // action with ID action_refresh was selected
              case R.id.action_logout_id:
                  logout();
                  break;
@@ -115,8 +108,12 @@ public class MainActivity extends AppCompatActivity {
 
          return true;
      }
- */
+
+
+
+
     private boolean isNetworkAvailable() {
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
@@ -140,3 +137,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
