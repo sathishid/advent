@@ -25,9 +25,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -197,18 +194,9 @@ public class CheckInOut extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//
-//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            Bitmap imageBitmap = BitmapFactory.decodeFile(attendance.getImageFileName());
 
-            /*Bitmap bm = BitmapFactory.decodeFile(attendance.getImageFilePath());
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.PNG,0,bos);
-            attendance.setImageFileName(attendance.getImageFilePath());
-            imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));*/
-
+            compressImageFile(imageBitmap, attendance.getImageFileName());
 
             imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));
 
@@ -224,24 +212,25 @@ public class CheckInOut extends AppCompatActivity {
         }
     }
 
-    public File compressImageFile(Bitmap bitmap) {
+    public void compressImageFile(Bitmap bitmap, String fileName) {
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
 
 
-            File file = new File(this.getApplicationContext().getFilesDir(), "user.jpg");
-            String imageFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/user.jpg";
-            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+            File file = new File(fileName);
+            file.deleteOnExit();
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
             byte[] array = outputStream.toByteArray();
             fileOutputStream.write(array);
             fileOutputStream.close();
-            return new File(imageFile);
+
         } catch (Exception exception) {
             Log.e(TAG, exception.getMessage(), exception);
         }
-        return null;
+
     }
 
     private void updateDetails() {
@@ -667,8 +656,9 @@ public class CheckInOut extends AppCompatActivity {
 
         HttpRequest httpRequest = new HttpRequest(AppConstants.getSaveAction());
         httpRequest.setRequestBody(attendance.toMultiPartBody(isCheckIn));
+        String progressMessage = (isCheckIn) ? "Checking In" : "Checking Out";
         try {
-            new HttpCaller(this, "Checking In") {
+            new HttpCaller(this, progressMessage) {
                 @Override
                 public void onResponse(HttpResponse response) {
                     super.onResponse(response);
