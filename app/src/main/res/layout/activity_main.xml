@@ -43,11 +43,20 @@
                 android:text="Check In / Out" />
 
             <Button
-                android:id="@+id/goto_TripSheet"
+                android:id="@+id/goto_Contract_TripSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Trip Sheet" />
+                android:text="Contract Trip Sheet" />
+
+
+            <Button
+                android:id="@+id/goto_Oncall_Tripsheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Oncall Trip Sheet" />
+
 
         </LinearLayout>
 

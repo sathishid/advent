@@ -22,7 +22,7 @@ public class AppConstants {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int MY_CAMERA_REQUEST_CODE = 100;
 
-    private static final String URL = "http://arasoftwares.in/atnc-app/android_atncfile.php?action=";
+    private static final String URL = "http://amazetravels.in/atnc-app/android_atncfile.php?action=";
     private static final String SAVE_ACTION = "save";
     private static final String LOGIN_ACTION = "login_details";
 
@@ -47,6 +47,9 @@ public class AppConstants {
     public static final int CHECK_OUT = 2;
 
 
+    public static final String CUSTOMER_SELECTING_SPINNER_URL = URL + "customerstation";
+    public static final String CUSTOMER_ID_FOR_SELECTING = "customerId";
+
     public static final String PARAM_IMAGE = "userimage";
     public static final String PARAM_ID = "id";
     public static final String PARAM_LOCATION = "location";
@@ -59,22 +62,28 @@ public class AppConstants {
     public static final String CHECK_IN_DATE = "CheckInDate";
 
     public static final String CUSTOMER_URL = URL + "customerList";
-    public static final String VEHICLENO_URL = URL + "";
-    public static final String VEHICLETYPE_URL = URL + "vehiclelist";
-    public static final String PLACE_YRL = URL + "";
-    public static final String BOOKING_URL = URL + "tripsheetentry";
-    public static final String PARAM_CUSTOMERID = "custid";
-    public static final String PARAM_VEHICLETYPE = "vehicletype";
-    public static final String PARAM_VEHICELNO = "vehicle_no";
-    public static final String PARAM_ROUTE = "route";
-    public static final String PARAM_STARTDATE = "start_date";
-    public static final String PARAM_CLOSEDATE = "close_date";
-    public static final String PARAM_STARTKM = "startkm";
-    public static final String PARAM_ENDKM = "endkm";
-    public static final String PARAM_TOTALKM = "totalkm";
-    public static final String PARAM_STARTTIME = "starttime";
-    public static final String PARAM_CLOSETIME = "endtime";
-    public static final String PARAM_TOTALTIME = "totaltime";
+    public static  final String BOOKING_URL = URL + "tripsheetentry";
+    public static final String VEHICLE_NO_URL = URL + "vehicleList";
+    public static final  String PARAM_CUSTOMERID = "custid";
+    public static final  String PARAM_VEHICELNO = "vehicle_no";
+    public static final  String PARAM_TARIFF_ID = "tariff_id";
+    public static  final String PARAM_STARTDATE = "start_date";
+    public static final  String PARAM_CLOSEDATE = "close_date";
+    public static final  String PARAM_STARTKM = "startkm";
+    public static final  String PARAM_ENDKM = "endkm";
+    public static  final String PARAM_TOTALKM = "totalkm";
+    public static final  String PARAM_STARTTIME = "starttime";
+    public static  final String PARAM_CLOSETIME = "endtime";
+    public static  final String PARAM_TOTALTIME = "totaltime";
+
+    public static final String ONCALL_BOOKING_URL = "";
+    public static final String PARAM_CUSTOMER_ID = "";
+    public static final String PARAM_TRIPSHEET_ID = "";
+    public static final String PARAM_DEF_DATE = "";
+    public static final String PARAM_IMG_ONE = "";
+    public static final String PARAM_IMG_TWO= "";
+    public static final String PARAM_IMG_THREE= "";
+
 
     public static User user;
 
@@ -103,8 +112,6 @@ public class AppConstants {
     }
 
     public static String timeAsString(Calendar calendar) {
-        if (calendar == null)
-            calendar = Calendar.getInstance();
         String am_pm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
         int hour = calendar.get(Calendar.HOUR);
         if (calendar.get(Calendar.HOUR_OF_DAY) == 24) {
@@ -159,8 +166,6 @@ public class AppConstants {
     }
 
     public static boolean isNotHalfAnHourDifference(Calendar inTime) {
-        if (inTime == null)
-            return true;
         Calendar currentTime = Calendar.getInstance();
         if (inTime.get(Calendar.HOUR) != currentTime.get(Calendar.HOUR))
             return false;

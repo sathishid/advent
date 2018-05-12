@@ -51,14 +51,15 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/login"></activity>
-        <activity android:name=".CheckInOut">
+            android:label="@string/login" />
+        <activity android:name=".CheckInOut"></activity>
+        <activity
+            android:name=".ContractTripsheet"
+            android:label="Contract Trip Sheet"></activity>
 
-        </activity>
-        <activity android:name=".TripsheetActivity"
-            android:label="Contract Trip Sheet">
-
-        </activity>
+        <activity
+            android:name=".OncallTripsheet"
+            android:label="OnCall Trip Sheet"></activity>
     </application>
 
 </manifest>

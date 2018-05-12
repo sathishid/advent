@@ -33,9 +33,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.goto_CheckInOut)
     Button gotoCheckInOut;
 
-    @BindView(R.id.goto_TripSheet)
-    Button gotoTripSheet;
+    @BindView(R.id.goto_Contract_TripSheet)
+    Button gotoContractTripSheet;
 
+    @BindView(R.id.goto_Oncall_Tripsheet)
+    Button gotoOncallTripSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,33 @@ public class MainActivity extends AppCompatActivity {
             bar.show();
         }
 
+
+        Intent in = getIntent();
+        String text = in.getStringExtra("bookingSucceed");
+        if (text != null) {
+            Snackbar bar = Snackbar.make(rootLayout, "" + text, Snackbar.LENGTH_LONG)
+                    .setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Handle user action
+                        }
+                    });
+
+            bar.show();
+        }
+
+        String text1 = in.getStringExtra("OncallBooked");
+        if (text1 != null) {
+            Snackbar bar = Snackbar.make(rootLayout, "" + text1, Snackbar.LENGTH_LONG)
+                    .setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Handle user action
+                        }
+                    });
+
+            bar.show();
+        }
         gotoCheckInOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,46 +99,50 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        gotoTripSheet.setOnClickListener(new View.OnClickListener() {
+        gotoContractTripSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, TripsheetActivity.class));
+                startActivity(new Intent(MainActivity.this, ContractTripsheet.class));
+                finish();
+            }
+        });
+        gotoOncallTripSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, OncallTripsheet.class));
                 finish();
             }
         });
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu, menu);
+        return true;
+    }
 
-     @Override
-     public boolean onCreateOptionsMenu(Menu menu) {
-         MenuInflater inflater = getMenuInflater();
-         inflater.inflate(R.menu.action_menu, menu);
-         return true;
-     }
+    private void logout() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+        finish();
+    }
 
-     private void logout() {
-         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-         SharedPreferences.Editor editor = sharedPreferences.edit();
-         editor.clear();
-         editor.commit();
-         finish();
-     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout_id:
+                logout();
+                break;
+            default:
+                break;
+        }
 
-     @Override
-     public boolean onOptionsItemSelected(MenuItem item) {
-         switch (item.getItemId()) {
-             case R.id.action_logout_id:
-                 logout();
-                 break;
-             default:
-                 break;
-         }
-
-         return true;
-     }
-
-
+        return true;
+    }
 
 
     private boolean isNetworkAvailable() {

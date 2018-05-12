@@ -25,6 +25,9 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -199,6 +202,7 @@ public class CheckInOut extends AppCompatActivity {
             compressImageFile(imageBitmap, attendance.getImageFileName());
 
             imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));
+            imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));
 
             updateDetails();
         } else if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
@@ -211,7 +215,6 @@ public class CheckInOut extends AppCompatActivity {
             requestGPSPermission(false);
         }
     }
-
     public void compressImageFile(Bitmap bitmap, String fileName) {
 
         try {
@@ -656,9 +659,8 @@ public class CheckInOut extends AppCompatActivity {
 
         HttpRequest httpRequest = new HttpRequest(AppConstants.getSaveAction());
         httpRequest.setRequestBody(attendance.toMultiPartBody(isCheckIn));
-        String progressMessage = (isCheckIn) ? "Checking In" : "Checking Out";
         try {
-            new HttpCaller(this, progressMessage) {
+            new HttpCaller(this, "Checking In") {
                 @Override
                 public void onResponse(HttpResponse response) {
                     super.onResponse(response);
@@ -773,6 +775,7 @@ public class CheckInOut extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e);
             showSnackbar("Something went wrong, contact support");
         }
+
     }
 
     private void onFailed(HttpResponse response) {
