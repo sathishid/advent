@@ -22,10 +22,8 @@ import java.util.ArrayList;
 
 public class RouteAndVehicleAdapter extends ArrayAdapter<RouteAndvehicleModel> {
 
-    private Activity context;
     ArrayList<RouteAndvehicleModel> data = null;
-
-
+    private Activity context;
 
     public RouteAndVehicleAdapter(Activity context, int resource, ArrayList<RouteAndvehicleModel> data) {
         super(context, resource, data);
@@ -33,6 +31,7 @@ public class RouteAndVehicleAdapter extends ArrayAdapter<RouteAndvehicleModel> {
         this.data = data;
 
     }
+
 
 
     @NonNull
@@ -53,8 +52,8 @@ public class RouteAndVehicleAdapter extends ArrayAdapter<RouteAndvehicleModel> {
         RouteAndvehicleModel item = data.get(position);
 
         if (item != null) { // Parse the data from each object and set it.
-            TextView  station_name = (TextView) row.findViewById(R.id.item_stationname);
-            TextView  station_name_id = (TextView) row.findViewById(R.id.item_stationId);
+            TextView station_name = (TextView) row.findViewById(R.id.item_stationname);
+            TextView station_name_id = (TextView) row.findViewById(R.id.item_stationId);
 
             if (station_name != null) {
                 station_name.setText(item.getName());

@@ -136,7 +136,7 @@ public class OncallTripsheet extends AppCompatActivity {
         OnSubmit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnSubmit_buttonMethod();
+//                OnSubmit_buttonMethod();
             }
         });
 
@@ -211,7 +211,7 @@ public class OncallTripsheet extends AppCompatActivity {
     }
 
     private void PushtoServer() {
-        HttpRequest httpRequest = new HttpRequest(AppConstants.ONCALL_BOOKING_URL);
+        HttpRequest httpRequest = new HttpRequest(AppConstants.ONCALLTRIPSHEETURL);
         httpRequest.setRequestBody(oncallTsModel.multipartRequest());
         try {
             new HttpCaller(this,"Processing..."){

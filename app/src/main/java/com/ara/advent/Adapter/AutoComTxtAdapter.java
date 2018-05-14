@@ -26,8 +26,11 @@ public class AutoComTxtAdapter extends ArrayAdapter<AutoComTxtModel> {
         this.data = data;
 
     }
-
-
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        return super.getView(position, convertView, parent);
+    }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

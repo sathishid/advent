@@ -30,8 +30,6 @@ public class CustomerAdapter extends ArrayAdapter<Customer> {
 
     }
 
-
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

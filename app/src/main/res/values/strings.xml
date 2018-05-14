@@ -19,5 +19,7 @@
     <string name="text_Choose_a_Customer">Choose a Customer</string>
     <string name="text_right_arrow">Right Arrow</string>
     <string name="clickopencamera">Click Here to Get a Picture</string>
+    <string name="user_text">User</string>
+    <string name="Driver_text">Driver</string>
 
 </resources>

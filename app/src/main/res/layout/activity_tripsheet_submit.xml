@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/scrol"
+    tools:context="com.ara.advent.TripsheetSubmit">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:gravity="center"
+            android:text="Booking Id"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="28dp"
+            android:gravity="center"
+            android:text="Date"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/textview_tripno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:text="NO"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:id="@+id/textview_tripdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:text="DD?MM?YY"
+            android:paddingRight="10dp"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="22dp"
+        android:shadowColor="@color/iron"
+        android:text="Customer Name "
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/textview_customer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="CUstomer name"
+        android:textColor="@color/iron"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="7dp"
+        android:shadowColor="@color/iron"
+        android:text="Contact Name "
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/textview_customermc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:text="customer multi customer name"
+        android:textColor="@color/iron"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:shadowColor="@color/iron"
+        android:text="Report To "
+        android:layout_marginLeft="7dp"
+        android:textSize="13sp" />
+    <TextView
+        android:id="@+id/textview_customerREPORT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:text="Report to"
+        android:textColor="@color/iron"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="Starting Km"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:id="@+id/textview_startingkm"
+            android:text="KM"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="Starting time"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:id="@+id/textview_startingtime"
+            android:text="time"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="Closing KM"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:id="@+id/textview_closingkm"
+            android:text="time"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="Closing time"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/textview_closingtimeH"
+            android:layout_toLeftOf="@+id/st"
+            android:maxLength="2"
+            android:hint="HH"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/st"
+            android:layout_width="20dp"
+            android:text=":"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_toLeftOf="@id/textview_closingtimeM"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:hint="MM"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:maxLength="2"
+            android:id="@+id/textview_closingtimeM"
+            android:textColor="@color/iron"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:id="@+id/Submit"/>
+    </LinearLayout>
+</ScrollView>

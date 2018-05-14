@@ -8,20 +8,25 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.ara.advent.utils.AppConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.DRIVER_TYPE;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
+import static com.ara.advent.utils.AppConstants.PREF_TYPE;
+import static com.ara.advent.utils.AppConstants.USER_TYPE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,18 +44,32 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.goto_Oncall_Tripsheet)
     Button gotoOncallTripSheet;
 
+    @BindView(R.id.goto_Tripsheetlist)
+            Button gotoTRipsheetList;
+
+    int type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-        if (sharedPreferences.contains(PARAM_USER_ID)) {
 
-        } else {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        type = sharedPreferences.getInt(PREF_TYPE,-1);
+        Log.e(TAG,"shred preferne type"+type);
+        Toast.makeText(MainActivity.this,""+type,Toast.LENGTH_SHORT).show();
+        if (sharedPreferences.contains(PARAM_USER_ID) && type == USER_TYPE) {
+
+            gotoTRipsheetList.setVisibility(View.INVISIBLE);
+        } else if(sharedPreferences.contains(PARAM_USER_ID) && type == DRIVER_TYPE){
+            gotoCheckInOut.setVisibility(View.INVISIBLE);
+            gotoContractTripSheet.setVisibility(View.INVISIBLE);
+        }else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
         }
+
         if (isNetworkAvailable()) {
 
         } else {
@@ -79,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
             bar.show();
         }
+
 
         String text1 = in.getStringExtra("OncallBooked");
         if (text1 != null) {
@@ -110,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, OncallTripsheet.class));
+                finish();
+            }
+        });
+        gotoTRipsheetList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TripSheetList.class));
                 finish();
             }
         });

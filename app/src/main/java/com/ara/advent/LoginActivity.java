@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -31,12 +33,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.ara.advent.utils.AppConstants.CHECK_IN_DATE;
+import static com.ara.advent.utils.AppConstants.DRIVER_TYPE;
+import static com.ara.advent.utils.AppConstants.LOGIN_RESULT;
 import static com.ara.advent.utils.AppConstants.PARAM_CHECK_IN;
 import static com.ara.advent.utils.AppConstants.PARAM_CHECK_OUT;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
+import static com.ara.advent.utils.AppConstants.PREF_TYPE;
+import static com.ara.advent.utils.AppConstants.SUCCESS_MESSAGE;
+import static com.ara.advent.utils.AppConstants.USER_TYPE;
 import static com.ara.advent.utils.AppConstants.toAppTimeFormation;
+import static com.ara.advent.utils.AppConstants.user;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -49,6 +57,12 @@ public class LoginActivity extends AppCompatActivity {
     Button _loginButton;
     @BindView(R.id.scroll_view_login)
     ScrollView _rootScrollView;
+    @BindView(R.id.userLogin)
+    CheckBox userLogin_CheckBox;
+    @BindView(R.id.DriverLogin)
+    CheckBox driverLogin_Checkbox;
+    int type = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +70,29 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        userLogin_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+
+                if (isChecked) {
+                    driverLogin_Checkbox.setChecked(false);
+                    type = USER_TYPE;
+                }
+
+            }
+        });
+        driverLogin_Checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    userLogin_CheckBox.setChecked(false);
+                    type = DRIVER_TYPE;
+                }
+
+            }
+        });
 
     }
 
@@ -75,9 +111,9 @@ public class LoginActivity extends AppCompatActivity {
         user.setPassword(_passwordText.getText().toString());
 
         _loginButton.setEnabled(true);
-        HttpRequest request = new HttpRequest(AppConstants.getLoginAction());
 
-        request.setRequestBody(user.toRequestBody());
+        HttpRequest request = new HttpRequest(AppConstants.getLoginAction());
+        request.setRequestBody(user.toRequestBody(type));
         try {
             new HttpCaller(this, "Validating User") {
                 @Override
@@ -143,15 +179,20 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Invalid Mobile or Password!", Toast.LENGTH_LONG).show();
                 return;
             }
+
             Log.i("LoginSuccess", response.getMesssage());
-
-
-            User user = AppConstants.toUser(jsonObject);
             SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(PREF_TYPE, type);
+//8667214262
+            User user = AppConstants.toUser(jsonObject);
+            /*SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();*/
             editor.putInt(PARAM_USER_ID, user.getId());
             editor.putString(PARAM_USER_NAME, user.getUserName());
+
             String timeInString = toAppTimeFormation(jsonObject.getString(PARAM_CHECK_IN));
             if (timeInString != null) {
                 editor.putString(PARAM_CHECK_IN, timeInString);
@@ -162,7 +203,6 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString(PARAM_CHECK_OUT, timeInString);
 
             editor.commit();
-
             Intent result = new Intent();
             result.putExtra("result", "success");
             setResult(RESULT_OK, result);

@@ -39,21 +39,33 @@
             <Button
                 android:id="@+id/goto_CheckInOut"
                 android:layout_width="match_parent"
+                android:visibility="visible"
                 android:layout_height="wrap_content"
                 android:text="Check In / Out" />
 
             <Button
                 android:id="@+id/goto_Contract_TripSheet"
                 android:layout_width="match_parent"
+                android:visibility="visible"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Contract Trip Sheet" />
 
 
             <Button
+                android:visibility="visible"
+                android:layout_marginTop="20dp"
+                android:id="@+id/goto_Tripsheetlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trip Sheet List" />
+
+
+            <Button
                 android:id="@+id/goto_Oncall_Tripsheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:text="Oncall Trip Sheet" />
 

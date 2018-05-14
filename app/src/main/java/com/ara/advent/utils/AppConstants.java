@@ -34,7 +34,7 @@ public class AppConstants {
     public static String getSaveAction() {
         return URL + SAVE_ACTION;
     }
-
+    public static final String PREF_TYPE = "TYPE";
     public static final String PARAM_USER_ID = "userid";
     public static final String PARAM_USER_NAME = "username";
     public static final String PARAM_LOGIN = "login";
@@ -46,6 +46,8 @@ public class AppConstants {
     public static final int CHECK_IN = 1;
     public static final int CHECK_OUT = 2;
 
+    public static final int USER_TYPE = 1;
+    public static final int DRIVER_TYPE = 2;
 
     public static final String CUSTOMER_SELECTING_SPINNER_URL = URL + "customerstation";
     public static final String CUSTOMER_ID_FOR_SELECTING = "customerId";
@@ -63,7 +65,7 @@ public class AppConstants {
 
     public static final String CUSTOMER_URL = URL + "customerList";
     public static  final String BOOKING_URL = URL + "tripsheetentry";
-    public static final String VEHICLE_NO_URL = URL + "vehicleList";
+    public static final String VEHICLE_NO_URL = URL + "lastvehicleno";
     public static final  String PARAM_CUSTOMERID = "custid";
     public static final  String PARAM_VEHICELNO = "vehicle_no";
     public static final  String PARAM_TARIFF_ID = "tariff_id";
@@ -75,14 +77,34 @@ public class AppConstants {
     public static final  String PARAM_STARTTIME = "starttime";
     public static  final String PARAM_CLOSETIME = "endtime";
     public static  final String PARAM_TOTALTIME = "totaltime";
-
-    public static final String ONCALL_BOOKING_URL = "";
-    public static final String PARAM_CUSTOMER_ID = "";
-    public static final String PARAM_TRIPSHEET_ID = "";
+    public static final String PARAM_CUSTOMER_ID = "custtomerId";
+    public static final String ONCALLTRIPSHEETURL = "oncaltripsheetlist";
+    public static final String PARAM_VEHICLE_ID = "vehicleid";
+    public static final String ONCALLTRIPSHEETUPDATE = "oncaltripsheetupdate";
+    public static final String PARAM_TRIPSHEET_ID = "tripid";
+    public static final String PARAM_CLOSING_KM_ONCALL = "closingkm";
+    public static final String PARAM_CLOSIN_TIME_ONCALL = "closingtime";
     public static final String PARAM_DEF_DATE = "";
     public static final String PARAM_IMG_ONE = "";
     public static final String PARAM_IMG_TWO= "";
     public static final String PARAM_IMG_THREE= "";
+
+    public static final String PARAMTB = "oncaltripsheetlist";
+    public static final String TBURL = URL+PARAMTB;
+    public static final String TBID = "trip_booking_id";
+    public static final String TBNO = "trip_booking_no";
+    public static final String TBDATE ="trip_booking_date" ;
+    public static final String TBCNAME ="customer_name" ;
+    public static final String TBCMCNAME ="customer_multi_contact_name" ;
+    public static final String TBREPORTTO ="trip_booking_report_to" ;
+    public static final String TBCSTIME = "trip_closing_customer_starting_time";
+    public static final String TBCSSKM = "trip_closing_customer_starting_km";
+
+    public static final String SUB = "oncaltripsheetupdate";
+    public static final String SUBMITURL = URL +SUB;
+    public static final String TRIPID = "tripid";
+    public static final String CLOSINGKM = "closingkm";
+    public static final String CLOSINTIME ="closingtime" ;
 
 
     public static User user;

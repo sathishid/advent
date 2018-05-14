@@ -58,6 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.ara.advent.utils.AppConstants.BOOKING_URL;
+import static com.ara.advent.utils.AppConstants.CUSTOMER_ID_FOR_SELECTING;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSEDATE;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSETIME;
 import static com.ara.advent.utils.AppConstants.PARAM_CUSTOMERID;
@@ -69,6 +70,7 @@ import static com.ara.advent.utils.AppConstants.PARAM_TARIFF_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_TOTALKM;
 import static com.ara.advent.utils.AppConstants.PARAM_TOTALTIME;
 import static com.ara.advent.utils.AppConstants.PARAM_VEHICELNO;
+import static com.ara.advent.utils.AppConstants.VEHICLE_NO_URL;
 
 
 public class ContractTripsheet extends AppCompatActivity implements TextWatcher {
@@ -77,7 +79,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
 
 
     int i1, i2, substract;
-    String val_tarrif_id;
+    String val_tarrif_id,vehNo,vehId,name;
 
     long diffMinutes, diffHours, diffDays;
     String valCusId, valvehicletype, valvehicleno, valroute, valclosedate, valstartdate, valstartkm, valendkm, valtotalkm, valstarttime, valendtime, valtotaltime;
@@ -91,7 +93,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
     @BindView(R.id.spinner_vehicle_type)
     Spinner vehicleType_spinner;
     @BindView(R.id.input_VehicleNo)
-    AutoCompleteTextView autoCompleteTextView;
+    TextView autoCompleteTextView;
     @BindView(R.id.input_date)
     TextView startingDate;
     @BindView(R.id.input_default_date)
@@ -206,8 +208,9 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
 
         if (isNetworkAvailable()) {
 
+            customer.clear();
             getCustomerJson();
-            getVehicleNoJson();
+
         } else {
 
             showSnackbar("Something went wrong, Check Network connection!");
@@ -235,7 +238,9 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                 RouteAndvehicleModel routeAndvehicleModel = randvModel.get(position);
                 val_tarrif_id = routeAndvehicleModel.getId();
                 Log.e(TAG, "valtarrifid" + val_tarrif_id);
+                autocomplete.clear();
 
+                getVehicleNoJson(val_tarrif_id);
             }
 
             @Override
@@ -275,12 +280,15 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
                         String contract_tariff_id = jsonObject.getString("contract_tariff_id");
-                        String name = jsonObject.getString("name");
+                         name = jsonObject.getString("name");
 
                         randvModel.add(new RouteAndvehicleModel(contract_tariff_id, name));
                     }
-                    RouteAndVehicleAdapter routeAndvehicleModel = new RouteAndVehicleAdapter(ContractTripsheet.this, android.R.layout.simple_spinner_item, randvModel);
-                    vehicleType_spinner.setAdapter(routeAndvehicleModel);
+
+                        RouteAndVehicleAdapter routeAndvehicleModel = new RouteAndVehicleAdapter(ContractTripsheet.this, android.R.layout.simple_spinner_item, randvModel);
+                        vehicleType_spinner.setAdapter(routeAndvehicleModel);
+
+
 
 
                 } catch (JSONException e) {
@@ -301,7 +309,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(AppConstants.CUSTOMER_ID_FOR_SELECTING, value);
+                map.put(CUSTOMER_ID_FOR_SELECTING, value);
                 return map;
             }
         };
@@ -550,6 +558,8 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                             Customer selectedname = customer.get(position);
                             valCusId = selectedname.getCus_id();
                             Log.e(TAG, "value customer id inside listener " + valCusId);
+                            randvModel.clear();
+                            autoCompleteTextView.setText("");
                             getRouteAndVehicletype(valCusId);
                         }
 
@@ -577,14 +587,12 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
         MySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-    private void getVehicleNoJson() {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConstants.VEHICLE_NO_URL, new Response.Listener<String>() {
+    private void getVehicleNoJson(final String Id) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, VEHICLE_NO_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e(TAG, "Response" + response);
-
+                Log.e(TAG,"response -------------------------------------- "+response);
                 JSONArray jsonArray = null;
                 JSONObject jsonObject = null;
 
@@ -592,37 +600,42 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                     jsonArray = new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
-                        String id = jsonObject.getString("vehicle_id");
-                        String VehNO = jsonObject.getString("vehicle_no");
-                        autocomplete.add(new AutoComTxtModel(id,VehNO));
+                        vehNo = jsonObject.getString("vehicle_no");
+                        vehId = jsonObject.getString("vehicle_id");
 
+
+                     /*   autocomplete.add(new AutoComTxtModel(vehNo,vehId));
+                        AutoComTxtAdapter autoComTxtAdapter = new AutoComTxtAdapter(ContractTripsheet.this, android.R.layout.simple_spinner_item, autocomplete);
+                        autoCompleteTextView.setAdapter(autoComTxtAdapter);*/
                     }
-                }catch (JSONException exception) {
-                    Log.e(TAG,"JSON Exception for autocomplete "+exception);
+                    autoCompleteTextView.setText(vehNo);
+                    valvehicleno = vehId;
+
+                } catch(JSONException j) {
+                    Log.e(TAG,"json exception for"+j);
                 }
 
-                AutoComTxtAdapter autoComTxtAdapter = new AutoComTxtAdapter(ContractTripsheet.this, android.R.layout.simple_dropdown_item_1line,autocomplete );
-                autoCompleteTextView.setThreshold(1);
-                autoCompleteTextView.setAdapter(autoComTxtAdapter);
-                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        AutoComTxtModel text = autocomplete.get(position);
-                        String autoCompleteTextId = text.getId();
-
-                        Log.e(TAG,"autoCompleteTextId"+autoCompleteTextId);
-                        Toast.makeText(ContractTripsheet.this, ""+autoCompleteTextId, Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "error" + error);
+
+                Log.e(TAG,"Error - "+error);
             }
-        });
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map map = new HashMap();
+                map.put(PARAM_TARIFF_ID,Id);
+                map.put(CUSTOMER_ID_FOR_SELECTING,valCusId);
+                return map;
+            }
+        };
         MySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+
 
     private void closeDate() {
 
