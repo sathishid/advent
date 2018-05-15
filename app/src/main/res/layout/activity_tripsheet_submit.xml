@@ -1,291 +1,297 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrol"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/scrol"
     tools:context="com.ara.advent.TripsheetSubmit">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:gravity="center"
+                android:text="Booking Id"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="28dp"
+                android:gravity="center"
+                android:text="Date"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/textview_tripno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:text="NO"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textview_tripdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="7dp"
+                android:gravity="center"
+                android:paddingRight="10dp"
+                android:text="DD?MM?YY"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="22dp"
+            android:shadowColor="@color/iron"
+            android:text="Customer Name "
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textview_customer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
-            android:gravity="center"
-            android:text="Booking Id"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="28dp"
-            android:gravity="center"
-            android:text="Date"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:id="@+id/textview_tripno"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:paddingLeft="20dp"
-            android:text="NO"
+            android:text="CUstomer name"
             android:textColor="@color/iron"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_alignParentEnd="true"
-            android:id="@+id/textview_tripdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:gravity="center"
-            android:text="DD?MM?YY"
-            android:paddingRight="10dp"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="22dp"
-        android:shadowColor="@color/iron"
-        android:text="Customer Name "
-        android:textSize="13sp" />
-
-    <TextView
-        android:id="@+id/textview_customer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="CUstomer name"
-        android:textColor="@color/iron"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="7dp"
-        android:shadowColor="@color/iron"
-        android:text="Contact Name "
-        android:textSize="13sp" />
-
-    <TextView
-        android:id="@+id/textview_customermc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:paddingLeft="20dp"
-        android:text="customer multi customer name"
-        android:textColor="@color/iron"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:shadowColor="@color/iron"
-        android:text="Report To "
-        android:layout_marginLeft="7dp"
-        android:textSize="13sp" />
-    <TextView
-        android:id="@+id/textview_customerREPORT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:paddingLeft="20dp"
-        android:text="Report to"
-        android:textColor="@color/iron"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="15dp"
+            android:shadowColor="@color/iron"
+            android:text="Contact Name "
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textview_customermc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Starting Km"
+            android:paddingLeft="20dp"
+            android:text="customer multi customer name"
             android:textColor="@color/iron"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
-            android:id="@+id/textview_startingkm"
-            android:text="KM"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="15dp"
+            android:shadowColor="@color/iron"
+            android:text="Report To "
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textview_customerREPORT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Starting time"
+            android:paddingLeft="20dp"
+            android:text="Report to"
             android:textColor="@color/iron"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
-            android:id="@+id/textview_startingtime"
-            android:text="time"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="Starting Km"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textview_startingkm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="KM"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="Closing KM"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="20dp">
 
-        <EditText
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="Starting time"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textview_startingtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="time"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
-            android:id="@+id/textview_closingkm"
-            android:text="time"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
+            android:layout_marginTop="20dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="Closing KM"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/textview_closingkm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:hint=""
+                android:inputType="number"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="Closing time"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/textview_closingtimeH"
-            android:layout_toLeftOf="@+id/st"
-            android:maxLength="2"
-            android:hint="HH"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/st"
-            android:layout_width="20dp"
-            android:text=":"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:layout_toLeftOf="@id/textview_closingtimeM"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:hint="MM"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
-            android:maxLength="2"
-            android:id="@+id/textview_closingtimeM"
-            android:textColor="@color/iron"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="2"
+                android:text="Closing time"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:id="@+id/Submit"/>
+            <EditText
+                android:id="@+id/textview_closingtimeH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="HH"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/st"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0"
+                android:text=":" />
+
+            <EditText
+                android:id="@+id/textview_closingtimeM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="MM"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textColor="@color/iron"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/Submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            android:text="Submit" />
     </LinearLayout>
 </ScrollView>

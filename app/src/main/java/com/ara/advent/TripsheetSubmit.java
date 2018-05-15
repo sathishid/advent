@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,24 +54,31 @@ public class TripsheetSubmit extends AppCompatActivity {
     @BindView(R.id.textview_closingtimeM)
     TextView closetimem;
     @BindView(R.id.textview_closingtimeH)
+
     TextView closetimeh;
     String a;
+    @BindView(R.id.Submit)
+    Button Submit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_submit);
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        sv.setFocusableInTouchMode(true);
+        sv.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences("submit",MODE_PRIVATE);
-        a = sharedPreferences.getString("tripsheetid","");
-        String b = sharedPreferences.getString("tripsheetno","");
-        String c = sharedPreferences.getString("tripsheetDate","");
-        String d = sharedPreferences.getString("tripsheetcustomername","");
-        String e = sharedPreferences.getString("tripsheetMCname","");
-        String f = sharedPreferences.getString("tripsheetreportto","");
-        String j = sharedPreferences.getString("tripshetstartingkm","");
-        String h = sharedPreferences.getString("tripsheetstartingtie","");
+        SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
+        a = sharedPreferences.getString("tripsheetid", "");
+        String b = sharedPreferences.getString("tripsheetno", "");
+        String c = sharedPreferences.getString("tripsheetDate", "");
+        String d = sharedPreferences.getString("tripsheetcustomername", "");
+        String e = sharedPreferences.getString("tripsheetMCname", "");
+        String f = sharedPreferences.getString("tripsheetreportto", "");
+        String j = sharedPreferences.getString("tripshetstartingkm", "");
+        String h = sharedPreferences.getString("tripsheetstartingtie", "");
 
         trino.setText(b);
         tripdate.setText(c);
@@ -78,26 +88,33 @@ public class TripsheetSubmit extends AppCompatActivity {
         startkm.setText(j);
         starttime.setText(h);
         if (isNetworkAvailable()) {
-            submitMethodd();
+
         } else {
 
             showSnackbar("No connection");
         }
+        Submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitMethodd();
+            }
+        });
 
     }
+
     public boolean formValid() {
 
         boolean error = true;
 
 
-        if (closetimeh.getText().toString().isEmpty()) {
+        if (closetimeh.getText().toString().isEmpty() ||  Integer.parseInt(closetimeh.getText().toString())>24) {
             closetimeh.setError("hours not valid");
             error = false;
         } else {
             closetimeh.setError(null);
         }
 
-        if (closetimem.getText().toString().isEmpty()) {
+        if (closetimem.getText().toString().isEmpty() || Integer.parseInt(closetimeh.getText().toString())>60) {
             closetimem.setError("minutes not valid");
             error = false;
         } else {
@@ -108,7 +125,7 @@ public class TripsheetSubmit extends AppCompatActivity {
         if (closekm.getText().toString().isEmpty()) {
             closekm.setError("km not valid");
             error = false;
-        } else  {
+        } else {
             closekm.setError(null);
         }
 
@@ -123,37 +140,37 @@ public class TripsheetSubmit extends AppCompatActivity {
             return;
         }
 
-        final String closing_time = closetimeh.getText().toString()+":"+closetimem.getText().toString();
+        final String closing_time = closetimeh.getText().toString() + ":" + closetimem.getText().toString();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.SUBMITURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e("TAG","response--------"+response);
+                Log.e("TAG", "response--------" + response);
                 if (response.equalsIgnoreCase("success")) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("submit",MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.clear();
                     editor.commit();
-                    startActivity(new Intent(TripsheetSubmit.this,TripSheetList.class)
-                    .putExtra("name","TripSheet Added successfully"));
+                    startActivity(new Intent(TripsheetSubmit.this, TripSheetList.class)
+                            .putExtra("name", "TripSheet Added successfully"));
                     finish();
 
-                } else{
+                } else {
                     Toast.makeText(TripsheetSubmit.this, "data was not sent", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("TAG","error--------"+error);
+                Log.e("TAG", "error--------" + error);
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(AppConstants.TRIPID,a);
-                map.put(AppConstants.CLOSINGKM,closekm.getText().toString());
-                map.put(AppConstants.CLOSINTIME,closing_time);
+                map.put(AppConstants.TRIPID, a);
+                map.put(AppConstants.CLOSINGKM, closekm.getText().toString());
+                map.put(AppConstants.CLOSINTIME, closing_time);
                 return map;
 
             }
@@ -167,6 +184,7 @@ public class TripsheetSubmit extends AppCompatActivity {
         finish();
         super.onBackPressed();
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

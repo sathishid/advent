@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox userLogin_CheckBox;
     @BindView(R.id.DriverLogin)
     CheckBox driverLogin_Checkbox;
-    int type = 0;
+    int type = DRIVER_TYPE;
 
 
     @Override

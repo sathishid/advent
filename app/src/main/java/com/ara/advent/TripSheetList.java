@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.nfc.Tag;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,8 +45,8 @@ import static com.ara.advent.utils.AppConstants.TBNO;
 import static com.ara.advent.utils.AppConstants.TBREPORTTO;
 
 public class TripSheetList extends AppCompatActivity {
-    private static final String TAG ="TRIPSHEETLIST";
-@BindView(R.id.li)
+    private static final String TAG = "TRIPSHEETLIST";
+    @BindView(R.id.li)
     LinearLayout li;
 
     @BindView(R.id.list)
@@ -61,12 +60,12 @@ public class TripSheetList extends AppCompatActivity {
         ButterKnife.bind(this);
         if (isNetworkAvailable()) {
             populateTripSheetData();
-        }else {
+        } else {
             showSnackbar("Please check your networ connection");
         }
         Intent in = getIntent();
         String text = in.getStringExtra("name");
-        if (text!=null) {
+        if (text != null) {
             Snackbar bar = Snackbar.make(li, "" + text, Snackbar.LENGTH_LONG)
                     .setAction("Dismiss", new View.OnClickListener() {
                         @Override
@@ -91,29 +90,29 @@ public class TripSheetList extends AppCompatActivity {
                 String tripshetstartingkm = triplistArray.get(i).getTripcustomer_startingkm();
                 String tripsheetstartingtie = triplistArray.get(i).getTripcustomer_startingtime();
 
-                Log.e(TAG,"tripsheetid"+tripsheetid);
-                Log.e(TAG,"tripsheetno"+tripsheetno);
-                Log.e(TAG,"tripsheetDate"+tripsheetDate);
-                Log.e(TAG,"tripsheetcustomername"+tripsheetcustomername);
-                Log.e(TAG,"tripsheetMCname"+tripsheetMCname);
-                Log.e(TAG,"tripsheetreportto"+tripsheetreportto);
-                Log.e(TAG,"tripshetstartingkm"+tripshetstartingkm);
-                Log.e(TAG,"tripsheetstartingtie"+tripsheetstartingtie);
+                Log.e(TAG, "tripsheetid" + tripsheetid);
+                Log.e(TAG, "tripsheetno" + tripsheetno);
+                Log.e(TAG, "tripsheetDate" + tripsheetDate);
+                Log.e(TAG, "tripsheetcustomername" + tripsheetcustomername);
+                Log.e(TAG, "tripsheetMCname" + tripsheetMCname);
+                Log.e(TAG, "tripsheetreportto" + tripsheetreportto);
+                Log.e(TAG, "tripshetstartingkm" + tripshetstartingkm);
+                Log.e(TAG, "tripsheetstartingtie" + tripsheetstartingtie);
 
 
-                SharedPreferences sharedPreferences = getSharedPreferences("submit",MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("tripsheetid",tripsheetid);
-                editor.putString("tripsheetno",tripsheetno);
-                editor.putString("tripsheetDate",tripsheetDate);
-                editor.putString("tripsheetcustomername",tripsheetcustomername);
-                editor.putString("tripsheetMCname",tripsheetMCname);
-                editor.putString("tripsheetreportto",tripsheetreportto);
-                editor.putString("tripshetstartingkm",tripshetstartingkm);
-                editor.putString("tripsheetstartingtie",tripsheetstartingtie);
+                editor.putString("tripsheetid", tripsheetid);
+                editor.putString("tripsheetno", tripsheetno);
+                editor.putString("tripsheetDate", tripsheetDate);
+                editor.putString("tripsheetcustomername", tripsheetcustomername);
+                editor.putString("tripsheetMCname", tripsheetMCname);
+                editor.putString("tripsheetreportto", tripsheetreportto);
+                editor.putString("tripshetstartingkm", tripshetstartingkm);
+                editor.putString("tripsheetstartingtie", tripsheetstartingtie);
                 editor.commit();
 
-                startActivity(new Intent(TripSheetList.this,TripsheetSubmit.class));
+                startActivity(new Intent(TripSheetList.this, TripsheetSubmit.class));
                 finish();
             }
         });
@@ -126,16 +125,17 @@ public class TripSheetList extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
     }
+
     public void populateTripSheetData() {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.TBURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e(TAG,"populate trip sheet data "+response);
+                Log.e(TAG, "populate trip sheet data " + response);
                 JSONArray jsonArray = null;
                 JSONObject jsonObject = null;
-
+                triplistArray = new ArrayList<>();
                 try {
                     jsonArray = new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -164,26 +164,28 @@ public class TripSheetList extends AppCompatActivity {
 
                     TripsheetListAdapter tripsheet = new TripsheetListAdapter(getApplicationContext(), R.layout.listitems, triplistArray);
                     Trip_list.setAdapter(tripsheet);
-                }catch(JSONException json) {
-                    Log.e(TAG,"jsonexception"+json);
+                } catch (JSONException json) {
+                    Log.e(TAG, "jsonexception" + json);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG,"populate trip sheet data error "+error);
+                Log.e(TAG, "populate trip sheet data error " + error);
             }
         }) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(AppConstants.PARAM_VEHICLE_ID,AppConstants.PARAM_USER_ID);
+                map.put(AppConstants.PARAM_VEHICLE_ID, ""+AppConstants.getUser().getId());
+
                 return map;
             }
         };
         MySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+
     @Override
     public void onBackPressed() {
         startActivity(new Intent(TripSheetList.this, MainActivity.class));

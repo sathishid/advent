@@ -25,6 +25,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/amaze_logo_space" />
+        <LinearLayout
+        android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/userLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:paddingLeft="10dp"
+                android:text="@string/user_text" />
+
+            <CheckBox
+                android:id="@+id/DriverLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="true"
+                android:paddingLeft="10dp"
+                android:text="@string/Driver_text" />
+
+    </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -54,23 +77,6 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/userLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:checked="false"
-            android:paddingLeft="10dp"
-            android:text="@string/user_text" />
-
-        <CheckBox
-            android:id="@+id/DriverLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:checked="false"
-            android:paddingLeft="10dp"
-            android:text="@string/Driver_text" />
 
 
         <Button

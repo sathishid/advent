@@ -660,7 +660,7 @@ public class CheckInOut extends AppCompatActivity {
         HttpRequest httpRequest = new HttpRequest(AppConstants.getSaveAction());
         httpRequest.setRequestBody(attendance.toMultiPartBody(isCheckIn));
         try {
-            new HttpCaller(this, "Checking In") {
+            new HttpCaller(this, (isCheckIn)?"Checking In":"Checking Out") {
                 @Override
                 public void onResponse(HttpResponse response) {
                     super.onResponse(response);

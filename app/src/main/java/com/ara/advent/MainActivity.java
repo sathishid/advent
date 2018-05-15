@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.ara.advent.models.User;
 import com.ara.advent.utils.AppConstants;
 
 import butterknife.BindView;
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 
 import static com.ara.advent.utils.AppConstants.DRIVER_TYPE;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
+import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 import static com.ara.advent.utils.AppConstants.PREF_TYPE;
 import static com.ara.advent.utils.AppConstants.USER_TYPE;
@@ -41,11 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.goto_Contract_TripSheet)
     Button gotoContractTripSheet;
 
-    @BindView(R.id.goto_Oncall_Tripsheet)
-    Button gotoOncallTripSheet;
 
-    @BindView(R.id.goto_Tripsheetlist)
-            Button gotoTRipsheetList;
 
     int type;
 
@@ -59,12 +57,13 @@ public class MainActivity extends AppCompatActivity {
         type = sharedPreferences.getInt(PREF_TYPE,-1);
         Log.e(TAG,"shred preferne type"+type);
         Toast.makeText(MainActivity.this,""+type,Toast.LENGTH_SHORT).show();
-        if (sharedPreferences.contains(PARAM_USER_ID) && type == USER_TYPE) {
-
-            gotoTRipsheetList.setVisibility(View.INVISIBLE);
-        } else if(sharedPreferences.contains(PARAM_USER_ID) && type == DRIVER_TYPE){
-            gotoCheckInOut.setVisibility(View.INVISIBLE);
-            gotoContractTripSheet.setVisibility(View.INVISIBLE);
+        User user=new User();
+        user.setId(sharedPreferences.getInt(PARAM_USER_ID,-1));
+        user.setUserName(sharedPreferences.getString(PARAM_USER_NAME,"No Name"));
+        AppConstants.setUser(user);
+       if(sharedPreferences.contains(PARAM_USER_ID) && type == DRIVER_TYPE){
+            startActivity(new Intent(MainActivity.this, TripSheetList.class));
+            finish();
         }else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
@@ -126,20 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        gotoOncallTripSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, OncallTripsheet.class));
-                finish();
-            }
-        });
-        gotoTRipsheetList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, TripSheetList.class));
-                finish();
-            }
-        });
+
     }
 
 
@@ -185,7 +171,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
+                SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+                type = sharedPreferences.getInt(PREF_TYPE,-1);
+                if(type==DRIVER_TYPE) {
+                    startActivity(new Intent(MainActivity.this, TripSheetList.class));
+                    finish();
+                }
             }
         }
     }

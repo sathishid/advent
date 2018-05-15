@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class TripsheetListAdapter extends ArrayAdapter<TripsheetListModel> {
 
-    TripsheetListAdapter adapterObject ;
+
     ArrayList<TripsheetListModel> ara = new ArrayList<TripsheetListModel>();
     public TripsheetListAdapter(Context applicationContext, int stockreportitems, ArrayList<TripsheetListModel> reports_dataModelArrayList) {
         super(applicationContext, stockreportitems, reports_dataModelArrayList);
@@ -60,7 +60,7 @@ View result;
             viewHolder.NAME = (TextView)convertView.findViewById(R.id.text_tbcustname);
             viewHolder.NO.setText("NO : "+ara.get(position).getTripBooking_no());
             viewHolder.DATE.setText("DATE : "+ara.get(position).getTripBooking_date());
-            viewHolder.NAME.setText("CUSTOMER : "+ara.get(position).getCustomer_name());
+            viewHolder.NAME.setText(ara.get(position).getCustomer_name());
 
             convertView.setTag(viewHolder);
             result = convertView;
