@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:shadowColor="@color/iron"
-            android:text="Choose a Customer"
+            android:text="@string/pick_a_customer"
             android:textSize="13sp" />
 
         <Spinner
@@ -50,33 +50,21 @@
             android:layout_height="35dp"
             android:layout_marginTop="5dp" />
 
-       <!-- <TextView
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:shadowColor="@color/iron"
-            android:text="Choose a Vehicle No"
+            android:text="@string/vehicle_no"
             android:textSize="13sp" />
--->
-      <!--  <android.support.design.widget.TextInputLayout
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp">
 
-        <AutoCompleteTextView
-            android:id="@+id/input_VehicleNo"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/spinnerTheme"
-            android:hint="Search Vehicle Here"
-            android:layout_gravity="center" />
-        </android.support.design.widget.TextInputLayout>
--->
         <TextView
             android:id="@+id/input_VehicleNo"
             android:layout_width="fill_parent"
             android:shadowColor="@color/iron"
             android:layout_height="35dp"
+            android:paddingLeft="15dp"
             android:layout_marginTop="5dp" />
 
         <TextView
@@ -84,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:shadowColor="@color/iron"
-            android:text="Choose a Date"
+            android:text="@string/choose_a_date"
             android:textSize="13sp" />
 
         <LinearLayout
@@ -101,7 +89,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@color/ediitext_background"
-                android:text="Starting Date"
+                android:text="@string/starting_date"
                 android:textSize="14sp" />
 
             <ImageView
@@ -122,7 +110,7 @@
                 android:background="@color/ediitext_background"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
-                android:text="Closing Date"
+                android:text="@string/closing_date"
                 android:textSize="14sp" />
 
             <ImageView
@@ -141,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Choose a KiloMeter"
+            android:text="@string/please_enter_kilometer"
             android:textSize="13sp" />
 
         <LinearLayout
@@ -161,7 +149,7 @@
                     android:id="@+id/input_start_km"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Starting"
+                    android:hint="@string/starting"
                     android:inputType="number"
                     android:shadowColor="@color/iron"
                     android:textSize="14sp" />
@@ -177,7 +165,7 @@
                     android:id="@+id/input_closing_km"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Closing"
+                    android:hint="@string/closing"
                     android:inputType="number"
                     android:shadowColor="@color/iron"
                     android:textSize="14sp" />
@@ -194,7 +182,7 @@
                 android:background="@color/ediitext_background"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
-                android:text="Total"
+                android:text="@string/total"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -202,7 +190,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Choose a Time"
+            android:text="@string/please_enter_a_time"
             android:textSize="13sp" />
 
         <LinearLayout
@@ -221,7 +209,7 @@
                 android:clickable="false"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
-                android:text="Starting"
+                android:text="@string/starting"
                 android:textSize="14sp" />
 
             <EditText
@@ -229,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="HH"
+                android:hint="@string/hh"
                 android:maxLength="2"
                 android:inputType="number"
                 android:shadowColor="@color/iron"
@@ -249,7 +237,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="MM"
+                android:hint="@string/mm"
                 android:maxLength="2"
                 android:inputType="number"
                 android:shadowColor="@color/iron"
@@ -263,7 +251,7 @@
                 android:clickable="false"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
-                android:text="Closing"
+                android:text="@string/closing"
                 android:textSize="14sp" />
 
             <EditText
@@ -271,7 +259,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="HH"
+                android:hint="@string/hh"
                 android:maxLength="2"
                 android:inputType="number"
                 android:shadowColor="@color/iron"
@@ -292,7 +280,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="MM"
+                android:hint="@string/mm"
                 android:inputType="number"
                 android:shadowColor="@color/iron"
                 android:textSize="14sp" />
@@ -306,7 +294,7 @@
                 android:gravity="center"
                 android:maxWidth="60dp"
                 android:shadowColor="@color/iron"
-                android:text="Total"
+                android:text="@string/total"
                 android:textSize="14sp" />
 
         </LinearLayout>

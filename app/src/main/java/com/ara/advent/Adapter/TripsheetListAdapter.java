@@ -31,7 +31,7 @@ public class TripsheetListAdapter extends ArrayAdapter<TripsheetListModel> {
 
     @Override
     public int getViewTypeCount() {
-        return getCount();
+        return 1;
     }
 
     @Override

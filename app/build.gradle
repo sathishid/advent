@@ -2,13 +2,21 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     defaultConfig {
         applicationId "com.ara.advent"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 2
-        versionName "2.6"
+        versionName "2.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
     buildTypes {
         release {

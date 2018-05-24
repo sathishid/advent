@@ -13,6 +13,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,10 +35,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.ara.advent.http.HttpCaller;
 import com.ara.advent.http.HttpRequest;
 import com.ara.advent.http.HttpResponse;
+import com.ara.advent.http.MySingleton;
 import com.ara.advent.models.Attendance;
 import com.ara.advent.models.User;
 import com.ara.advent.utils.AppConstants;
@@ -51,6 +60,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,8 +72,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +84,8 @@ import static com.ara.advent.utils.AppConstants.CHECK_IN_DATE;
 import static com.ara.advent.utils.AppConstants.MY_CAMERA_REQUEST_CODE;
 import static com.ara.advent.utils.AppConstants.PARAM_CHECK_IN;
 import static com.ara.advent.utils.AppConstants.PARAM_CHECK_OUT;
+import static com.ara.advent.utils.AppConstants.PARAM_PASSWORD;
+import static com.ara.advent.utils.AppConstants.PARAM_TYPE;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
@@ -109,19 +126,39 @@ public class CheckInOut extends AppCompatActivity {
     private boolean mLocationHistoryGranted = false;
     private FusedLocationProviderClient mFusedLocationClient;
     private Attendance attendance;
+    String cIn,cOut;
+    String username,pasword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in_out);
-        attendance = new Attendance();
         ButterKnife.bind(this);
+        attendance = new Attendance();
         sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         User user = new User();
         user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
         user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, null));
         AppConstants.setUser(user);
-/*
+        SharedPreferences sharedPreferences = getSharedPreferences("logindetails",MODE_PRIVATE);
+        username = sharedPreferences.getString("user","");
+        pasword = sharedPreferences.getString("pass","");
+        Log.e(TAG,"username = "+username);
+        Log.e(TAG,"password = "+pasword);
+
+
+        if (isNetworkAvailable()) {
+
+            method();
+        } else {
+            showSnackbar("something went wrong ,PLease check your network connection");
+        }
+
+
+
+
+
+        /*
         if (updateFromPreference()) {
             updateDetails();
             requestGPSPermission(true);
@@ -201,8 +238,7 @@ public class CheckInOut extends AppCompatActivity {
 
             compressImageFile(imageBitmap, attendance.getImageFileName());
 
-            imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));
-            imageViewAvatar.setImageBitmap(BitmapFactory.decodeFile(attendance.getImageFileName()));
+            imageViewAvatar.setImageBitmap(imageBitmap);
 
             updateDetails();
         } else if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
@@ -215,6 +251,7 @@ public class CheckInOut extends AppCompatActivity {
             requestGPSPermission(false);
         }
     }
+
     public void compressImageFile(Bitmap bitmap, String fileName) {
 
         try {
@@ -247,11 +284,14 @@ public class CheckInOut extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         boolean hasAlreadyCheckedOut = sharedPreferences.contains(PARAM_CHECK_OUT);
         if (attendance.hasCheckedIn()) {
-            if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckInTime())) {
-                changeButtonState(btn_check_in, false);
+             if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckInTime())) {
+               changeButtonState(btn_check_in, false);
             } else {
                 changeButtonState(btn_check_in, true);
+
             }
+
+
             if (hasAlreadyCheckedOut) {
                 if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckOutTime())) {
                     changeButtonState(btn_check_out, false);
@@ -647,11 +687,71 @@ public class CheckInOut extends AppCompatActivity {
             Log.i(TAG, "Validation Failed");
             return;
         }
+        if (!isNetworkAvailable()) {
+            showSnackbar("PLease Check Your Netwok Connection");
+            return;
+        }
         if (attendance.hasCheckedIn()) {
             showAlertDialog(true);
         } else {
             pushToServer(true);
         }
+
+    }
+    public void method() {
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.getLoginAction(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e(TAG,"rsponse for "+response);
+                JSONArray jsonArray = null;
+                JSONObject jsonObject = null;
+                try {
+                    jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObject = jsonArray.getJSONObject(i);
+                    cIn = jsonObject.getString("checkin");
+                    cOut = jsonObject.getString("chec   Qkout");
+                    }
+                    if (cIn.equalsIgnoreCase(null)) {
+
+                        showSnackbar("Please check In");
+                    }else if( cOut.equalsIgnoreCase(null)) {
+
+                        showSnackbar("Please Check Out");
+                    } else if(cIn.equalsIgnoreCase(null) && cOut.equalsIgnoreCase(null)) {
+
+                        showSnackbar("PLease both check In and Check Out");
+                    } else {
+
+                        showSnackbar("Your daily limit is finished . PLease try again tommorrow ");
+                    }
+                   /* if (cIn != null && cOut != null ) {
+                        showSnackbar("you are already check in please try again tommorrow");
+                    }*/
+                }catch(JSONException ex) {
+                    Log.e(TAG,"exception json "+ex);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG,"error for "+error);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map map = new HashMap();
+                map.put(PARAM_USER_NAME,username);
+                map.put(PARAM_PASSWORD,pasword);
+                map.put(PARAM_TYPE,String.valueOf(1));
+                return map;
+            }
+        };
+        MySingleton.getInstance(this).addToRequestQueue(stringRequest);
 
     }
 
@@ -660,7 +760,7 @@ public class CheckInOut extends AppCompatActivity {
         HttpRequest httpRequest = new HttpRequest(AppConstants.getSaveAction());
         httpRequest.setRequestBody(attendance.toMultiPartBody(isCheckIn));
         try {
-            new HttpCaller(this, (isCheckIn)?"Checking In":"Checking Out") {
+            new HttpCaller(this, (isCheckIn) ? "Checking In" : "Checking Out") {
                 @Override
                 public void onResponse(HttpResponse response) {
                     super.onResponse(response);
@@ -678,35 +778,7 @@ public class CheckInOut extends AppCompatActivity {
             showSnackbar("Something went wrong, contact Ara software", false);
         }
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // action with ID action_refresh was selected
-            case R.id.action_logout_id:
-                logout();
-                break;
-            default:
-                break;
-        }
-
-        return true;
-    }
-
-    private void logout() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.commit();
-        finish();
-    }*/
 
 
     private File createImageFile() throws IOException {
@@ -790,8 +862,19 @@ public class CheckInOut extends AppCompatActivity {
             Log.i(TAG, "Validation Failed");
             return;
         }
+        if (!isNetworkAvailable()) {
+            showSnackbar("PLease Check Your Netwok Connection");
+            return;
+        }
         pushToServer(false);
 
+
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
     }
 

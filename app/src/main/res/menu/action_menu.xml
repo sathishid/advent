@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <item
+        android:id="@+id/action_tripHistory"
+        android:orderInCategory="1"
+        android:visible="true"
+        android:iconTint="@color/white"
+        android:icon="@drawable/ic_feedback_black"
+        android:title="@string/logout"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_logout_id"
-        android:orderInCategory="100"
+        android:orderInCategory="10"
         android:icon="@drawable/icon_logout"
         android:title="@string/logout"
-        app:showAsAction="always"/>
+        android:visible="true"
+        app:showAsAction="ifRoom"/>
+
+
 </menu>

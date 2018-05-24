@@ -79,7 +79,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
 
 
     int i1, i2, substract;
-    String val_tarrif_id,vehNo,vehId,name;
+    String val_tarrif_id, vehNo, vehId, name;
 
     long diffMinutes, diffHours, diffDays;
     String valCusId, valvehicletype, valvehicleno, valroute, valclosedate, valstartdate, valstartkm, valendkm, valtotalkm, valstarttime, valendtime, valtotaltime;
@@ -159,18 +159,18 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    if (startHoursInput.getText().toString().length() == 2) {
+                   /* if (startHoursInput.getText().toString().length() == 2) {
                         startMinutesInput.requestFocus();
-                    }
+                    }*/
 
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    if (startMinutesInput.getText().toString().length() == 2) {
+                   /* if (startMinutesInput.getText().toString().length() == 2) {
                         closeHoursInput.requestFocus();
-                    }
+                    }*/
 
                 }
             });
@@ -186,21 +186,21 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+/*
                     if (closeHoursInput.getText().toString().length() == 2) {
                         closeMinutesInput.requestFocus();
-                    }
+                    }*/
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    if (closeMinutesInput.getText().toString().length() == 2 && startMinutesInput.getText().toString().length() == 2) {
-
-                        hideSoftKeyboard(closeMinutesInput);
+//                    if (closeMinutesInput.getText().toString().length() == 2 && startMinutesInput.getText().toString().length() == 2) {
+//
+//                        hideSoftKeyboard(closeMinutesInput);
 
                         calTimeDiff();
-                    }
+//                    }
                 }
             });
         }
@@ -280,15 +280,13 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
                         String contract_tariff_id = jsonObject.getString("contract_tariff_id");
-                         name = jsonObject.getString("name");
+                        name = jsonObject.getString("name");
 
                         randvModel.add(new RouteAndvehicleModel(contract_tariff_id, name));
                     }
 
-                        RouteAndVehicleAdapter routeAndvehicleModel = new RouteAndVehicleAdapter(ContractTripsheet.this, android.R.layout.simple_spinner_item, randvModel);
-                        vehicleType_spinner.setAdapter(routeAndvehicleModel);
-
-
+                    RouteAndVehicleAdapter routeAndvehicleModel = new RouteAndVehicleAdapter(ContractTripsheet.this, android.R.layout.simple_spinner_item, randvModel);
+                    vehicleType_spinner.setAdapter(routeAndvehicleModel);
 
 
                 } catch (JSONException e) {
@@ -444,7 +442,6 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                                           int monthOfYear, int dayOfMonth) {
                         dstart = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
                         startingDate.setText(dstart);
-                        closeDate();
                         start_date_changed = true;
                         Log.e(TAG, " date ---" + dstart);
                     }
@@ -460,6 +457,10 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
         if (!formValid()) {
             Toast.makeText(ContractTripsheet.this, "Entered details are not valid", Toast.LENGTH_SHORT).show();
 //            showSnackbar("please enter all in the field");
+            return;
+        }
+        if (!isNetworkAvailable()) {
+            showSnackbar("PLease Check Your Netwok Connection");
             return;
         }
 
@@ -592,7 +593,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
             @Override
             public void onResponse(String response) {
 
-                Log.e(TAG,"response -------------------------------------- "+response);
+                Log.e(TAG, "response -------------------------------------- " + response);
                 JSONArray jsonArray = null;
                 JSONObject jsonObject = null;
 
@@ -604,15 +605,12 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
                         vehId = jsonObject.getString("vehicle_id");
 
 
-                     /*   autocomplete.add(new AutoComTxtModel(vehNo,vehId));
-                        AutoComTxtAdapter autoComTxtAdapter = new AutoComTxtAdapter(ContractTripsheet.this, android.R.layout.simple_spinner_item, autocomplete);
-                        autoCompleteTextView.setAdapter(autoComTxtAdapter);*/
                     }
                     autoCompleteTextView.setText(vehNo);
                     valvehicleno = vehId;
 
-                } catch(JSONException j) {
-                    Log.e(TAG,"json exception for"+j);
+                } catch (JSONException j) {
+                    Log.e(TAG, "json exception for" + j);
                 }
 
             }
@@ -620,7 +618,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e(TAG,"Error - "+error);
+                Log.e(TAG, "Error - " + error);
             }
         }) {
 
@@ -628,8 +626,8 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map map = new HashMap();
-                map.put(PARAM_TARIFF_ID,Id);
-                map.put(CUSTOMER_ID_FOR_SELECTING,valCusId);
+                map.put(PARAM_TARIFF_ID, Id);
+                map.put(CUSTOMER_ID_FOR_SELECTING, valCusId);
                 return map;
             }
         };
@@ -731,4 +729,6 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
         });
         snackbar.show();
     }
+
+
 }

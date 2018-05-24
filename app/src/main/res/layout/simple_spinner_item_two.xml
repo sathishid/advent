@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/item_stationname"
         android:layout_marginLeft="7dp"
-        android:text="avkumar"
+        android:text="@string/avkumar"
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="35dp" >
