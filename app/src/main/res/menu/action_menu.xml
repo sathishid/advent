@@ -5,7 +5,7 @@
         android:id="@+id/action_tripHistory"
         android:orderInCategory="1"
         android:visible="true"
-        android:iconTint="@color/white"
+        app:iconTint="@color/white"
         android:icon="@drawable/ic_feedback_black"
         android:title="@string/logout"
         app:showAsAction="ifRoom"/>

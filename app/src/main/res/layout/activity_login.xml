@@ -91,25 +91,24 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
             android:layout_height="wrap_content">
 
-            <Button
+            <TextView
                 android:id="@+id/multiLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
                 android:ems="8"
-                android:layout_marginTop="28dp"
                 android:text="@string/tamil" />
 
-            <Button
+            <TextView
                 android:id="@+id/multiLanguage1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="40dp"
                 android:ems="8"
-                android:layout_marginTop="28dp"
+                android:gravity="right"
                 android:text="@string/english"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>

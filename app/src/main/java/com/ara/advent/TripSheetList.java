@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -258,7 +260,17 @@ public class TripSheetList extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 
+        MenuItem item = menu.findItem(R.id.action_tripHistory);
+        Drawable icon = getResources().getDrawable(R.drawable.ic_feedback_black);
+        icon.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+
+        item.setIcon(icon);
+        return  true;
+    }
 
     private void showSnackbar(String message) {
         final Snackbar snackbar = Snackbar.make(li, message,

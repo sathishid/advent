@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ara.advent.Languages.LocaleHelper;
@@ -67,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.DriverLogin)
     CheckBox driverLogin_Checkbox;
     @BindView(R.id.multiLanguage)
-    Button multilanguage;
+    TextView multilanguage;
     @BindView(R.id.multiLanguage1)
-    Button multilanguage1;
-
+    TextView multilanguage1;
+    Locale mylocale;
     int type = DRIVER_TYPE;
     String current = "en";
 
@@ -108,30 +109,29 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                setLocale("ta");
+                setLanguage("ta");
+                Toast.makeText(LoginActivity.this, "you selected tamil", Toast.LENGTH_SHORT).show();
             }
         });
-        multilanguage.setOnClickListener(new View.OnClickListener() {
+        multilanguage1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setLanguage("en");
+                Toast.makeText(LoginActivity.this, "you selected english language", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void setLocale(String lang) {
-        if (!current.equalsIgnoreCase("en")) {
-            Locale myLocale = new Locale(lang);
-            Resources res = getResources();
-            DisplayMetrics dm = res.getDisplayMetrics();
-            Configuration conf = res.getConfiguration();
-            conf.locale = myLocale;
-            res.updateConfiguration(conf, dm);
-            Intent refresh = new Intent(this, LoginActivity.class);
-            startActivity(refresh);
-            finish();
-        } else {
-
-        }
+    protected void setLanguage(String language){
+        mylocale=new Locale(language);
+        Resources resources=getResources();
+        DisplayMetrics dm=resources.getDisplayMetrics();
+        Configuration conf= resources.getConfiguration();
+        conf.locale=mylocale;
+        resources.updateConfiguration(conf,dm);
+        Intent refreshIntent=new Intent(LoginActivity.this,LoginActivity.class);
+        finish();
+        startActivity(refreshIntent);
     }
 
 
