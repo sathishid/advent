@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,13 +51,12 @@ import static com.ara.advent.utils.AppConstants.MY_CAMERA_REQUEST_CODE;
 
 public class TripsheetImageSubmit extends AppCompatActivity {
 
-
     private static final String TAG = "Oncall TripSheet";
     private static final int REQUEST_TAKE_IMAGE_ONE = 1;
+    private static final int REQUEST_TAKE_IMAGE_ONE_BACK = 11;
     private static final int REQUEST_TAKE_IMAGE_TWO = 2;
     private static final int REQUEST_TAKE_IMAGE_THREE = 3;
     private static final int REQUEST_TAKE_IMAGE_FOUR = 4;
-
 
     @BindView(R.id.textview_tripnosubmit)
     TextView tripno;
@@ -90,7 +90,10 @@ public class TripsheetImageSubmit extends AppCompatActivity {
     EditText permitAmount;
     @BindView(R.id.TollAmount)
     EditText tollgateAmount;
-
+    @BindView(R.id.cardview1back)
+    CardView CardInput_image1back;
+    @BindView(R.id.input_cameraImage1back)
+    ImageView input_image1back;
 
     String a;
     OncallTsModel oncallTsModel;
@@ -138,6 +141,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
                 requestPermissionForCamera(REQUEST_TAKE_IMAGE_ONE);
             }
         });
+
         CardInput_image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +159,12 @@ public class TripsheetImageSubmit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 requestPermissionForCamera(REQUEST_TAKE_IMAGE_FOUR);
+            }
+        });
+        CardInput_image1back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestPermissionForCamera(REQUEST_TAKE_IMAGE_ONE_BACK);
             }
         });
     }
@@ -204,11 +214,20 @@ public class TripsheetImageSubmit extends AppCompatActivity {
             Toast.makeText(this, "Please enter all details", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (!isNetworkAvailable()) {
             showSnackbar("PLease Check Your Netwok Connection");
             return;
         }
-        PushtoServer();
+        oncallTsModel.setPark_amount(parkingAmount.getText().toString());
+        oncallTsModel.setPemit_amount(permitAmount.getText().toString());
+        oncallTsModel.setToll_amout(tollgateAmount.getText().toString());
+
+       PushtoServer();
+    }
+
+    private void pushToLog() {
+        Log.e(TAG,"Objet oncall ts model "+oncallTsModel);
     }
 
     private void PushtoServer() {
@@ -304,6 +323,10 @@ public class TripsheetImageSubmit extends AppCompatActivity {
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_four());
             compressImageFile(imageBitmap, oncallTsModel.getImage_file_four());
             input_image4.setImageBitmap(imageBitmap);
+        } else if (requestCode == REQUEST_TAKE_IMAGE_ONE_BACK && resultCode == RESULT_OK) {
+            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one_back());
+            compressImageFile(imageBitmap,oncallTsModel.getImage_file_one_back());
+            input_image1back.setImageBitmap(imageBitmap);
         }
     }
 
@@ -351,6 +374,8 @@ public class TripsheetImageSubmit extends AppCompatActivity {
             oncallTsModel.setImage_file_three(mCurrentPhotoPath);
         } else if (REQUEST == 4) {
             oncallTsModel.setImage_file_four(mCurrentPhotoPath);
+        } else if (REQUEST == 11) {
+            oncallTsModel.setImage_file_one_back(mCurrentPhotoPath);
         }
 
         return image;

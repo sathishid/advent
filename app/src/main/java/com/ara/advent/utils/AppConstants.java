@@ -92,8 +92,11 @@ public class AppConstants {
     public static final String PARAM_IMG_TWO= "permitbill";
     public static final String PARAM_IMG_THREE= "tollgatebill";
     public static final String PARAM_IMG_FOUR= "parkingbill";
-
+    public static final String PARAM_IMG_ONE_BACK = "tripsheetbillback";
     public static final String PARAMTB = "oncaltripsheetlist";
+    public static final String PARAM_PARKAMT = "parkingbillamount";
+    public static final String PARAM_PERAMT = "permitbillamount";
+    public static final String PARAM_TOLLAMT = "tollgatebillamount";
     public static final String TBURL = URL+PARAMTB;
     public static final String TBID = "trip_booking_id";
     public static final String TBNO = "trip_booking_no";
@@ -103,7 +106,8 @@ public class AppConstants {
     public static final String TBREPORTTO ="trip_booking_report_to" ;
     public static final String TBCSTIME = "trip_closing_customer_starting_time";
     public static final String TBCSSKM = "trip_closing_customer_starting_km";
-
+    public static final String TBCMOBNO = "mobile_no";
+    public static final String TBCADDRESS = "address";
     public static final String SUB = "oncaltripsheetstartingupdate";
     public static final String STARTINGSUBMITURL = URL +SUB;
     public static final String TRIPID = "tripid";

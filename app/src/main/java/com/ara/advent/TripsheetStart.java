@@ -63,9 +63,9 @@ public class TripsheetStart extends AppCompatActivity {
     TextView mobileNo;
     @BindView(R.id.customer_address)
     TextView cus_Address;
-    @BindView(R.id.spinnertype_vehicle)
+   /* @BindView(R.id.spinnertype_vehicle)
     Spinner vehicle_type;
-
+*/
 
     String a;
     @BindView(R.id.Submit)
@@ -97,6 +97,8 @@ public class TripsheetStart extends AppCompatActivity {
         String f = sharedPreferences.getString("tripsheetreportto", "");
         String j = sharedPreferences.getString("trioppshettstkm", "");
         String h = sharedPreferences.getString("tripshetsttime", "");
+        String i = sharedPreferences.getString("tirpsheetcusmobno","");
+        String k = sharedPreferences.getString("tripsheetcusadd","");
 
         String currentString = h;
         String[] separated = currentString.split(":");
@@ -111,6 +113,8 @@ public class TripsheetStart extends AppCompatActivity {
         startingkM.setText(j);
         starttimeHours.setText(timeHour);
         starttimeMinutes.setText(timeMinute);
+        mobileNo.setText(i);
+        cus_Address.setText(k);
 
         Log.e("TAG", "------------------------------------------------------" + a);
         if (isNetworkAvailable()) {

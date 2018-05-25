@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="7dp"
                 android:gravity="center"
-                android:text="Booking Id"
+                android:text="@string/booking_id"
                 android:shadowColor="@color/iron"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -137,6 +137,25 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="10dp"
+            android:shadowColor="@color/iron"
+            android:text="@string/address"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:paddingLeft="20dp"
+            android:id="@+id/customer_address"
+            android:layout_marginTop="10dp"
+            android:shadowColor="@color/iron"
+            android:text="@string/address"
+            android:textSize="16sp" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -165,26 +184,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
-            android:text="@string/address"
-            android:textSize="13sp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:paddingLeft="20dp"
-            android:id="@+id/customer_address"
-            android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
-            android:text="@string/address"
-            android:textSize="16sp" />
-
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
@@ -200,7 +200,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="5dp">
 
-        </Spinner>
+        </Spinner>-->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

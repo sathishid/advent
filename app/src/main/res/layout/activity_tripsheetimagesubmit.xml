@@ -28,7 +28,7 @@
                 android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
-                android:text="Booking Id"
+                android:text="@string/booking_id"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
             android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:shadowColor="@color/iron"
-            android:text="Customer Name : "
+            android:text="@string/customer_name"
             android:textSize="13sp" />
 
         <TextView
@@ -90,62 +90,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
-            android:paddingLeft="20sp"
             android:layout_marginTop="10dp"
+            android:paddingLeft="20sp"
             android:text="@string/customer_name"
             android:textColor="@color/iron"
             android:textSize="16sp"
             android:textStyle="bold" />
-     <android.support.design.widget.TextInputLayout
-         android:layout_width="match_parent"
-         android:layout_marginTop="10dp"
-         android:layout_height="wrap_content">
-         <EditText
-             android:id="@+id/ParkingAmount"
-             android:layout_width="match_parent"
-             android:hint="@string/enter_parking_bill_amount"
-             android:layout_height="wrap_content" />
-     </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/PermitAmount"
-                android:layout_width="match_parent"
-                android:hint="@string/enter_permit_bill_amount"
-                android:layout_height="wrap_content" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/TollAmount"
-                android:layout_width="match_parent"
-                android:hint="@string/enter_tollgate_bill_amount"
-                android:layout_height="wrap_content" />
-        </android.support.design.widget.TextInputLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginTop="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:ems="13"
-                    android:hint="@string/click_to_take_tripsheet_bill_picture" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ems="8"
+                android:gravity="center"
+                android:hint="@string/click_to_take_tripsheet_bill_picture" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardview1"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/cardview1back"
                 app:cardBackgroundColor="@color/cardview_dark_background"
                 app:cardCornerRadius="10dp">
 
@@ -158,8 +128,36 @@
                     android:src="@drawable/camera_icon" />
             </android.support.v7.widget.CardView>
 
-        </RelativeLayout>
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardview1back"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                app:cardBackgroundColor="@color/cardview_dark_background"
+                app:cardCornerRadius="10dp">
 
+                <ImageView
+                    android:id="@+id/input_cameraImage1back"
+                    android:layout_width="60dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/text_your_photo"
+                    android:src="@drawable/camera_icon" />
+            </android.support.v7.widget.CardView>
+        </RelativeLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/ParkingAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_parking_bill_amount" />
+        </android.support.design.widget.TextInputLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -168,8 +166,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:ems="13"
+                android:gravity="center"
                 android:hint="@string/click_to_take_parking_bill_picture" />
 
             <android.support.v7.widget.CardView
@@ -192,6 +190,18 @@
             </android.support.v7.widget.CardView>
         </RelativeLayout>
 
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/PermitAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_permit_bill_amount" />
+        </android.support.design.widget.TextInputLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -201,8 +211,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:ems="13"
+                android:gravity="center"
                 android:hint="@string/click_to_take_permit_bill_picture" />
 
             <android.support.v7.widget.CardView
@@ -225,6 +235,19 @@
             </android.support.v7.widget.CardView>
         </RelativeLayout>
 
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/TollAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_tollgate_bill_amount" />
+        </android.support.design.widget.TextInputLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -233,8 +256,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:ems="13"
+                android:gravity="center"
                 android:hint="@string/click_to_take_toll_gate_bill_picture" />
 
 
@@ -257,6 +280,7 @@
                     android:src="@drawable/camera_icon" />
             </android.support.v7.widget.CardView>
         </RelativeLayout>
+
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/OnSubmit"

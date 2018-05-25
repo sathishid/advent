@@ -94,8 +94,8 @@ public class TripsheetClose extends AppCompatActivity {
     TextView starting_time_close;
     @BindView(R.id.customer_addressClose)
     TextView addressClose;
-    @BindView(R.id.spinnertype_vehicleClose)
-    Spinner vehType_close;
+   /* @BindView(R.id.spinnertype_vehicleClose)
+    Spinner vehType_close;*/
     @BindView(R.id.mobileNumberClose)
     TextView mobnoClose;
     String a;
@@ -323,7 +323,7 @@ public class TripsheetClose extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        startActivity(new Intent(TripsheetClose.this, TripsheetStart.class));
+        startActivity(new Intent(TripsheetClose.this, TripSheetList.class));
         finish();
 
 

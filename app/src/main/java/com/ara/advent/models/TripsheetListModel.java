@@ -6,9 +6,25 @@ package com.ara.advent.models;
 
 public class TripsheetListModel {
 
-    String tripBooking_id,tripBooking_no,tripBooking_date,customer_name,customerMultiContact_name,tripBookingReport_to,tripcustomer_startingkm,tripcustomer_startingtime;
+    String tripBooking_id,tripBooking_no,tripBooking_date,customer_name,customerMultiContact_name,tripBookingReport_to,tripcustomer_startingkm,tripcustomer_startingtime,cus_mobNo,cus_add;
 
-    public TripsheetListModel(String tripBooking_id, String tripBooking_no, String tripBooking_date, String customer_name, String customerMultiContact_name, String tripBookingReport_to, String tripcustomer_startingkm, String tripcustomer_startingtime) {
+    public String getCus_mobNo() {
+        return cus_mobNo;
+    }
+
+    public void setCus_mobNo(String cus_mobNo) {
+        this.cus_mobNo = cus_mobNo;
+    }
+
+    public String getCus_add() {
+        return cus_add;
+    }
+
+    public void setCus_add(String cus_add) {
+        this.cus_add = cus_add;
+    }
+
+    public TripsheetListModel(String tripBooking_id, String tripBooking_no, String tripBooking_date, String customer_name, String customerMultiContact_name, String tripBookingReport_to, String tripcustomer_startingkm, String tripcustomer_startingtime, String cus_mobNo, String cus_add) {
         this.tripBooking_id = tripBooking_id;
         this.tripBooking_no = tripBooking_no;
         this.tripBooking_date = tripBooking_date;
@@ -17,6 +33,8 @@ public class TripsheetListModel {
         this.tripBookingReport_to = tripBookingReport_to;
         this.tripcustomer_startingkm = tripcustomer_startingkm;
         this.tripcustomer_startingtime = tripcustomer_startingtime;
+        this.cus_mobNo = cus_mobNo;
+        this.cus_add = cus_add;
     }
 
     public TripsheetListModel() {

@@ -44,7 +44,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
+import static com.ara.advent.utils.AppConstants.TBCADDRESS;
 import static com.ara.advent.utils.AppConstants.TBCMCNAME;
+import static com.ara.advent.utils.AppConstants.TBCMOBNO;
 import static com.ara.advent.utils.AppConstants.TBCNAME;
 import static com.ara.advent.utils.AppConstants.TBCSSKM;
 import static com.ara.advent.utils.AppConstants.TBCSTIME;
@@ -113,16 +115,8 @@ public class TripSheetList extends AppCompatActivity {
                 String tripsheetreportto = triplistArray.get(i).getTripBookingReport_to();
                 String trioppshettstkm = triplistArray.get(i).getTripcustomer_startingkm();
                 String tripshetsttime = triplistArray.get(i).getTripcustomer_startingtime();
-
-                Log.e(TAG, "tripsheetid" + tripsheetid);
-                Log.e(TAG, "tripsheetno" + tripsheetno);
-                Log.e(TAG, "tripsheetDate" + tripsheetDate);
-                Log.e(TAG, "tripsheetcustomername" + tripsheetcustomername);
-                Log.e(TAG, "tripsheetMCname" + tripsheetMCname);
-                Log.e(TAG, "tripsheetreportto" + tripsheetreportto);
-                Log.e(TAG, "trioppshettstkm" + trioppshettstkm);
-                Log.e(TAG, "tripshetsttime" + tripshetsttime);
-
+                String tirpsheetcusmobno = triplistArray.get(i).getCus_mobNo();
+                String tripsheetcusadd = triplistArray.get(i).getCus_add();
 
                 SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -134,6 +128,8 @@ public class TripSheetList extends AppCompatActivity {
                 editor.putString("tripsheetreportto", tripsheetreportto);
                 editor.putString("trioppshettstkm",trioppshettstkm);
                 editor.putString("tripshetsttime",tripshetsttime);
+                editor.putString("tirpsheetcusmobno",tirpsheetcusmobno);
+                editor.putString("tripsheetcusadd",tripsheetcusadd);
                 editor.commit();
 
                     startActivity(new Intent(TripSheetList.this, TripsheetStart.class));
@@ -184,6 +180,9 @@ public class TripSheetList extends AppCompatActivity {
                         String tbreeportto = jsonObject.getString(TBREPORTTO);
                         String tbstartkm = jsonObject.getString(TBCSSKM);
                         String tbstarttime = jsonObject.getString(TBCSTIME);
+                        String tbcusMobNo = jsonObject.getString(TBCMOBNO);
+                        String tbcusaddd = jsonObject.getString(TBCADDRESS);
+
                         TripsheetListModel t = new TripsheetListModel();
                         t.setTripBooking_id(tbid);
                         t.setTripBooking_no(tbbno);
@@ -193,7 +192,8 @@ public class TripSheetList extends AppCompatActivity {
                         t.setTripBookingReport_to(tbreeportto);
                         t.setTripcustomer_startingkm(tbstartkm);
                         t.setTripcustomer_startingtime(tbstarttime);
-
+                        t.setCus_add(tbcusaddd);
+                        t.setCus_mobNo(tbcusMobNo);
                         triplistArray.add(t);
                     }
 
