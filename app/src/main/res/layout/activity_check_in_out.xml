@@ -79,7 +79,9 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_text_your_name"
-            app:layout_constraintVertical_bias="0.106">
+            app:layout_constraintVertical_bias="0.106"
+            android:layout_marginRight="38dp"
+            android:layout_marginLeft="18dp">
 
             <TextView
                 android:layout_column="0"
@@ -98,7 +100,7 @@
                 android:layout_column="0"
                 android:layout_marginTop="@dimen/grid_horizontal_space"
                 android:layout_row="1"
-                android:text="Place" />
+                android:text="@string/place" />
 
             <TextView
                 android:id="@+id/input_view_place"

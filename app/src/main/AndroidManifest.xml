@@ -51,18 +51,20 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity android:name=".CheckInOut" />
         <activity
             android:name=".ContractTripsheet"
             android:label="Contract Trip Sheet" />
         <activity
-            android:name=".OncallTripsheet"
+            android:name=".TripsheetImageSubmit"
             android:label="OnCall Trip Sheet" />
         <activity
             android:name=".TripSheetList"
             android:label="TripSheet List" />
-        <activity android:name=".TripsheetSubmit"></activity>
+        <activity android:name=".TripsheetStart" />
+        <activity android:name=".TripsheetClose" />
+        <activity android:name=".TripsheetHistory"></activity>
     </application>
 
 </manifest>

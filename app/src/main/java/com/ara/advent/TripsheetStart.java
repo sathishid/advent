@@ -8,12 +8,17 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +32,14 @@ import com.ara.advent.utils.AppConstants;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TripsheetSubmit extends AppCompatActivity {
+import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
+
+public class TripsheetStart extends AppCompatActivity {
 
     @BindView(R.id.scrol)
     ScrollView sv;
@@ -43,19 +51,22 @@ public class TripsheetSubmit extends AppCompatActivity {
     TextView customer;
     @BindView(R.id.textview_customermc)
     TextView customermc;
-    @BindView(R.id.textview_startingkm)
-    TextView startkm;
-    @BindView(R.id.textview_startingtime)
-    TextView starttime;
     @BindView(R.id.textview_customerREPORT)
     TextView cusreportto;
-    @BindView(R.id.textview_closingkm)
-    TextView closekm;
-    @BindView(R.id.textview_closingtimeM)
-    TextView closetimem;
-    @BindView(R.id.textview_closingtimeH)
+    @BindView(R.id.textview_starngtimeM)
+    EditText starttimeMinutes;
+    @BindView(R.id.textview_startingtimeH)
+    EditText starttimeHours;
+    @BindView(R.id.textview_startingKm)
+    EditText startingkM;
+    @BindView(R.id.mobileNumber)
+    TextView mobileNo;
+    @BindView(R.id.customer_address)
+    TextView cus_Address;
+   /* @BindView(R.id.spinnertype_vehicle)
+    Spinner vehicle_type;
+*/
 
-    TextView closetimeh;
     String a;
     @BindView(R.id.Submit)
     Button Submit;
@@ -63,11 +74,18 @@ public class TripsheetSubmit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tripsheet_submit);
+        setContentView(R.layout.activity_tripsheet_start);
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         sv.setFocusableInTouchMode(true);
         sv.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
+        String ok = sharedPreferences1.getString("started","");
+        if (ok.equalsIgnoreCase("ok")) {
+            startActivity(new Intent(TripsheetStart.this,TripsheetClose.class));
+            finish();
+        }
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
@@ -77,16 +95,28 @@ public class TripsheetSubmit extends AppCompatActivity {
         String d = sharedPreferences.getString("tripsheetcustomername", "");
         String e = sharedPreferences.getString("tripsheetMCname", "");
         String f = sharedPreferences.getString("tripsheetreportto", "");
-        String j = sharedPreferences.getString("tripshetstartingkm", "");
-        String h = sharedPreferences.getString("tripsheetstartingtie", "");
+        String j = sharedPreferences.getString("trioppshettstkm", "");
+        String h = sharedPreferences.getString("tripshetsttime", "");
+        String i = sharedPreferences.getString("tirpsheetcusmobno","");
+        String k = sharedPreferences.getString("tripsheetcusadd","");
+
+        String currentString = h;
+        String[] separated = currentString.split(":");
+        String timeHour = separated[0];
+        String timeMinute = separated[1];
 
         trino.setText(b);
         tripdate.setText(c);
         customer.setText(d);
         customermc.setText(e);
         cusreportto.setText(f);
-        startkm.setText(j);
-        starttime.setText(h);
+        startingkM.setText(j);
+        starttimeHours.setText(timeHour);
+        starttimeMinutes.setText(timeMinute);
+        mobileNo.setText(i);
+        cus_Address.setText(k);
+
+        Log.e("TAG", "------------------------------------------------------" + a);
         if (isNetworkAvailable()) {
 
         } else {
@@ -99,34 +129,72 @@ public class TripsheetSubmit extends AppCompatActivity {
                 submitMethodd();
             }
         });
+        initEdittextFocus();
 
     }
+
+
+    private void initEdittextFocus() {
+
+        EditText[] editTexts2 = new EditText[]{starttimeHours, starttimeMinutes};
+        for (int k = 0; k < editTexts2.length; k++) {
+            editTexts2[k].addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if (starttimeHours.getText().toString().length() == 2) {
+
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                    if (starttimeMinutes.getText().toString().length() == 2) {
+
+
+                    }
+                }
+            });
+        }
+    }
+
+    public void hideSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 
     public boolean formValid() {
 
         boolean error = true;
 
 
-        if (closetimeh.getText().toString().isEmpty() ||  Integer.parseInt(closetimeh.getText().toString())>24) {
-            closetimeh.setError("hours not valid");
+        if (starttimeHours.getText().toString().isEmpty() || Integer.parseInt(starttimeHours.getText().toString()) > 24) {
+            starttimeHours.setError("hours not valid");
             error = false;
         } else {
-            closetimeh.setError(null);
+            starttimeHours.setError(null);
         }
 
-        if (closetimem.getText().toString().isEmpty() || Integer.parseInt(closetimeh.getText().toString())>60) {
-            closetimem.setError("minutes not valid");
+        if (starttimeMinutes.getText().toString().isEmpty() || Integer.parseInt(starttimeMinutes.getText().toString()) > 60) {
+            starttimeMinutes.setError("minutes not valid");
             error = false;
         } else {
-            closetimem.setError(null);
+            starttimeMinutes.setError(null);
         }
 
 
-        if (closekm.getText().toString().isEmpty()) {
-            closekm.setError("km not valid");
+        if (startingkM.getText().toString().isEmpty()) {
+            startingkM.setError("km not valid");
             error = false;
         } else {
-            closekm.setError(null);
+            startingkM.setError(null);
         }
 
         return error;
@@ -139,24 +207,39 @@ public class TripsheetSubmit extends AppCompatActivity {
             Toast.makeText(this, "please enter all details", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (!isNetworkAvailable()) {
+            showSnackbar("PLease Check Your Netwok Connection");
+            return;
+        }
 
-        final String closing_time = closetimeh.getText().toString() + ":" + closetimem.getText().toString();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.SUBMITURL, new Response.Listener<String>() {
+        final String starting_time = starttimeHours.getText().toString() + ":" + starttimeMinutes.getText().toString();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.STARTINGSUBMITURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 Log.e("TAG", "response--------" + response);
-                if (response.equalsIgnoreCase("success")) {
+
+                String curentString = response;
+                String[] separated = curentString.split("(?<=\\d)(?=\\D)");
+                String code = separated[0];
+                String res = separated[1];
+
+                if (res.equalsIgnoreCase("success")) {
                     SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.clear();
+                    editor.putString("starttime", starting_time);
+                    editor.putString("startingkm", startingkM.getText().toString());
                     editor.commit();
-                    startActivity(new Intent(TripsheetSubmit.this, TripSheetList.class)
+                    SharedPreferences ses = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
+                    SharedPreferences.Editor ed = ses.edit();
+                    ed.putString("started","ok");
+                    ed.commit();
+                    startActivity(new Intent(TripsheetStart.this, TripsheetClose.class)
                             .putExtra("name", "TripSheet Added successfully"));
                     finish();
 
                 } else {
-                    Toast.makeText(TripsheetSubmit.this, "data was not sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TripsheetStart.this, "data was not sent", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -169,8 +252,8 @@ public class TripsheetSubmit extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
                 map.put(AppConstants.TRIPID, a);
-                map.put(AppConstants.CLOSINGKM, closekm.getText().toString());
-                map.put(AppConstants.CLOSINTIME, closing_time);
+                map.put(AppConstants.STARTINGKM, startingkM.getText().toString());
+                map.put(AppConstants.STARTINGTIME, starting_time);
                 return map;
 
             }
@@ -180,7 +263,7 @@ public class TripsheetSubmit extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(TripsheetSubmit.this, TripSheetList.class));
+        startActivity(new Intent(TripsheetStart.this, TripSheetList.class));
         finish();
         super.onBackPressed();
     }

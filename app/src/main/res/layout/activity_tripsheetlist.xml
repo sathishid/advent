@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/li"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/li"
+    android:orientation="vertical"
+    android:paddingBottom="3dp"
+    android:paddingTop="10dp"
     tools:context="com.ara.advent.TripSheetList">
 
-    <ListView
-        android:id="@+id/list"
-        style="@style/spinnerTheme"
-        android:divider="@color/ediitext_background"
-        android:gravity="center"
-        android:dividerHeight="2dp"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </ListView>
-</LinearLayout>
+        <ListView
+            android:id="@+id/list"
+            style="@style/spinnerTheme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/ediitext_background"
+            android:dividerHeight="2dp">
+
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

@@ -3,6 +3,8 @@ package com.ara.advent.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.ara.advent.models.Attendance;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AppConstants {
+
     public static String PREFERENCE_NAME = "amaze_advent.ara";
     public static final int MAIN_REQUEST_CODE = 0;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -77,19 +80,23 @@ public class AppConstants {
     public static final  String PARAM_STARTTIME = "starttime";
     public static  final String PARAM_CLOSETIME = "endtime";
     public static  final String PARAM_TOTALTIME = "totaltime";
-    public static final String PARAM_CUSTOMER_ID = "custtomerId";
-    public static final String ONCALLTRIPSHEETURL = "oncaltripsheetlist";
+    public static final String PARAM_CUSTOMER_ID = "customerId";
+    public static final String ONCALLTRIPSHEETURL = URL+"oncaltripsheetupdate";
     public static final String PARAM_VEHICLE_ID = "vehicleid";
     public static final String ONCALLTRIPSHEETUPDATE = "oncaltripsheetupdate";
     public static final String PARAM_TRIPSHEET_ID = "tripid";
     public static final String PARAM_CLOSING_KM_ONCALL = "closingkm";
     public static final String PARAM_CLOSIN_TIME_ONCALL = "closingtime";
     public static final String PARAM_DEF_DATE = "";
-    public static final String PARAM_IMG_ONE = "";
-    public static final String PARAM_IMG_TWO= "";
-    public static final String PARAM_IMG_THREE= "";
-
+    public static final String PARAM_IMG_ONE = "tripsheetbill";
+    public static final String PARAM_IMG_TWO= "permitbill";
+    public static final String PARAM_IMG_THREE= "tollgatebill";
+    public static final String PARAM_IMG_FOUR= "parkingbill";
+    public static final String PARAM_IMG_ONE_BACK = "tripsheetbillback";
     public static final String PARAMTB = "oncaltripsheetlist";
+    public static final String PARAM_PARKAMT = "parkingbillamount";
+    public static final String PARAM_PERAMT = "permitbillamount";
+    public static final String PARAM_TOLLAMT = "tollgatebillamount";
     public static final String TBURL = URL+PARAMTB;
     public static final String TBID = "trip_booking_id";
     public static final String TBNO = "trip_booking_no";
@@ -99,14 +106,19 @@ public class AppConstants {
     public static final String TBREPORTTO ="trip_booking_report_to" ;
     public static final String TBCSTIME = "trip_closing_customer_starting_time";
     public static final String TBCSSKM = "trip_closing_customer_starting_km";
-
-    public static final String SUB = "oncaltripsheetupdate";
-    public static final String SUBMITURL = URL +SUB;
+    public static final String TBCMOBNO = "mobile_no";
+    public static final String TBCADDRESS = "address";
+    public static final String SUB = "oncaltripsheetstartingupdate";
+    public static final String STARTINGSUBMITURL = URL +SUB;
     public static final String TRIPID = "tripid";
-    public static final String CLOSINGKM = "closingkm";
-    public static final String CLOSINTIME ="closingtime" ;
-
-
+    public  static final String USERID = "userid";
+    public static final String STARTINGKM = "startingkm";
+    public static final String STARTINGTIME ="startingtime" ;
+    public static final String TOTALKM = "totalkm";
+    public static final String TOTALTIME = "totaltime";
+    public static final String IP = "ipadd";
+    public static  final  String NOTIFYURL = URL + "customernotify";
+    public static  final  String HISTORYURL = "";
     public static User user;
 
     public static void setUser(User tmpUser) {
@@ -187,11 +199,12 @@ public class AppConstants {
         return strAdddress;
     }
 
+
     public static boolean isNotHalfAnHourDifference(Calendar inTime) {
         Calendar currentTime = Calendar.getInstance();
-        if (inTime.get(Calendar.HOUR) != currentTime.get(Calendar.HOUR))
+        if (inTime.get(Calendar.HOUR) != currentTime.get(Calendar.HOUR ))
             return false;
-        if (inTime.get(Calendar.AM_PM) != currentTime.get(Calendar.AM_PM))
+        if ( inTime.get(Calendar.AM_PM) != currentTime.get(Calendar.AM_PM) )
             return false;
         if ((currentTime.get(Calendar.MINUTE) - inTime.get(Calendar.MINUTE)) > 30)
             return false;

@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     Button gotoContractTripSheet;
 
 
-
     int type;
 
     @Override
@@ -54,17 +53,19 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-        type = sharedPreferences.getInt(PREF_TYPE,-1);
-        Log.e(TAG,"shred preferne type"+type);
-        Toast.makeText(MainActivity.this,""+type,Toast.LENGTH_SHORT).show();
-        User user=new User();
-        user.setId(sharedPreferences.getInt(PARAM_USER_ID,-1));
-        user.setUserName(sharedPreferences.getString(PARAM_USER_NAME,"No Name"));
+        type = sharedPreferences.getInt(PREF_TYPE, -1);
+        Log.e(TAG, "shred preferne type" + type);
+        User user = new User();
+        user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
+        user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, "No Name"));
         AppConstants.setUser(user);
-       if(sharedPreferences.contains(PARAM_USER_ID) && type == DRIVER_TYPE){
+        if (sharedPreferences.contains(PARAM_USER_ID) && type == DRIVER_TYPE) {
             startActivity(new Intent(MainActivity.this, TripSheetList.class));
             finish();
-        }else {
+        } else if (sharedPreferences.contains(PARAM_USER_ID) && type == USER_TYPE) {
+
+
+        } else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
         }
@@ -114,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
         gotoCheckInOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showSnackbar("PLease Check Your Netwok Connection");
+                    return;
+                }
                 startActivity(new Intent(MainActivity.this, CheckInOut.class));
                 finish();
             }
@@ -121,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
         gotoContractTripSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showSnackbar("PLease Check Your Netwok Connection");
+                    return;
+                }
                 startActivity(new Intent(MainActivity.this, ContractTripsheet.class));
                 finish();
             }
@@ -128,7 +137,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    private void showSnackbar(String message) {
+        final Snackbar snackbar = Snackbar.make(rootLayout, message,
+                Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(R.string.text_ok_button, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -146,10 +165,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.action_logout_id:
                 logout();
                 break;
+
             default:
                 break;
         }
@@ -157,6 +178,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_tripHistory);
+        item.setVisible(false);
+        return  true;
+    }
 
     private boolean isNetworkAvailable() {
 
@@ -172,8 +199,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-                type = sharedPreferences.getInt(PREF_TYPE,-1);
-                if(type==DRIVER_TYPE) {
+                type = sharedPreferences.getInt(PREF_TYPE, -1);
+                if (type == DRIVER_TYPE) {
                     startActivity(new Intent(MainActivity.this, TripSheetList.class));
                     finish();
                 }
