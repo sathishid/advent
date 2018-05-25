@@ -385,6 +385,45 @@ public class TripsheetImageSubmit extends AppCompatActivity {
 
         boolean error = true;
 
+        if (parkingAmount.getText().toString().isEmpty()) {
+            parkingAmount.setError("starting km not valid");
+            error = false;
+        } else {
+            parkingAmount.setError(null);
+        }
+        if (permitAmount.getText().toString().isEmpty()) {
+            permitAmount.setError("starting km not valid");
+            error = false;
+        } else {
+            permitAmount.setError(null);
+        }
+        if (tollgateAmount.getText().toString().isEmpty()) {
+            tollgateAmount.setError("starting km not valid");
+            error = false;
+        } else {
+            tollgateAmount.setError(null);
+        }
+        if (oncallTsModel.getImage_file_one() ==  null) {
+            showSnackbar("photo not Updated",false);
+            return  false;
+        }
+        if (oncallTsModel.getImage_file_two() ==  null) {
+            showSnackbar("photo not Updated",false);
+            return  false;
+        }
+        if (oncallTsModel.getImage_file_three() ==  null) {
+            showSnackbar("photo not Updated",false);
+            return  false;
+        } if (oncallTsModel.getImage_file_four() ==  null) {
+            showSnackbar("photo not Updated",false);
+            return  false;
+        }
+        if (oncallTsModel.getImage_file_one_back() ==  null) {
+            showSnackbar("photo not Updated",false);
+            return  false;
+        }
+
+
         return error;
     }
 

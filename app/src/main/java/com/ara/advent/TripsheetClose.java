@@ -133,12 +133,16 @@ public class TripsheetClose extends AppCompatActivity {
         String d = sharedPreferences.getString("tripsheetcustomername", "");
         e = sharedPreferences.getString("starttime", "");
         f = sharedPreferences.getString("startingkm", "");
+        String i = sharedPreferences.getString("tirpsheetcusmobno","");
+        String k = sharedPreferences.getString("tripsheetcusadd","");
 
         trino.setText(b);
         tripdate.setText(c);
         customer.setText(d);
         startingKm_close.setText(f);
         starting_time_close.setText(e);
+        mobnoClose.setText(i);
+        addressClose.setText(k);
 
 
         if (!isNetworkAvailable()) {
@@ -302,15 +306,15 @@ public class TripsheetClose extends AppCompatActivity {
             closetimeHours.setError(null);
         }
 
-
+/*
         if (closingkM.getText().toString().isEmpty()) {
             closingkM.setError("km not valid");
             error = false;
         } else {
             closetimeHours.setError(null);
-        }
+        }*/
 
-        if (Integer.parseInt(closingkM.getText().toString()) < Integer.parseInt(f)) {
+        if (closingkM.getText().toString().isEmpty() || Integer.parseInt(closingkM.getText().toString()) < Integer.parseInt(startingKm_close.getText().toString())) {
             closingkM.setError("km not valid");
             error = false;
         } else {

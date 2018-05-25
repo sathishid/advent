@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="3dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     android:paddingTop="10dp"
     tools:context="com.ara.advent.TripSheetList">
 
