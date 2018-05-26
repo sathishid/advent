@@ -114,7 +114,7 @@
                 android:id="@+id/cardview1"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@+id/cardview1back"
                 app:cardBackgroundColor="@color/cardview_dark_background"
                 app:cardCornerRadius="10dp">

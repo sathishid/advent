@@ -5,6 +5,23 @@ package com.ara.advent.models;
  */
 
 public class TripsheetListModel {
+    String VehiName,VehiId;
+
+    public String getVehiName() {
+        return VehiName;
+    }
+
+    public void setVehiName(String vehiName) {
+        VehiName = vehiName;
+    }
+
+    public String getVehiId() {
+        return VehiId;
+    }
+
+    public void setVehiId(String vehiId) {
+        VehiId = vehiId;
+    }
 
     String tripBooking_id,tripBooking_no,tripBooking_date,customer_name,customerMultiContact_name,tripBookingReport_to,tripcustomer_startingkm,tripcustomer_startingtime,cus_mobNo,cus_add;
 
@@ -24,7 +41,9 @@ public class TripsheetListModel {
         this.cus_add = cus_add;
     }
 
-    public TripsheetListModel(String tripBooking_id, String tripBooking_no, String tripBooking_date, String customer_name, String customerMultiContact_name, String tripBookingReport_to, String tripcustomer_startingkm, String tripcustomer_startingtime, String cus_mobNo, String cus_add) {
+    public TripsheetListModel(String vehiName, String vehiId, String tripBooking_id, String tripBooking_no, String tripBooking_date, String customer_name, String customerMultiContact_name, String tripBookingReport_to, String tripcustomer_startingkm, String tripcustomer_startingtime, String cus_mobNo, String cus_add) {
+        VehiName = vehiName;
+        VehiId = vehiId;
         this.tripBooking_id = tripBooking_id;
         this.tripBooking_no = tripBooking_no;
         this.tripBooking_date = tripBooking_date;

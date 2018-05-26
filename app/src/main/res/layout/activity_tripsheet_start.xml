@@ -184,23 +184,35 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-        <!--<TextView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
-            android:text="@string/pick_a_vehicle_type"
-            android:textSize="13sp" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
 
-        <Spinner
-            android:id="@+id/spinnertype_vehicle"
-            style="@style/spinnerTheme"
-            android:layout_width="fill_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="7dp"
+                android:gravity="center"
+                android:shadowColor="@color/iron"
+                android:text="@string/Vehicle_name"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        </Spinner>-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="28dp"
+                android:gravity="center"
+                android:id="@+id/tripVehName"
+                android:shadowColor="@color/iron"
+                android:text="sample"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

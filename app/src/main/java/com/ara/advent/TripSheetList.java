@@ -50,10 +50,12 @@ import static com.ara.advent.utils.AppConstants.TBCMOBNO;
 import static com.ara.advent.utils.AppConstants.TBCNAME;
 import static com.ara.advent.utils.AppConstants.TBCSSKM;
 import static com.ara.advent.utils.AppConstants.TBCSTIME;
+import static com.ara.advent.utils.AppConstants.TBCVEHNAME;
 import static com.ara.advent.utils.AppConstants.TBDATE;
 import static com.ara.advent.utils.AppConstants.TBID;
 import static com.ara.advent.utils.AppConstants.TBNO;
 import static com.ara.advent.utils.AppConstants.TBREPORTTO;
+import static com.ara.advent.utils.AppConstants.TBVEHID;
 
 public class TripSheetList extends AppCompatActivity {
     private static final String TAG = "TRIPSHEETLIST";
@@ -117,6 +119,9 @@ public class TripSheetList extends AppCompatActivity {
                 String tripshetsttime = triplistArray.get(i).getTripcustomer_startingtime();
                 String tirpsheetcusmobno = triplistArray.get(i).getCus_mobNo();
                 String tripsheetcusadd = triplistArray.get(i).getCus_add();
+                String veh_id = triplistArray.get(i).getVehiId();
+                String veh_name = triplistArray.get(i).getVehiName();
+
 
                 SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -130,6 +135,8 @@ public class TripSheetList extends AppCompatActivity {
                 editor.putString("tripshetsttime",tripshetsttime);
                 editor.putString("tirpsheetcusmobno",tirpsheetcusmobno);
                 editor.putString("tripsheetcusadd",tripsheetcusadd);
+                editor.putString("vehId",veh_id);
+                editor.putString("vehname",veh_name);
                 editor.commit();
 
                     startActivity(new Intent(TripSheetList.this, TripsheetStart.class));
@@ -182,6 +189,8 @@ public class TripSheetList extends AppCompatActivity {
                         String tbstarttime = jsonObject.getString(TBCSTIME);
                         String tbcusMobNo = jsonObject.getString(TBCMOBNO);
                         String tbcusaddd = jsonObject.getString(TBCADDRESS);
+                        String tbvehiname = jsonObject.getString(TBCVEHNAME);
+                        String tbvehid = jsonObject.getString(TBVEHID);
 
                         TripsheetListModel t = new TripsheetListModel();
                         t.setTripBooking_id(tbid);
@@ -194,6 +203,8 @@ public class TripSheetList extends AppCompatActivity {
                         t.setTripcustomer_startingtime(tbstarttime);
                         t.setCus_add(tbcusaddd);
                         t.setCus_mobNo(tbcusMobNo);
+                        t.setVehiName(tbvehiname);
+                        t.setVehiId(tbvehid);
                         triplistArray.add(t);
                     }
 
