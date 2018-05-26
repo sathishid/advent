@@ -1,5 +1,6 @@
 package com.ara.advent;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -65,7 +66,16 @@ public class TripsheetHistory extends AppCompatActivity {
     }
 
     private void initViews() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.HISTORYURL, new Response.Listener<String>() {
+
+
+        if (!isNetworkAvailable()) {
+        showSnackbar("Please Check Your Network Connection");
+        return;
+    }
+        final ProgressDialog progressDialog = new ProgressDialog(this,R.style.AppTheme_Dark_Dialog);
+        progressDialog.setTitle("Please Wait...");
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.TBURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -82,7 +92,8 @@ public class TripsheetHistory extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put("","");
+                map.put(AppConstants.PARAM_VEHICLE_ID,AppConstants.getUser().getId());
+                map.put("status","1");
                 return map;
             }
         };
