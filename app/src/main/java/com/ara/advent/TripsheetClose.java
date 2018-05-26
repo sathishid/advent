@@ -94,8 +94,8 @@ public class TripsheetClose extends AppCompatActivity {
     TextView starting_time_close;
     @BindView(R.id.customer_addressClose)
     TextView addressClose;
-   /* @BindView(R.id.spinnertype_vehicleClose)
-    Spinner vehType_close;*/
+    @BindView(R.id.tripVehName1)
+    TextView vehicle_name;
     @BindView(R.id.mobileNumberClose)
     TextView mobnoClose;
     String a;
@@ -135,7 +135,8 @@ public class TripsheetClose extends AppCompatActivity {
         f = sharedPreferences.getString("startingkm", "");
         String i = sharedPreferences.getString("tirpsheetcusmobno","");
         String k = sharedPreferences.getString("tripsheetcusadd","");
-
+        String m = sharedPreferences.getString("vehId", "");
+        String n = sharedPreferences.getString("vehname", "");
         trino.setText(b);
         tripdate.setText(c);
         customer.setText(d);
@@ -143,6 +144,7 @@ public class TripsheetClose extends AppCompatActivity {
         starting_time_close.setText(e);
         mobnoClose.setText(i);
         addressClose.setText(k);
+        vehicle_name.setText(n);
 
 
         if (!isNetworkAvailable()) {

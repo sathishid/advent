@@ -13,14 +13,14 @@
 
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
             android:id="@+id/notify_user"
-            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/amaze_logo_space"
             android:layout_marginLeft="30dp"
-            android:text="@string/click_here_to_notify_user"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
             android:background="@color/cardview_dark_background"
-            android:layout_height="@dimen/amaze_logo_space" />
+            android:text="@string/click_here_to_notify_user" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -95,8 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
-            android:paddingLeft="10dp"
             android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
             android:text="@string/customer_name"
             android:textColor="@color/iron"
             android:textSize="16sp"
@@ -162,6 +162,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -178,18 +179,48 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/mobileNumberClose"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="28dp"
                 android:gravity="center"
-                android:id="@+id/mobileNumberClose"
                 android:shadowColor="@color/iron"
                 android:text="@string/_1234567890"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="7dp"
+                android:gravity="center"
+                android:shadowColor="@color/iron"
+                android:text="@string/Vehicle_name"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tripVehName1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="28dp"
+                android:gravity="center"
+                android:shadowColor="@color/iron"
+                android:text="sample"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -198,34 +229,18 @@
             android:shadowColor="@color/iron"
             android:text="@string/address"
             android:textSize="13sp" />
+
         <TextView
+            android:id="@+id/customer_addressClose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
-            android:paddingLeft="20dp"
-            android:id="@+id/customer_addressClose"
             android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
             android:shadowColor="@color/iron"
             android:text="@string/address"
             android:textSize="16sp" />
 
-  <!--      <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
-            android:text="@string/pick_a_vehicle_type"
-            android:textSize="13sp" />
-
-        <Spinner
-            android:id="@+id/spinnertype_vehicleClose"
-            style="@style/spinnerTheme"
-            android:layout_width="fill_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp">
-
-        </Spinner>-->
         <android.support.design.widget.TextInputLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -236,9 +251,9 @@
                 android:id="@+id/textview_closingKmclose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:shadowColor="@color/iron"
-                android:inputType="number"
                 android:hint="@string/enter_closing_kilometer"
+                android:inputType="number"
+                android:shadowColor="@color/iron"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </android.support.design.widget.TextInputLayout>
@@ -254,8 +269,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="@string/closing_time"
                 android:shadowColor="@color/iron"
+                android:text="@string/closing_time"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -276,10 +291,10 @@
                 android:id="@+id/stclose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="0"
-                android:text=":" />
+                android:text=":"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/textview_closingtimeMclose"
@@ -302,8 +317,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginRight="@dimen/amaze_logo_space"
             android:layout_marginBottom="40dp"
+            android:layout_marginRight="@dimen/amaze_logo_space"
             android:layout_marginTop="40dp"
             android:text="@string/next" />
 

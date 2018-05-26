@@ -108,6 +108,9 @@ public class AppConstants {
     public static final String TBCSSKM = "trip_closing_customer_starting_km";
     public static final String TBCMOBNO = "mobile_no";
     public static final String TBCADDRESS = "address";
+    public static final String TBCVEHNAME = "vehicle_type_name";
+    public static final String TBVEHID = "vehicle_type_id";
+
     public static final String SUB = "oncaltripsheetstartingupdate";
     public static final String STARTINGSUBMITURL = URL +SUB;
     public static final String TRIPID = "tripid";

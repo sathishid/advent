@@ -63,9 +63,9 @@ public class TripsheetStart extends AppCompatActivity {
     TextView mobileNo;
     @BindView(R.id.customer_address)
     TextView cus_Address;
-   /* @BindView(R.id.spinnertype_vehicle)
-    Spinner vehicle_type;
-*/
+    @BindView(R.id.tripVehName)
+    TextView vehicle_name;
+
 
     String a;
     @BindView(R.id.Submit)
@@ -80,10 +80,10 @@ public class TripsheetStart extends AppCompatActivity {
         sv.setFocusableInTouchMode(true);
         sv.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
-        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
-        String ok = sharedPreferences1.getString("started","");
+        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        String ok = sharedPreferences1.getString("started", "");
         if (ok.equalsIgnoreCase("ok")) {
-            startActivity(new Intent(TripsheetStart.this,TripsheetClose.class));
+            startActivity(new Intent(TripsheetStart.this, TripsheetClose.class));
             finish();
         }
 
@@ -97,9 +97,10 @@ public class TripsheetStart extends AppCompatActivity {
         String f = sharedPreferences.getString("tripsheetreportto", "");
         String j = sharedPreferences.getString("trioppshettstkm", "");
         String h = sharedPreferences.getString("tripshetsttime", "");
-        String i = sharedPreferences.getString("tirpsheetcusmobno","");
-        String k = sharedPreferences.getString("tripsheetcusadd","");
-
+        String i = sharedPreferences.getString("tirpsheetcusmobno", "");
+        String k = sharedPreferences.getString("tripsheetcusadd", "");
+        String m = sharedPreferences.getString("vehId", "");
+        String n = sharedPreferences.getString("vehname", "");
         String currentString = h;
         String[] separated = currentString.split(":");
         String timeHour = separated[0];
@@ -115,6 +116,7 @@ public class TripsheetStart extends AppCompatActivity {
         starttimeMinutes.setText(timeMinute);
         mobileNo.setText(i);
         cus_Address.setText(k);
+        vehicle_name.setText(n);
 
         Log.e("TAG", "------------------------------------------------------" + a);
         if (isNetworkAvailable()) {
@@ -230,9 +232,9 @@ public class TripsheetStart extends AppCompatActivity {
                     editor.putString("starttime", starting_time);
                     editor.putString("startingkm", startingkM.getText().toString());
                     editor.commit();
-                    SharedPreferences ses = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
+                    SharedPreferences ses = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
                     SharedPreferences.Editor ed = ses.edit();
-                    ed.putString("started","ok");
+                    ed.putString("started", "ok");
                     ed.commit();
                     startActivity(new Intent(TripsheetStart.this, TripsheetClose.class)
                             .putExtra("name", "TripSheet Added successfully"));
