@@ -227,6 +227,7 @@ public class TripSheetList extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
                 map.put(AppConstants.PARAM_VEHICLE_ID, ""+AppConstants.getUser().getId());
+                map.put("status","0");
                 return map;
             }
         };
