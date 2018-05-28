@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:layout_height="match_parent"
     android:background="@drawable/listback"
     android:orientation="vertical">
 
 
     <TextView
-        android:textColor="@color/iron"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_marginLeft="5dp"
+        android:id="@+id/text_tbcustname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/amaze_travels"
-        android:id="@+id/text_tbcustname"/>
+        android:shadowColor="@color/iron"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
     <RelativeLayout
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
         <TextView
+            android:id="@+id/text_tbno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1001"
-            android:layout_marginLeft="7dp"
-            android:textColor="@color/iron"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:id="@+id/text_tbno"/>
+            android:textColor="@color/white"
+            android:shadowColor="@color/iron"
+            android:textSize="15sp"
+            android:textStyle="italic|bold" />
 
         <TextView
 
-            android:layout_marginRight="7dp"
-            android:layout_alignParentEnd="true"
-            android:text="@string/dd_mm_yy"
-            android:textColor="@color/iron"
-            android:textStyle="bold"
-            android:textSize="14sp"
+            android:id="@+id/text_tbdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_tbdate"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="7dp"
+            android:text="@string/dd_mm_yy"
+            android:shadowColor="@color/iron"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="italic|bold" />
 
     </RelativeLayout>
-
 
 
 </LinearLayout>
