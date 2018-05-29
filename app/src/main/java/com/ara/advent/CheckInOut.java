@@ -165,6 +165,14 @@ public class CheckInOut extends AppCompatActivity {
         } else if (checkIn.contains("") && checkOut.contains("")) {
             showSnackbar("Please Check Out");
         }
+
+        if(!checkIn.contains("")) {
+            showSnackbar("check In - "+"please Cheeck Out");
+        } else if (!checkOut.contains("")) {
+            showSnackbar("check Out - "+"PLease Check In");
+        } else if (!checkIn.contains("") && !checkOut.contains("")) {
+            showSnackbar("you Are Already Check IN Today ,Please Try again tommorrow");
+        }
         requestGPSPermission(true);
 
 
@@ -712,7 +720,7 @@ public class CheckInOut extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
                         cIn = jsonObject.getString("checkin");
-                        cOut = jsonObject.getString("chec   Qkout");
+                        cOut = jsonObject.getString("checkout");
                     }
                     SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
