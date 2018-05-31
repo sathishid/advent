@@ -291,19 +291,19 @@ public class TripsheetClose extends AppCompatActivity {
 
     public boolean formValid() {
 
-        boolean error = true;
+        boolean isValid = true;
 
 
         if (closetimeHours.getText().toString().isEmpty() || Integer.parseInt(closetimeHours.getText().toString()) > 24) {
             closetimeHours.setError("hours not valid");
-            error = false;
+            isValid = false;
         } else {
             closetimeHours.setError(null);
         }
 
         if (closetimeHours.getText().toString().isEmpty() || Integer.parseInt(closetimeHours.getText().toString()) > 60) {
             closetimeHours.setError("minutes not valid");
-            error = false;
+            isValid = false;
         } else {
             closetimeHours.setError(null);
         }
@@ -317,13 +317,13 @@ public class TripsheetClose extends AppCompatActivity {
         }*/
 
         if (closingkM.getText().toString().isEmpty() || Integer.parseInt(closingkM.getText().toString()) < Integer.parseInt(startingKm_close.getText().toString())) {
-            closingkM.setError("km not valid");
-            error = false;
+            closingkM.setError("closing KM should be lesser than starting KM");
+            isValid = false;
         } else {
             closingkM.setError(null);
         }
 
-        return error;
+        return isValid;
     }
 
     @Override

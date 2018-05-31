@@ -245,19 +245,9 @@ public class TripsheetImageSubmit extends AppCompatActivity {
                     } else {
 
                         Log.e(TAG, "Booking Ride Success------" + response.getMesssage());
-                        Snackbar bar = Snackbar.make(OntripLayout, "Tripsheet Closed Successfully", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Dismiss", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // Handle user action
-                                        startActivity(new Intent(TripsheetImageSubmit.this, TripSheetList.class)
-                                                .putExtra("OncallBooked", "Trip sheet closed successfully"));
-                                        finish();
-                                    }
-                                });
-
-                        bar.show();
-
+                        startActivity(new Intent(TripsheetImageSubmit.this, TripSheetList.class)
+                                .putExtra("OncallBooked", "Trip sheet closed successfully"));
+                        finish();
                     }
                 }
             }.execute(httpRequest);
@@ -300,40 +290,55 @@ public class TripsheetImageSubmit extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        String tempImage = "temp.png";
         if (requestCode == REQUEST_TAKE_IMAGE_ONE && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one());
             compressImageFile(imageBitmap, oncallTsModel.getImage_file_one());
+            compressImageFile(imageBitmap, 10, tempImage);
+            imageBitmap = BitmapFactory.decodeFile(tempImage);
             input_image1.setImageBitmap(imageBitmap);
 
         } else if (requestCode == REQUEST_TAKE_IMAGE_TWO && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_two());
             compressImageFile(imageBitmap, oncallTsModel.getImage_file_two());
+            compressImageFile(imageBitmap, 10, tempImage);
+            imageBitmap = BitmapFactory.decodeFile(tempImage);
             input_image2.setImageBitmap(imageBitmap);
 
         } else if (requestCode == REQUEST_TAKE_IMAGE_THREE && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_three());
             compressImageFile(imageBitmap, oncallTsModel.getImage_file_three());
+            compressImageFile(imageBitmap, 10, tempImage);
+            imageBitmap = BitmapFactory.decodeFile(tempImage);
             input_image3.setImageBitmap(imageBitmap);
         } else if (requestCode == REQUEST_TAKE_IMAGE_FOUR && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_four());
             compressImageFile(imageBitmap, oncallTsModel.getImage_file_four());
+            compressImageFile(imageBitmap, 10, tempImage);
+            imageBitmap = BitmapFactory.decodeFile(tempImage);
             input_image4.setImageBitmap(imageBitmap);
         } else if (requestCode == REQUEST_TAKE_IMAGE_ONE_BACK && resultCode == RESULT_OK) {
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one_back());
             compressImageFile(imageBitmap, oncallTsModel.getImage_file_one_back());
+            compressImageFile(imageBitmap, 10, tempImage);
+            imageBitmap = BitmapFactory.decodeFile(tempImage);
             input_image1back.setImageBitmap(imageBitmap);
         }
     }
 
     public void compressImageFile(Bitmap bitmap, String fileName) {
+        compressImageFile(bitmap, 50, fileName);
+    }
+
+    public void compressImageFile(Bitmap bitmap, int quality, String fileName) {
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream);
 
 
             File file = new File(fileName);

@@ -58,13 +58,14 @@
             android:label="Contract Trip Sheet" />
         <activity
             android:name=".TripsheetImageSubmit"
-            android:label="OnCall Trip Sheet" />
+            android:label="Submit Proof" />
         <activity
             android:name=".TripSheetList"
             android:label="TripSheet List" />
         <activity android:name=".TripsheetStart" />
         <activity android:name=".TripsheetClose" />
-        <activity android:name=".TripsheetHistory" />
+        <activity android:name=".TripsheetHistory"
+            android:label="Trip Sheet History"/>
 
     </application>
 
