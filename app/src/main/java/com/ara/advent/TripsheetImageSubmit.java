@@ -222,6 +222,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         oncallTsModel.setPemit_amount(permitAmount.getText().toString());
         oncallTsModel.setToll_amout(tollgateAmount.getText().toString());
 
+//        pushToLog();
         PushtoServer();
     }
 
@@ -240,14 +241,31 @@ public class TripsheetImageSubmit extends AppCompatActivity {
                     super.onResponse(response);
 
                     if (response.getStatus() == HttpResponse.ERROR) {
-                        Log.e(TAG, "Error response when pushto server " + response.getMesssage());
+                        Log.e(TAG, "Error response when push to server " + response.getMesssage());
                         onBookingFailure(response);
                     } else {
 
                         Log.e(TAG, "Booking Ride Success------" + response.getMesssage());
-                        startActivity(new Intent(TripsheetImageSubmit.this, TripSheetList.class)
-                                .putExtra("OncallBooked", "Trip sheet closed successfully"));
+                        SharedPreferences sharedPreferences = getSharedPreferences("Oncall", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("OncallBooked", "success");
+                        editor.commit();
+                        startActivity(new Intent(TripsheetImageSubmit.this, TripSheetList.class));
                         finish();
+                        /*Snackbar bar = Snackbar.make(OntripLayout, "Tripsheet Closed Successfully", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Dismiss", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // Handle user action
+                                        startActivity(new Intent(TripsheetImageSubmit.this, TripSheetList.class)
+                                                .putExtra("OncallBooked", "Trip sheet closed successfully"));
+                                        finish();
+                                    }
+                                });
+
+                        bar.show();
+*/
+
                     }
                 }
             }.execute(httpRequest);
@@ -290,55 +308,70 @@ public class TripsheetImageSubmit extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String tempImage = "temp.png";
         if (requestCode == REQUEST_TAKE_IMAGE_ONE && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_one());
-            compressImageFile(imageBitmap, 10, tempImage);
-            imageBitmap = BitmapFactory.decodeFile(tempImage);
-            input_image1.setImageBitmap(imageBitmap);
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getImage_file_one());
+            input_image1.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap One" + oncallTsModel.getImage_file_one());
+
 
         } else if (requestCode == REQUEST_TAKE_IMAGE_TWO && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_two());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_two());
-            compressImageFile(imageBitmap, 10, tempImage);
-            imageBitmap = BitmapFactory.decodeFile(tempImage);
-            input_image2.setImageBitmap(imageBitmap);
-
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getImage_file_two());
+            input_image2.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap two" + oncallTsModel.getImage_file_two());
         } else if (requestCode == REQUEST_TAKE_IMAGE_THREE && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_three());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_three());
-            compressImageFile(imageBitmap, 10, tempImage);
-            imageBitmap = BitmapFactory.decodeFile(tempImage);
-            input_image3.setImageBitmap(imageBitmap);
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getImage_file_three());
+            input_image3.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap three" + oncallTsModel.getImage_file_three());
         } else if (requestCode == REQUEST_TAKE_IMAGE_FOUR && resultCode == RESULT_OK) {
 
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_four());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_four());
-            compressImageFile(imageBitmap, 10, tempImage);
-            imageBitmap = BitmapFactory.decodeFile(tempImage);
-            input_image4.setImageBitmap(imageBitmap);
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getImage_file_four());
+            input_image4.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap four" + oncallTsModel.getImage_file_four());
         } else if (requestCode == REQUEST_TAKE_IMAGE_ONE_BACK && resultCode == RESULT_OK) {
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one_back());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_one_back());
-            compressImageFile(imageBitmap, 10, tempImage);
-            imageBitmap = BitmapFactory.decodeFile(tempImage);
-            input_image1back.setImageBitmap(imageBitmap);
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getImage_file_one_back());
+            input_image1back.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap One back " + oncallTsModel.getImage_file_one_back());
         }
     }
 
     public void compressImageFile(Bitmap bitmap, String fileName) {
-        compressImageFile(bitmap, 50, fileName);
-    }
-
-    public void compressImageFile(Bitmap bitmap, int quality, String fileName) {
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
 
 
             File file = new File(fileName);

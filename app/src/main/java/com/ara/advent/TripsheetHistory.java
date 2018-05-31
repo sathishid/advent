@@ -37,7 +37,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.ara.advent.utils.AppConstants.PICKUP_TIME;
 import static com.ara.advent.utils.AppConstants.TBCADDRESS;
 import static com.ara.advent.utils.AppConstants.TBCMCNAME;
 import static com.ara.advent.utils.AppConstants.TBCMOBNO;
@@ -121,7 +120,6 @@ public class TripsheetHistory extends AppCompatActivity {
                         String tbcusMobNo = jsonObject.getString(TBCMOBNO);
                         String tbcusaddd = jsonObject.getString(TBCADDRESS);
                         String tbvehiname = jsonObject.getString(TBCVEHNAME);
-                        String pickTime=jsonObject.getString(PICKUP_TIME);
                         String tbvehid = jsonObject.getString(TBVEHID);
 
                         TripsheetListModel t = new TripsheetListModel();
@@ -137,7 +135,6 @@ public class TripsheetHistory extends AppCompatActivity {
                         t.setCus_mobNo(tbcusMobNo);
                         t.setVehiName(tbvehiname);
                         t.setVehiId(tbvehid);
-                        t.setPickupTime(pickTime);
                         triplistArray.add(t);
                     }
 

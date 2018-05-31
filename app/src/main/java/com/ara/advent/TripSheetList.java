@@ -57,7 +57,6 @@ import static com.ara.advent.utils.AppConstants.TBNO;
 import static com.ara.advent.utils.AppConstants.TBREPORTTO;
 import static com.ara.advent.utils.AppConstants.TBVEHID;
 
-
 public class TripSheetList extends AppCompatActivity {
     private static final String TAG = "TRIPSHEETLIST";
     @BindView(R.id.li)
@@ -78,10 +77,16 @@ public class TripSheetList extends AppCompatActivity {
         }
         populateTripSheetData();
 
-        Intent in = new Intent();
-        String text = in.getStringExtra("OncallBooked");
-        if (text != null) {
-            Snackbar bar = Snackbar.make(li, "" + text, Snackbar.LENGTH_LONG);
+        SharedPreferences sh = getSharedPreferences("Oncall",MODE_PRIVATE);
+        String text = sh.getString("OncallBooked","");
+        if (text.equalsIgnoreCase("success")) {
+            Snackbar bar = Snackbar.make(li, "trip sheet Added Successfully", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Handle user action
+                        }
+                    });
 
             bar.show();
         }
@@ -138,6 +143,8 @@ public class TripSheetList extends AppCompatActivity {
 
                 startActivity(new Intent(TripSheetList.this, TripsheetStart.class));
                 finish();
+
+
             }
         });
 
