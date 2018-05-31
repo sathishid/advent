@@ -1,25 +1,19 @@
 package com.ara.advent.models;
 
-import android.content.SharedPreferences;
 import android.util.Log;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-
-import com.ara.advent.utils.AppConstants;
 
 import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-import static android.content.Context.MODE_PRIVATE;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 import static com.ara.advent.utils.AppConstants.IP;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSING_KM_ONCALL;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSIN_TIME_ONCALL;
-import static com.ara.advent.utils.AppConstants.PARAM_CUSTOMER_ID;
-import static com.ara.advent.utils.AppConstants.PARAM_DEF_DATE;
 import static com.ara.advent.utils.AppConstants.PARAM_IMG_FOUR;
 import static com.ara.advent.utils.AppConstants.PARAM_IMG_ONE;
 import static com.ara.advent.utils.AppConstants.PARAM_IMG_ONE_BACK;
@@ -29,7 +23,6 @@ import static com.ara.advent.utils.AppConstants.PARAM_PARKAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_PERAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_TOLLAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_TRIPSHEET_ID;
-import static com.ara.advent.utils.AppConstants.TBCMOBNO;
 import static com.ara.advent.utils.AppConstants.TOTALKM;
 import static com.ara.advent.utils.AppConstants.TOTALTIME;
 import static com.ara.advent.utils.AppConstants.USERID;
@@ -134,12 +127,12 @@ public class OncallTsModel {
     String closingkilometer;
     String closingtime;
 
-    public String getLocalIpAddress(){
+    public String getLocalIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
-                 en.hasMoreElements();) {
+                 en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
                         return inetAddress.getHostAddress().toString();
@@ -212,45 +205,49 @@ public class OncallTsModel {
     public MultipartBody multipartRequest() {
 
 
-        Log.e("TAg","message string id "+customer_id);
+        Log.e("TAg", "message string id " + customer_id);
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         MediaType mediaType = MediaType.parse("image/jpeg");
-        builder.addFormDataPart(PARAM_IMG_ONE,getImage_file_one(),
-                RequestBody.create(mediaType,new File(getImage_file_one())));
-        builder.addFormDataPart(PARAM_IMG_TWO,getImage_file_two(),
-                RequestBody.create(mediaType,new File(getImage_file_two())));
-        builder.addFormDataPart(PARAM_IMG_THREE,getImage_file_three(),
-                RequestBody.create(mediaType,new File(getImage_file_three())));
-        builder.addFormDataPart(PARAM_IMG_FOUR,getImage_file_four(),
-                RequestBody.create(mediaType,new File(getImage_file_four())));
-        builder.addFormDataPart(PARAM_IMG_ONE_BACK,getImage_file_one_back(),
-                RequestBody.create(mediaType,new File(getImage_file_one_back())));
-        builder.addFormDataPart(PARAM_TRIPSHEET_ID,getTrip_Id());
-        builder.addFormDataPart(USERID,String.valueOf(user.getId()));
-        builder.addFormDataPart(PARAM_CLOSING_KM_ONCALL,closingkilometer);
-        builder.addFormDataPart(PARAM_CLOSIN_TIME_ONCALL,closingtime);
-        builder.addFormDataPart(TOTALKM,getTotalkilometer());
-        builder.addFormDataPart(TOTALTIME,getTotalTime());
-        builder.addFormDataPart(IP,getLocalIpAddress());
-        builder.addFormDataPart(PARAM_PARKAMT,getPark_amount());
-        builder.addFormDataPart(PARAM_PERAMT,getPemit_amount());
-        builder.addFormDataPart(PARAM_TOLLAMT,getToll_amout());
+        builder.addFormDataPart(PARAM_IMG_ONE, getImage_file_one(),
+                RequestBody.create(mediaType, new File(getImage_file_one())));
+        if (getImage_file_two() != null)
+            builder.addFormDataPart(PARAM_IMG_TWO, getImage_file_two(),
+                    RequestBody.create(mediaType, new File(getImage_file_two())));
+        if (getImage_file_three() != null)
+            builder.addFormDataPart(PARAM_IMG_THREE, getImage_file_three(),
+                    RequestBody.create(mediaType, new File(getImage_file_three())));
+        if (getImage_file_four() != null)
+            builder.addFormDataPart(PARAM_IMG_FOUR, getImage_file_four(),
+                    RequestBody.create(mediaType, new File(getImage_file_four())));
+
+        builder.addFormDataPart(PARAM_IMG_ONE_BACK, getImage_file_one_back(),
+                RequestBody.create(mediaType, new File(getImage_file_one_back())));
+        builder.addFormDataPart(PARAM_TRIPSHEET_ID, getTrip_Id());
+        builder.addFormDataPart(USERID, String.valueOf(user.getId()));
+        builder.addFormDataPart(PARAM_CLOSING_KM_ONCALL, closingkilometer);
+        builder.addFormDataPart(PARAM_CLOSIN_TIME_ONCALL, closingtime);
+        builder.addFormDataPart(TOTALKM, getTotalkilometer());
+        builder.addFormDataPart(TOTALTIME, getTotalTime());
+        builder.addFormDataPart(IP, getLocalIpAddress());
+        builder.addFormDataPart(PARAM_PARKAMT, getPark_amount());
+        builder.addFormDataPart(PARAM_PERAMT, getPemit_amount());
+        builder.addFormDataPart(PARAM_TOLLAMT, getToll_amout());
         MultipartBody multipartBody = builder.build();
         return multipartBody;
     }
 
     @Override
     public String toString() {
-        return PARAM_TRIPSHEET_ID +"-"+getTrip_Id() +"\n"+
-                USERID  +"-"+user.getId()+"\n"+
-                PARAM_CLOSING_KM_ONCALL +"-"+closingkilometer+"\n"+
-                PARAM_CLOSIN_TIME_ONCALL+"-"+closingtime+"\n"+
-                TOTALKM+"-"+getTotalkilometer()+"\n"+
-                TOTALTIME+"-"+getTotalTime()+"\n"+
-                IP+"-"+getLocalIpAddress()+"\n"
-                +PARAM_PARKAMT+"-"+getPark_amount()+"\n"
-                +PARAM_PERAMT+"-"+getPemit_amount()+"\n"+
-                PARAM_TOLLAMT+"-"+getToll_amout();
+        return PARAM_TRIPSHEET_ID + "-" + getTrip_Id() + "\n" +
+                USERID + "-" + user.getId() + "\n" +
+                PARAM_CLOSING_KM_ONCALL + "-" + closingkilometer + "\n" +
+                PARAM_CLOSIN_TIME_ONCALL + "-" + closingtime + "\n" +
+                TOTALKM + "-" + getTotalkilometer() + "\n" +
+                TOTALTIME + "-" + getTotalTime() + "\n" +
+                IP + "-" + getLocalIpAddress() + "\n"
+                + PARAM_PARKAMT + "-" + getPark_amount() + "\n"
+                + PARAM_PERAMT + "-" + getPemit_amount() + "\n" +
+                PARAM_TOLLAMT + "-" + getToll_amout();
     }
 }

@@ -110,6 +110,7 @@ public class AppConstants {
     public static final String TBCADDRESS = "address";
     public static final String TBCVEHNAME = "vehicle_type_name";
     public static final String TBVEHID = "vehicle_type_id";
+    public static final String PICKUP_TIME="pickup_time";
 
     public static final String SUB = "oncaltripsheetstartingupdate";
     public static final String STARTINGSUBMITURL = URL +SUB;

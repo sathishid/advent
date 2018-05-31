@@ -37,6 +37,7 @@ import java.util.StringTokenizer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.PICKUP_TIME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 
 public class TripsheetStart extends AppCompatActivity {
@@ -61,6 +62,8 @@ public class TripsheetStart extends AppCompatActivity {
     EditText startingkM;
     @BindView(R.id.mobileNumber)
     TextView mobileNo;
+    @BindView(R.id.pick_up_time)
+    TextView pickup_time;
     @BindView(R.id.customer_address)
     TextView cus_Address;
     @BindView(R.id.tripVehName)
@@ -95,6 +98,7 @@ public class TripsheetStart extends AppCompatActivity {
         String d = sharedPreferences.getString("tripsheetcustomername", "");
         String e = sharedPreferences.getString("tripsheetMCname", "");
         String f = sharedPreferences.getString("tripsheetreportto", "");
+        String strPickupTime=sharedPreferences.getString(PICKUP_TIME,"");
         String j = sharedPreferences.getString("trioppshettstkm", "");
         String h = sharedPreferences.getString("tripshetsttime", "");
         String i = sharedPreferences.getString("tirpsheetcusmobno", "");
@@ -110,6 +114,7 @@ public class TripsheetStart extends AppCompatActivity {
         tripdate.setText(c);
         customer.setText(d);
         customermc.setText(e);
+        pickup_time.setText(strPickupTime);
         cusreportto.setText(f);
         startingkM.setText(j);
         starttimeHours.setText(timeHour);

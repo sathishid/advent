@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -17,7 +18,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -223,11 +222,11 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         oncallTsModel.setPemit_amount(permitAmount.getText().toString());
         oncallTsModel.setToll_amout(tollgateAmount.getText().toString());
 
-       PushtoServer();
+        PushtoServer();
     }
 
     private void pushToLog() {
-        Log.e(TAG,"Objet oncall ts model "+oncallTsModel);
+        Log.e(TAG, "Objet oncall ts model " + oncallTsModel);
     }
 
     private void PushtoServer() {
@@ -325,7 +324,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
             input_image4.setImageBitmap(imageBitmap);
         } else if (requestCode == REQUEST_TAKE_IMAGE_ONE_BACK && resultCode == RESULT_OK) {
             Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one_back());
-            compressImageFile(imageBitmap,oncallTsModel.getImage_file_one_back());
+            compressImageFile(imageBitmap, oncallTsModel.getImage_file_one_back());
             input_image1back.setImageBitmap(imageBitmap);
         }
     }
@@ -383,48 +382,44 @@ public class TripsheetImageSubmit extends AppCompatActivity {
 
     public boolean formValid() {
 
-        boolean error = true;
+        boolean isValid = true;
 
-        if (parkingAmount.getText().toString().isEmpty()) {
-            parkingAmount.setError("starting km not valid");
-            error = false;
-        } else {
+        if (!parkingAmount.getText().toString().isEmpty()) {
+            if (oncallTsModel.getImage_file_two() == null) {
+                showSnackbar("Take Parking bill's photo", false);
+                return false;
+            }
             parkingAmount.setError(null);
+            isValid = true;
         }
-        if (permitAmount.getText().toString().isEmpty()) {
-            permitAmount.setError("starting km not valid");
-            error = false;
-        } else {
+        if (!permitAmount.getText().toString().isEmpty()) {
+            if (oncallTsModel.getImage_file_three() == null) {
+                showSnackbar("Take Permit bill's Photo.", false);
+                return false;
+            }
             permitAmount.setError(null);
+            isValid = true;
         }
-        if (tollgateAmount.getText().toString().isEmpty()) {
-            tollgateAmount.setError("starting km not valid");
-            error = false;
-        } else {
+        if (!tollgateAmount.getText().toString().isEmpty()) {
+            if (oncallTsModel.getImage_file_four() == null) {
+                showSnackbar("Take Tollgate Photo.", false);
+                return false;
+            }
             tollgateAmount.setError(null);
+            isValid = true;
         }
-        if (oncallTsModel.getImage_file_one() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
+
+        if (oncallTsModel.getImage_file_one() == null) {
+            showSnackbar("Take Trip sheet Front Side photo.", false);
+            return false;
         }
-        if (oncallTsModel.getImage_file_two() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
-        }
-        if (oncallTsModel.getImage_file_three() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
-        } if (oncallTsModel.getImage_file_four() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
-        }
-        if (oncallTsModel.getImage_file_one_back() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
+        if (oncallTsModel.getImage_file_one_back() == null) {
+            showSnackbar("Take Trip sheet backside photo.", false);
+            return false;
         }
 
 
-        return error;
+        return isValid;
     }
 
     private boolean isNetworkAvailable() {

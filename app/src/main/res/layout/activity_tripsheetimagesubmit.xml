@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/OncallTripsheet_layout"
     android:layout_width="match_parent"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     tools:context="com.ara.advent.TripsheetImageSubmit">
 
 
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/no"
-                android:textColor="@color/iron"
+
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -68,22 +68,23 @@
                 android:layout_marginRight="7dp"
                 android:gravity="center"
                 android:paddingRight="10dp"
-                android:shadowColor="@color/iron"
+
                 android:text="@string/dd_mm_yy"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+
+            android:layout_marginTop="5dp"></TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
+
             android:text="@string/customer_name"
             android:textSize="13sp" />
 
@@ -93,16 +94,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/customer_name"
-            android:textColor="@color/iron"
+
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+          ></TableRow>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -113,7 +114,8 @@
                 android:layout_height="match_parent"
                 android:ems="8"
                 android:gravity="center"
-                android:hint="@string/click_to_take_tripsheet_bill_picture" />
+
+                android:text="@string/click_to_take_tripsheet_bill_picture" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardview1"
@@ -152,6 +154,7 @@
                     android:src="@drawable/camera_icon" />
             </android.support.v7.widget.CardView>
         </RelativeLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -163,6 +166,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_parking_bill_amount" />
         </android.support.design.widget.TextInputLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -173,7 +177,8 @@
                 android:layout_height="match_parent"
                 android:ems="13"
                 android:gravity="fill"
-                android:hint="@string/click_to_take_parking_bill_picture" />
+                android:text="@string/click_to_take_parking_bill_picture"
+                android:textColor="@color/golden_yellow" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardview2"
@@ -207,6 +212,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_permit_bill_amount" />
         </android.support.design.widget.TextInputLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -218,7 +224,8 @@
                 android:layout_height="match_parent"
                 android:ems="13"
                 android:gravity="fill"
-                android:hint="@string/click_to_take_permit_bill_picture" />
+                android:textColor="@color/golden_yellow"
+                android:text="@string/click_to_take_permit_bill_picture" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardview3"
@@ -263,7 +270,7 @@
                 android:layout_height="match_parent"
                 android:ems="13"
                 android:gravity="fill"
-                android:hint="@string/click_to_take_toll_gate_bill_picture" />
+                android:text="@string/click_to_take_toll_gate_bill_picture" />
 
 
             <android.support.v7.widget.CardView
@@ -292,6 +299,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="25dp"
             android:text="@string/submit"

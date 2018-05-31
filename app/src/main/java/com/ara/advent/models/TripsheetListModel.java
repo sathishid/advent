@@ -5,7 +5,7 @@ package com.ara.advent.models;
  */
 
 public class TripsheetListModel {
-    String VehiName,VehiId;
+    String VehiName, VehiId;
 
     public String getVehiName() {
         return VehiName;
@@ -23,7 +23,9 @@ public class TripsheetListModel {
         VehiId = vehiId;
     }
 
-    String tripBooking_id,tripBooking_no,tripBooking_date,customer_name,customerMultiContact_name,tripBookingReport_to,tripcustomer_startingkm,tripcustomer_startingtime,cus_mobNo,cus_add;
+    String pickupTime;
+
+    String tripBooking_id, tripBooking_no, tripBooking_date, customer_name, customerMultiContact_name, tripBookingReport_to, tripcustomer_startingkm, tripcustomer_startingtime, cus_mobNo, cus_add;
 
     public String getCus_mobNo() {
         return cus_mobNo;
@@ -41,7 +43,12 @@ public class TripsheetListModel {
         this.cus_add = cus_add;
     }
 
-    public TripsheetListModel(String vehiName, String vehiId, String tripBooking_id, String tripBooking_no, String tripBooking_date, String customer_name, String customerMultiContact_name, String tripBookingReport_to, String tripcustomer_startingkm, String tripcustomer_startingtime, String cus_mobNo, String cus_add) {
+    public TripsheetListModel(String vehiName, String vehiId, String tripBooking_id,
+                              String tripBooking_no, String tripBooking_date, String customer_name,
+                              String customerMultiContact_name, String tripBookingReport_to,
+                              String tripcustomer_startingkm, String tripcustomer_startingtime,
+                              String cus_mobNo, String cus_add,
+                              String pickupTime) {
         VehiName = vehiName;
         VehiId = vehiId;
         this.tripBooking_id = tripBooking_id;
@@ -54,6 +61,7 @@ public class TripsheetListModel {
         this.tripcustomer_startingtime = tripcustomer_startingtime;
         this.cus_mobNo = cus_mobNo;
         this.cus_add = cus_add;
+        this.pickupTime = pickupTime;
     }
 
     public TripsheetListModel() {
@@ -62,6 +70,14 @@ public class TripsheetListModel {
     public String getTripBooking_id() {
 
         return tripBooking_id;
+    }
+
+    public String getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(String pickupTime) {
+        this.pickupTime = pickupTime;
     }
 
     public void setTripBooking_id(String tripBooking_id) {
