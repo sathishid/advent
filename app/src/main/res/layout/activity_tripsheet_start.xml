@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     tools:context="com.ara.advent.TripsheetStart">
 
     <LinearLayout
@@ -20,7 +22,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:text="@string/booking_id"
                 android:shadowColor="@color/iron"
@@ -32,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="28dp"
+                android:layout_marginRight="48dp"
                 android:gravity="center"
                 android:text="@string/date"
                 android:shadowColor="@color/iron"
@@ -49,7 +50,6 @@
                 android:id="@+id/textview_tripno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:text="@string/no"
                 android:textColor="@color/iron"
@@ -71,10 +71,15 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
+        <TableRow
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="0.1dp">
+    </TableRow>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:shadowColor="@color/iron"
             android:text="@string/customer_name"
@@ -84,19 +89,21 @@
             android:id="@+id/textview_customer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
-            android:paddingLeft="20dp"
             android:text="@string/customer_name"
             android:textColor="@color/iron"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:shadowColor="@color/iron"
             android:text="Contact Name : "
@@ -106,20 +113,22 @@
             android:id="@+id/textview_customermc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:paddingLeft="20dp"
             android:text="@string/customer_multi_customer_name"
             android:textColor="@color/iron"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:shadowColor="@color/iron"
             android:text="@string/report_to"
@@ -129,19 +138,21 @@
             android:id="@+id/textview_customerREPORT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:text="@string/report_to"
             android:textColor="@color/iron"
-            android:paddingLeft="20dp"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:shadowColor="@color/iron"
             android:text="@string/address"
@@ -149,13 +160,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:paddingLeft="20dp"
             android:id="@+id/customer_address"
             android:layout_marginTop="10dp"
             android:shadowColor="@color/iron"
             android:text="@string/address"
             android:textSize="16sp" />
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -164,7 +180,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
                 android:text="@string/mobile_no"
@@ -184,6 +199,12 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -192,7 +213,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
                 android:text="@string/Vehicle_name"
@@ -212,7 +232,12 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -224,10 +249,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:selectAllOnFocus="true"
                 android:hint="@string/enter_starting_kilometer"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </android.support.design.widget.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -252,6 +279,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="@string/hh"
+                android:selectAllOnFocus="true"
                 android:inputType="number"
                 android:maxLength="2"
                 android:shadowColor="@color/iron"
@@ -276,6 +304,7 @@
                 android:gravity="center"
                 android:hint="@string/mm"
                 android:inputType="number"
+                android:selectAllOnFocus="true"
                 android:maxLength="2"
                 android:shadowColor="@color/iron"
                 android:textSize="16sp"

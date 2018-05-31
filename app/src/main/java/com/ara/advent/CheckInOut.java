@@ -85,6 +85,8 @@ import static com.ara.advent.utils.AppConstants.MY_CAMERA_REQUEST_CODE;
 import static com.ara.advent.utils.AppConstants.PARAM_CHECK_IN;
 import static com.ara.advent.utils.AppConstants.PARAM_CHECK_OUT;
 import static com.ara.advent.utils.AppConstants.PARAM_PASSWORD;
+import static com.ara.advent.utils.AppConstants.PARAM_PERAMT;
+import static com.ara.advent.utils.AppConstants.PARAM_TOLLAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_TYPE;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
@@ -126,8 +128,8 @@ public class CheckInOut extends AppCompatActivity {
     private boolean mLocationHistoryGranted = false;
     private FusedLocationProviderClient mFusedLocationClient;
     private Attendance attendance;
-    String cIn,cOut;
-    String username,pasword;
+    String cIn, cOut;
+    String username, pasword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,11 +142,11 @@ public class CheckInOut extends AppCompatActivity {
         user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
         user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, null));
         AppConstants.setUser(user);
-        SharedPreferences sharedPreferences = getSharedPreferences("logindetails",MODE_PRIVATE);
-        username = sharedPreferences.getString("user","");
-        pasword = sharedPreferences.getString("pass","");
-        Log.e(TAG,"username = "+username);
-        Log.e(TAG,"password = "+pasword);
+        SharedPreferences sharedPreferences = getSharedPreferences("logindetails", MODE_PRIVATE);
+        username = sharedPreferences.getString("user", "");
+        pasword = sharedPreferences.getString("pass", "");
+        Log.e(TAG, "username = " + username);
+        Log.e(TAG, "password = " + pasword);
 
 
         if (isNetworkAvailable()) {
@@ -153,20 +155,24 @@ public class CheckInOut extends AppCompatActivity {
         } else {
             showSnackbar("something went wrong ,PLease check your network connection");
         }
+        String checkIn = sharedPreferences.getString("checkin","");
+        String checkOut = sharedPreferences.getString("checkOut","");
+        if (!checkIn.contains("") && !checkOut.contains("")) {
+            showSnackbar("you Are Already Check IN Today ,Please Try again tommorrow");
+        } else if (checkIn.contains("") && checkOut.contains("")){
+            showSnackbar("please check In");
 
+        } else if (checkIn.contains("") && checkOut.contains("")) {
+            showSnackbar("Please Check Out");
+        }
 
-
-
-
-        /*
-        if (updateFromPreference()) {
-            updateDetails();
-            requestGPSPermission(true);
-        } else {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
-        }*/
-
+        if(!checkIn.contains("")) {
+            showSnackbar("check In - "+"please Cheeck Out");
+        } else if (!checkOut.contains("")) {
+            showSnackbar("check Out - "+"PLease Check In");
+        } else if (!checkIn.contains("") && !checkOut.contains("")) {
+            showSnackbar("you Are Already Check IN Today ,Please Try again tommorrow");
+        }
         requestGPSPermission(true);
 
 
@@ -284,8 +290,8 @@ public class CheckInOut extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         boolean hasAlreadyCheckedOut = sharedPreferences.contains(PARAM_CHECK_OUT);
         if (attendance.hasCheckedIn()) {
-             if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckInTime())) {
-               changeButtonState(btn_check_in, false);
+            if (!AppConstants.isNotHalfAnHourDifference(attendance.getCheckInTime())) {
+                changeButtonState(btn_check_in, false);
             } else {
                 changeButtonState(btn_check_in, true);
 
@@ -698,6 +704,7 @@ public class CheckInOut extends AppCompatActivity {
         }
 
     }
+
     public void method() {
 
 
@@ -705,49 +712,58 @@ public class CheckInOut extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e(TAG,"rsponse for "+response);
+                Log.e(TAG, "rsponse for " + response);
                 JSONArray jsonArray = null;
                 JSONObject jsonObject = null;
                 try {
                     jsonArray = new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++) {
-                    jsonObject = jsonArray.getJSONObject(i);
-                    cIn = jsonObject.getString("checkin");
-                    cOut = jsonObject.getString("chec   Qkout");
+                        jsonObject = jsonArray.getJSONObject(i);
+                        cIn = jsonObject.getString("checkin");
+                        cOut = jsonObject.getString("checkout");
                     }
-                    if (cIn.equalsIgnoreCase(null)) {
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("checkin",cIn);
+                    editor.putString("checkout",cOut);
+                    editor.commit();
+
+
+                    /* if (cIn.equalsIgnoreCase(null)) {
 
                         showSnackbar("Please check In");
-                    }else if( cOut.equalsIgnoreCase(null)) {
+                    } else if (cOut.equalsIgnoreCase(null)) {
 
                         showSnackbar("Please Check Out");
-                    } else if(cIn.equalsIgnoreCase(null) && cOut.equalsIgnoreCase(null)) {
+                    } else if (cIn.equalsIgnoreCase(null) && cOut.equalsIgnoreCase(null)) {
 
                         showSnackbar("PLease both check In and Check Out");
                     } else {
 
                         showSnackbar("Your daily limit is finished . PLease try again tommorrow ");
-                    }
+                    }*/
                    /* if (cIn != null && cOut != null ) {
                         showSnackbar("you are already check in please try again tommorrow");
                     }*/
-                }catch(JSONException ex) {
-                    Log.e(TAG,"exception json "+ex);
+
+
+                } catch (JSONException ex) {
+                    Log.e(TAG, "exception json " + ex);
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG,"error for "+error);
+                Log.e(TAG, "error for " + error);
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(PARAM_USER_NAME,username);
-                map.put(PARAM_PASSWORD,pasword);
-                map.put(PARAM_TYPE,String.valueOf(1));
+                map.put(PARAM_USER_NAME, username);
+                map.put(PARAM_PASSWORD, pasword);
+                map.put(PARAM_TYPE, String.valueOf(1));
                 return map;
             }
         };
@@ -778,7 +794,6 @@ public class CheckInOut extends AppCompatActivity {
             showSnackbar("Something went wrong, contact Ara software", false);
         }
     }
-
 
 
     private File createImageFile() throws IOException {

@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/OncallTripsheet_layout"
     android:layout_width="match_parent"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
     android:layout_height="match_parent"
     tools:context="com.ara.advent.TripsheetImageSubmit">
 
@@ -12,8 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
 
@@ -25,7 +25,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
                 android:text="@string/booking_id"
@@ -37,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="28dp"
+                android:layout_marginRight="68dp"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
                 android:text="@string/date"
@@ -54,7 +53,6 @@
                 android:id="@+id/textview_tripnosubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
                 android:gravity="center"
                 android:text="@string/no"
                 android:textColor="@color/iron"
@@ -75,11 +73,15 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:shadowColor="@color/iron"
             android:text="@string/customer_name"
@@ -89,15 +91,18 @@
             android:id="@+id/textview_customersubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
-            android:paddingLeft="20sp"
             android:text="@string/customer_name"
             android:textColor="@color/iron"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="0.1dp">
+        </TableRow>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -167,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="13"
-                android:gravity="center"
+                android:gravity="fill"
                 android:hint="@string/click_to_take_parking_bill_picture" />
 
             <android.support.v7.widget.CardView
@@ -212,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="13"
-                android:gravity="center"
+                android:gravity="fill"
                 android:hint="@string/click_to_take_permit_bill_picture" />
 
             <android.support.v7.widget.CardView
@@ -257,7 +262,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="13"
-                android:gravity="center"
+                android:gravity="fill"
                 android:hint="@string/click_to_take_toll_gate_bill_picture" />
 
 
@@ -287,7 +292,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
-            android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="25dp"
             android:text="@string/submit"

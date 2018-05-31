@@ -205,6 +205,7 @@ public class AppConstants {
 
     public static boolean isNotHalfAnHourDifference(Calendar inTime) {
         Calendar currentTime = Calendar.getInstance();
+
         if (inTime.get(Calendar.HOUR) != currentTime.get(Calendar.HOUR ))
             return false;
         if ( inTime.get(Calendar.AM_PM) != currentTime.get(Calendar.AM_PM) )

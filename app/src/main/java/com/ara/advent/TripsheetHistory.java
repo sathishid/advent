@@ -20,15 +20,35 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.ara.advent.Adapter.TripsheetListAdapter;
 import com.ara.advent.http.MySingleton;
+import com.ara.advent.models.TripsheetListModel;
 import com.ara.advent.utils.AppConstants;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IllegalFormatCodePointException;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.ara.advent.utils.AppConstants.TBCADDRESS;
+import static com.ara.advent.utils.AppConstants.TBCMCNAME;
+import static com.ara.advent.utils.AppConstants.TBCMOBNO;
+import static com.ara.advent.utils.AppConstants.TBCNAME;
+import static com.ara.advent.utils.AppConstants.TBCSSKM;
+import static com.ara.advent.utils.AppConstants.TBCSTIME;
+import static com.ara.advent.utils.AppConstants.TBCVEHNAME;
+import static com.ara.advent.utils.AppConstants.TBDATE;
+import static com.ara.advent.utils.AppConstants.TBID;
+import static com.ara.advent.utils.AppConstants.TBNO;
+import static com.ara.advent.utils.AppConstants.TBREPORTTO;
+import static com.ara.advent.utils.AppConstants.TBVEHID;
 
 public class TripsheetHistory extends AppCompatActivity {
 
@@ -39,6 +59,7 @@ public class TripsheetHistory extends AppCompatActivity {
     ListView TripHistory;
     @BindView(R.id.swipeto)
     SwipeRefreshLayout swipe;
+    ArrayList<TripsheetListModel> triplistArray = new ArrayList<TripsheetListModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,19 +101,62 @@ public class TripsheetHistory extends AppCompatActivity {
             public void onResponse(String response) {
 
                 Log.e(TAG,"response"+response);
+                progressDialog.dismiss();
+                JSONArray jsonArray = null;
+                JSONObject jsonObject = null;
+                triplistArray = new ArrayList<>();
+                try {
+                    jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsonObject = jsonArray.getJSONObject(i);
+                        String tbid = jsonObject.getString(TBID);
+                        String tbbno = jsonObject.getString(TBNO);
+                        String tbdate = jsonObject.getString(TBDATE);
+                        String cname = jsonObject.getString(TBCNAME);
+                        String cmcname = jsonObject.getString(TBCMCNAME);
+                        String tbreeportto = jsonObject.getString(TBREPORTTO);
+                        String tbstartkm = jsonObject.getString(TBCSSKM);
+                        String tbstarttime = jsonObject.getString(TBCSTIME);
+                        String tbcusMobNo = jsonObject.getString(TBCMOBNO);
+                        String tbcusaddd = jsonObject.getString(TBCADDRESS);
+                        String tbvehiname = jsonObject.getString(TBCVEHNAME);
+                        String tbvehid = jsonObject.getString(TBVEHID);
 
+                        TripsheetListModel t = new TripsheetListModel();
+                        t.setTripBooking_id(tbid);
+                        t.setTripBooking_no(tbbno);
+                        t.setTripBooking_date(tbdate);
+                        t.setCustomer_name(cname);
+                        t.setCustomerMultiContact_name(cmcname);
+                        t.setTripBookingReport_to(tbreeportto);
+                        t.setTripcustomer_startingkm(tbstartkm);
+                        t.setTripcustomer_startingtime(tbstarttime);
+                        t.setCus_add(tbcusaddd);
+                        t.setCus_mobNo(tbcusMobNo);
+                        t.setVehiName(tbvehiname);
+                        t.setVehiId(tbvehid);
+                        triplistArray.add(t);
+                    }
+
+                    TripsheetListAdapter tripsheet = new TripsheetListAdapter(getApplicationContext(), R.layout.listitems, triplistArray);
+                    TripHistory.setAdapter(tripsheet);
+                } catch (JSONException json) {
+                    progressDialog.dismiss();
+                    Log.e(TAG, "jsonexception" + json);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
                 Log.e(TAG,"error"+error);
+                progressDialog.dismiss();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(AppConstants.PARAM_VEHICLE_ID,AppConstants.getUser().getId());
+                map.put(AppConstants.PARAM_VEHICLE_ID,""+AppConstants.getUser().getId());
                 map.put("status","1");
                 return map;
             }

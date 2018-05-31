@@ -64,7 +64,8 @@
             android:label="TripSheet List" />
         <activity android:name=".TripsheetStart" />
         <activity android:name=".TripsheetClose" />
-        <activity android:name=".TripsheetHistory"></activity>
+        <activity android:name=".TripsheetHistory" />
+        <activity android:name=".Alternate_checkInOut"></activity>
     </application>
 
 </manifest>
