@@ -78,10 +78,20 @@ public class TripSheetList extends AppCompatActivity {
         }
         populateTripSheetData();
 
-        Intent in = new Intent();
-        String text = in.getStringExtra("OncallBooked");
-        if (text != null) {
-            Snackbar bar = Snackbar.make(li, "" + text, Snackbar.LENGTH_LONG);
+        SharedPreferences sh = getSharedPreferences("Oncall",MODE_PRIVATE);
+        String text = sh.getString("OncallBooked","");
+        if (text.equalsIgnoreCase("success")) {
+            Snackbar bar = Snackbar.make(li, "trip sheet Added Successfully", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Handle user action
+                            SharedPreferences shs = getSharedPreferences("Oncall",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = shs.edit();
+                            editor.clear();
+                            editor.commit();
+                        }
+                    });
 
             bar.show();
         }

@@ -14,11 +14,11 @@ import okhttp3.RequestBody;
 import static com.ara.advent.utils.AppConstants.IP;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSING_KM_ONCALL;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSIN_TIME_ONCALL;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_FOUR;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_ONE;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_ONE_BACK;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_THREE;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_TWO;
+import static com.ara.advent.utils.AppConstants.PARKIGNBILL;
+import static com.ara.advent.utils.AppConstants.PARAM_TRIPSHEETFRONT;
+import static com.ara.advent.utils.AppConstants.PARAM_TRIPSHEETBACK;
+import static com.ara.advent.utils.AppConstants.TOLLGAETEBILL;
+import static com.ara.advent.utils.AppConstants.PARAM_PERMITBILL;
 import static com.ara.advent.utils.AppConstants.PARAM_PARKAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_PERAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_TOLLAMT;
@@ -209,19 +209,19 @@ public class OncallTsModel {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         MediaType mediaType = MediaType.parse("image/jpeg");
-        builder.addFormDataPart(PARAM_IMG_ONE, getImage_file_one(),
+        builder.addFormDataPart(PARAM_TRIPSHEETFRONT, getImage_file_one(),
                 RequestBody.create(mediaType, new File(getImage_file_one())));
         if (getImage_file_two() != null)
-            builder.addFormDataPart(PARAM_IMG_TWO, getImage_file_two(),
+            builder.addFormDataPart(PARAM_PERMITBILL, getImage_file_two(),
                     RequestBody.create(mediaType, new File(getImage_file_two())));
         if (getImage_file_three() != null)
-            builder.addFormDataPart(PARAM_IMG_THREE, getImage_file_three(),
+            builder.addFormDataPart(PARKIGNBILL, getImage_file_three(),
                     RequestBody.create(mediaType, new File(getImage_file_three())));
         if (getImage_file_four() != null)
-            builder.addFormDataPart(PARAM_IMG_FOUR, getImage_file_four(),
+            builder.addFormDataPart(TOLLGAETEBILL, getImage_file_four(),
                     RequestBody.create(mediaType, new File(getImage_file_four())));
 
-        builder.addFormDataPart(PARAM_IMG_ONE_BACK, getImage_file_one_back(),
+        builder.addFormDataPart(PARAM_TRIPSHEETBACK, getImage_file_one_back(),
                 RequestBody.create(mediaType, new File(getImage_file_one_back())));
         builder.addFormDataPart(PARAM_TRIPSHEET_ID, getTrip_Id());
         builder.addFormDataPart(USERID, String.valueOf(user.getId()));

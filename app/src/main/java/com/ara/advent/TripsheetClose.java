@@ -258,9 +258,9 @@ public class TripsheetClose extends AppCompatActivity {
             showSnackbar("PLease Check Your Netwok Connection");
             return;
         }
-        String closetime = closetimeHours.getText().toString() + " : " + closetimeMinutes.getText().toString();
+        String closetime = closetimeHours.getText().toString() + ":" + closetimeMinutes.getText().toString();
         String closingKM = closingkM.getText().toString();
-
+        Log.e(TAG,"closetime "+closetime);
         calTimeDiff();
         calculateTotalkmandtime();
         SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
@@ -401,6 +401,7 @@ public class TripsheetClose extends AppCompatActivity {
 
         totaltime = diffHours + ":" + diffMinutes;
 
+        Log.e(TAG,"totsl time"+totaltime);
 
     }
 

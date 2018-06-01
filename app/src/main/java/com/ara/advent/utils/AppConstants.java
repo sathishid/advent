@@ -88,11 +88,11 @@ public class AppConstants {
     public static final String PARAM_CLOSING_KM_ONCALL = "closingkm";
     public static final String PARAM_CLOSIN_TIME_ONCALL = "closingtime";
     public static final String PARAM_DEF_DATE = "";
-    public static final String PARAM_IMG_ONE = "tripsheetbill";
-    public static final String PARAM_IMG_TWO= "permitbill";
-    public static final String PARAM_IMG_THREE= "tollgatebill";
-    public static final String PARAM_IMG_FOUR= "parkingbill";
-    public static final String PARAM_IMG_ONE_BACK = "tripsheetbillback";
+    public static final String PARAM_TRIPSHEETFRONT = "tripsheetbill";
+    public static final String PARAM_PERMITBILL = "permitbill";
+    public static final String TOLLGAETEBILL = "tollgatebill";
+    public static final String PARKIGNBILL = "parkingbill";
+    public static final String PARAM_TRIPSHEETBACK = "tripsheetbillback";
     public static final String PARAMTB = "oncaltripsheetlist";
     public static final String PARAM_PARKAMT = "parkingbillamount";
     public static final String PARAM_PERAMT = "permitbillamount";

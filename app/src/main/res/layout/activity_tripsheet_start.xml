@@ -243,11 +243,6 @@
             android:layout_marginTop="5dp"
             android:background="@color/white"></TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/white"></TableRow>
 
         <RelativeLayout
             android:layout_width="match_parent"
