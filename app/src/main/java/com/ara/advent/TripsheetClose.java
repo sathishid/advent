@@ -250,23 +250,14 @@ public class TripsheetClose extends AppCompatActivity {
     }
 
     private void submitMethodd() {
-
-
         if (!formValid()) {
-            progressDialog.dismiss();
             Toast.makeText(this, "please enter all details", Toast.LENGTH_SHORT).show();
             return;
-
         }
         if (!isNetworkAvailable()) {
-            progressDialog.dismiss();
             showSnackbar("PLease Check Your Netwok Connection");
             return;
         }
-        final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
-        progressDialog.setTitle("Please Wait...");
-        progressDialog.show();
-
         String closetime = closetimeHours.getText().toString() + " : " + closetimeMinutes.getText().toString();
         String closingKM = closingkM.getText().toString();
 
@@ -283,7 +274,6 @@ public class TripsheetClose extends AppCompatActivity {
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
         editor1.putString("closed","ok");
         editor1.commit();
-        progressDialog.dismiss();
         startActivity(new Intent(TripsheetClose.this, TripsheetImageSubmit.class));
         finish();
 
@@ -301,19 +291,19 @@ public class TripsheetClose extends AppCompatActivity {
 
     public boolean formValid() {
 
-        boolean error = true;
+        boolean isValid = true;
 
 
         if (closetimeHours.getText().toString().isEmpty() || Integer.parseInt(closetimeHours.getText().toString()) > 24) {
             closetimeHours.setError("hours not valid");
-            error = false;
+            isValid = false;
         } else {
             closetimeHours.setError(null);
         }
 
         if (closetimeHours.getText().toString().isEmpty() || Integer.parseInt(closetimeHours.getText().toString()) > 60) {
             closetimeHours.setError("minutes not valid");
-            error = false;
+            isValid = false;
         } else {
             closetimeHours.setError(null);
         }
@@ -327,13 +317,13 @@ public class TripsheetClose extends AppCompatActivity {
         }*/
 
         if (closingkM.getText().toString().isEmpty() || Integer.parseInt(closingkM.getText().toString()) < Integer.parseInt(startingKm_close.getText().toString())) {
-            closingkM.setError("km not valid");
-            error = false;
+            closingkM.setError("closing KM should be lesser than starting KM");
+            isValid = false;
         } else {
             closingkM.setError(null);
         }
 
-        return error;
+        return isValid;
     }
 
     @Override

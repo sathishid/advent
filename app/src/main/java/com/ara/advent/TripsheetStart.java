@@ -1,6 +1,5 @@
 package com.ara.advent;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -220,10 +219,6 @@ public class TripsheetStart extends AppCompatActivity {
             return;
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
-        progressDialog.setTitle("Please Wait...");
-        progressDialog.show();
-
         final String starting_time = starttimeHours.getText().toString() + ":" + starttimeMinutes.getText().toString();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.STARTINGSUBMITURL, new Response.Listener<String>() {
             @Override
@@ -237,7 +232,6 @@ public class TripsheetStart extends AppCompatActivity {
                 String res = separated[1];
 
                 if (res.equalsIgnoreCase("success")) {
-                    progressDialog.dismiss();
                     SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("starttime", starting_time);
@@ -252,14 +246,12 @@ public class TripsheetStart extends AppCompatActivity {
                     finish();
 
                 } else {
-                    progressDialog.dismiss();
                     Toast.makeText(TripsheetStart.this, "data was not sent", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
                 Log.e("TAG", "error--------" + error);
             }
         }) {

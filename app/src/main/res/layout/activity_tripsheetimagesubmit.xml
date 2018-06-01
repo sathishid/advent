@@ -164,6 +164,7 @@
                 android:id="@+id/ParkingAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:hint="@string/enter_parking_bill_amount" />
         </android.support.design.widget.TextInputLayout>
 
@@ -210,6 +211,7 @@
                 android:id="@+id/PermitAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:hint="@string/enter_permit_bill_amount" />
         </android.support.design.widget.TextInputLayout>
 
@@ -257,6 +259,7 @@
                 android:id="@+id/TollAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:hint="@string/enter_tollgate_bill_amount" />
         </android.support.design.widget.TextInputLayout>
 
@@ -270,6 +273,7 @@
                 android:layout_height="match_parent"
                 android:ems="13"
                 android:gravity="fill"
+
                 android:text="@string/click_to_take_toll_gate_bill_picture" />
 
 
