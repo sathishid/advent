@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Tripclode"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:layout_height="match_parent"
     tools:context=".TripsheetClose">
 
     <LinearLayout
@@ -21,14 +21,16 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="20dp"
-            android:background="@color/cardview_dark_background"
-            android:text="@string/click_here_to_notify_user" />
+            android:background="@color/golden_yellow"
+            android:text="@string/click_here_to_notify_user"
+            android:textColor="@color/black" />
+
         <TableRow
-            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"></TableRow>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,10 +50,10 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="68dp"
+                android:layout_marginRight="20dp"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
-                android:text="@string/date"
+                android:text="@string/starting_date"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -67,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/no"
-                android:textColor="@color/iron"
+
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -77,20 +79,21 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="7dp"
-                android:gravity="center"
-                android:paddingRight="10dp"
+                android:layout_marginRight="17dp"
+                android:ems="5"
+                android:paddingLeft="5dp"
                 android:shadowColor="@color/iron"
                 android:text="@string/dd_mm_yy"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,16 +108,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/customer_name"
-            android:textColor="@color/iron"
+
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -143,12 +146,13 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -177,12 +181,13 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -210,12 +215,13 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -243,12 +249,48 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:shadowColor="@color/iron"
+                android:text="@string/closing_date"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/closingdate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="28dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:shadowColor="@color/iron"
+                android:text="sample"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -265,12 +307,13 @@
             android:shadowColor="@color/iron"
             android:text="@string/address"
             android:textSize="16sp" />
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -344,11 +387,12 @@
 
         <Button
             android:id="@+id/Submitclose"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginBottom="40dp"
-            android:layout_marginRight="@dimen/amaze_logo_space"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="40dp"
             android:text="@string/next" />
 

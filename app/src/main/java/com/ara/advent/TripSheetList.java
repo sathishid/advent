@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -43,6 +42,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.PICKUP_TIME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 import static com.ara.advent.utils.AppConstants.TBCADDRESS;
 import static com.ara.advent.utils.AppConstants.TBCMCNAME;
@@ -56,6 +56,7 @@ import static com.ara.advent.utils.AppConstants.TBID;
 import static com.ara.advent.utils.AppConstants.TBNO;
 import static com.ara.advent.utils.AppConstants.TBREPORTTO;
 import static com.ara.advent.utils.AppConstants.TBVEHID;
+
 
 public class TripSheetList extends AppCompatActivity {
     private static final String TAG = "TRIPSHEETLIST";
@@ -77,14 +78,18 @@ public class TripSheetList extends AppCompatActivity {
         }
         populateTripSheetData();
 
-        Intent in = new Intent();
-        String text = in.getStringExtra("OncallBooked");
-        if (text != null) {
-            Snackbar bar = Snackbar.make(li, "" + text, Snackbar.LENGTH_LONG)
+        SharedPreferences sh = getSharedPreferences("Oncall",MODE_PRIVATE);
+        String text = sh.getString("OncallBooked","");
+        if (text.equalsIgnoreCase("success")) {
+            Snackbar bar = Snackbar.make(li, "trip sheet Closed Successfully", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Dismiss", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             // Handle user action
+                            SharedPreferences shs = getSharedPreferences("Oncall",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = shs.edit();
+                            editor.clear();
+                            editor.commit();
                         }
                     });
 
@@ -93,11 +98,11 @@ public class TripSheetList extends AppCompatActivity {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               if (!isNetworkAvailable()) {
-                   showSnackbar("Please check your network connection");
-               }
-               populateTripSheetData();
-               swipe.setRefreshing(false);
+                if (!isNetworkAvailable()) {
+                    showSnackbar("Please check your network connection");
+                }
+                populateTripSheetData();
+                swipe.setRefreshing(false);
             }
         });
 
@@ -121,6 +126,7 @@ public class TripSheetList extends AppCompatActivity {
                 String tripsheetcusadd = triplistArray.get(i).getCus_add();
                 String veh_id = triplistArray.get(i).getVehiId();
                 String veh_name = triplistArray.get(i).getVehiName();
+                String pickTime = triplistArray.get(i).getPickupTime();
 
 
                 SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
@@ -131,18 +137,34 @@ public class TripSheetList extends AppCompatActivity {
                 editor.putString("tripsheetcustomername", tripsheetcustomername);
                 editor.putString("tripsheetMCname", tripsheetMCname);
                 editor.putString("tripsheetreportto", tripsheetreportto);
-                editor.putString("trioppshettstkm",trioppshettstkm);
-                editor.putString("tripshetsttime",tripshetsttime);
-                editor.putString("tirpsheetcusmobno",tirpsheetcusmobno);
-                editor.putString("tripsheetcusadd",tripsheetcusadd);
-                editor.putString("vehId",veh_id);
-                editor.putString("vehname",veh_name);
+                editor.putString("trioppshettstkm", trioppshettstkm);
+                editor.putString("tripshetsttime", tripshetsttime);
+                editor.putString("tirpsheetcusmobno", tirpsheetcusmobno);
+                editor.putString("tripsheetcusadd", tripsheetcusadd);
+                editor.putString("vehId", veh_id);
+                editor.putString("vehname", veh_name);
+                editor.putString(PICKUP_TIME, pickTime);
                 editor.commit();
 
-                    startActivity(new Intent(TripSheetList.this, TripsheetStart.class));
+              /*  SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+                String ok = sharedPreferences1.getString("started", "");
+                String tripN = sharedPreferences1.getString("tripidS","");
+                String ok1 = sharedPreferences1.getString("closed","");
+                String tripN1 = sharedPreferences1.getString("tripidC","");
+                if (ok.equalsIgnoreCase("ok") && tripN.equalsIgnoreCase(tripsheetno))  {
+                    startActivity(new Intent(TripSheetList.this, TripsheetClose.class));
                     finish();
+                } else if (ok.equalsIgnoreCase("ok") && ok1.equalsIgnoreCase("ok")&& tripN1.equalsIgnoreCase(tripsheetno)){
+                    startActivity(new Intent(TripSheetList.this,TripsheetImageSubmit.class));
+                    finish();
+                } else {
+                    startActivity(new Intent(TripSheetList.this,TripsheetStart.class));
+                    finish();
+                }*/
 
 
+                startActivity(new Intent(TripSheetList.this, TripsheetStart.class));
+                finish();
             }
         });
 
@@ -162,10 +184,10 @@ public class TripSheetList extends AppCompatActivity {
             return;
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(this,R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setTitle("Please Wait...");
         progressDialog.show();
-        Log.e(TAG,"user id pointing error for 0 user ------------"+AppConstants.getUser().getId());
+        Log.e(TAG, "user id pointing error for 0 user ------------" + AppConstants.getUser().getId());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.TBURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -191,6 +213,7 @@ public class TripSheetList extends AppCompatActivity {
                         String tbcusaddd = jsonObject.getString(TBCADDRESS);
                         String tbvehiname = jsonObject.getString(TBCVEHNAME);
                         String tbvehid = jsonObject.getString(TBVEHID);
+                        String pickTime = jsonObject.getString(PICKUP_TIME);
 
                         TripsheetListModel t = new TripsheetListModel();
                         t.setTripBooking_id(tbid);
@@ -205,6 +228,7 @@ public class TripSheetList extends AppCompatActivity {
                         t.setCus_mobNo(tbcusMobNo);
                         t.setVehiName(tbvehiname);
                         t.setVehiId(tbvehid);
+                        t.setPickupTime(pickTime);
                         triplistArray.add(t);
                     }
 
@@ -226,8 +250,8 @@ public class TripSheetList extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(AppConstants.PARAM_VEHICLE_ID, ""+AppConstants.getUser().getId());
-                map.put("status","0");
+                map.put(AppConstants.PARAM_VEHICLE_ID, "" + AppConstants.getUser().getId());
+                map.put("status", "0");
                 return map;
             }
         };
@@ -262,8 +286,8 @@ public class TripSheetList extends AppCompatActivity {
             case R.id.action_logout_id:
                 logout();
                 break;
-            case R.id.action_tripHistory :
-                startActivity(new Intent(TripSheetList.this,TripsheetHistory.class));
+            case R.id.action_tripHistory:
+                startActivity(new Intent(TripSheetList.this, TripsheetHistory.class));
                 finish();
             default:
                 break;
@@ -277,11 +301,11 @@ public class TripSheetList extends AppCompatActivity {
         super.onPrepareOptionsMenu(menu);
 
         MenuItem item = menu.findItem(R.id.action_tripHistory);
-        Drawable icon = getResources().getDrawable(R.drawable.ic_feedback_black);
+        Drawable icon = getResources().getDrawable(R.drawable.history);
         icon.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
 
         item.setIcon(icon);
-        return  true;
+        return true;
     }
 
     private void showSnackbar(String message) {

@@ -1,6 +1,8 @@
 package com.ara.advent;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -52,6 +55,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -98,7 +102,9 @@ public class TripsheetClose extends AppCompatActivity {
     TextView vehicle_name;
     @BindView(R.id.mobileNumberClose)
     TextView mobnoClose;
-    String a;
+    @BindView(R.id.closingdate)
+    TextView closingdate;
+    String a, b;
     String f, e;
     String c, stime, ctime;
     OncallTsModel oncallTsModel;
@@ -117,34 +123,56 @@ public class TripsheetClose extends AppCompatActivity {
         sv.setFocusableInTouchMode(true);
         sv.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
-        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
-        String ok = sharedPreferences1.getString("closed","");
-        if (ok.equalsIgnoreCase("ok")){
-            startActivity(new Intent(TripsheetClose.this,TripsheetImageSubmit.class));
+       /* SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        String ok = sharedPreferences1.getString("closed", "");
+        if (ok.equalsIgnoreCase("ok")) {
+            startActivity(new Intent(TripsheetClose.this, TripsheetImageSubmit.class));
             finish();
-        }
+        }SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        String ok = sharedPreferences1.getString("closed", "");
+        if (ok.equalsIgnoreCase("ok")) {
+            startActivity(new Intent(TripsheetClose.this, TripsheetImageSubmit.class));
+            finish();
+        }*/
         oncallTsModel = new OncallTsModel();
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
         a = sharedPreferences.getString("tripsheetid", "");
-        String b = sharedPreferences.getString("tripsheetno", "");
+        b = sharedPreferences.getString("tripsheetno", "");
         c = sharedPreferences.getString("tripsheetDate", "");
         String d = sharedPreferences.getString("tripsheetcustomername", "");
         e = sharedPreferences.getString("starttime", "");
         f = sharedPreferences.getString("startingkm", "");
-        String i = sharedPreferences.getString("tirpsheetcusmobno","");
-        String k = sharedPreferences.getString("tripsheetcusadd","");
+        String i = sharedPreferences.getString("tirpsheetcusmobno", "");
+        String k = sharedPreferences.getString("tripsheetcusadd", "");
         String m = sharedPreferences.getString("vehId", "");
         String n = sharedPreferences.getString("vehname", "");
         trino.setText(b);
         tripdate.setText(c);
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        closingdate.setText(date);
         customer.setText(d);
         startingKm_close.setText(f);
         starting_time_close.setText(e);
         mobnoClose.setText(i);
         addressClose.setText(k);
         vehicle_name.setText(n);
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        String ok = sharedPreferences1.getString("closed", "");
+        String tid = sharedPreferences1.getString("tripidC", "");
+        if (ok.equalsIgnoreCase("ok") && tid.equalsIgnoreCase(b)) {
+            startActivity(new Intent(TripsheetClose.this, TripsheetImageSubmit.class));
+            finish();
+        }
+
+        closingdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closingDate();
+            }
+        });
 
 
         if (!isNetworkAvailable()) {
@@ -169,6 +197,27 @@ public class TripsheetClose extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void closingDate() {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR); // current year
+        int mMonth = c.get(Calendar.MONTH); // current month
+        int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+        // date picker dialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(TripsheetClose.this, AlertDialog.THEME_DEVICE_DEFAULT_DARK,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        String dstart =   year+ "-" +(monthOfYear + 1)+"-" +  dayOfMonth ;
+                        closingdate.setText(dstart);
+                        dateValidation();
+                    }
+                }, mYear, mMonth, mDay);
+
+        datePickerDialog.show();
     }
 
     private void clickToNotifycustomer() {
@@ -250,6 +299,7 @@ public class TripsheetClose extends AppCompatActivity {
     }
 
     private void submitMethodd() {
+
         if (!formValid()) {
             Toast.makeText(this, "please enter all details", Toast.LENGTH_SHORT).show();
             return;
@@ -258,10 +308,16 @@ public class TripsheetClose extends AppCompatActivity {
             showSnackbar("PLease Check Your Netwok Connection");
             return;
         }
-        String closetime = closetimeHours.getText().toString() + " : " + closetimeMinutes.getText().toString();
+        String closetime = closetimeHours.getText().toString() + ":" + closetimeMinutes.getText().toString();
         String closingKM = closingkM.getText().toString();
+        Log.e(TAG, "closetime " + closetime);
 
         calTimeDiff();
+
+        if (diffMinutes < 0 || diffHours < 0 ) {
+            showSnackbar("Please Enter valid Closing time");
+            return;
+        }
         calculateTotalkmandtime();
         SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -269,14 +325,24 @@ public class TripsheetClose extends AppCompatActivity {
         editor.putString("closekm", closingKM);
         editor.putString("totkm", String.valueOf(totalkm));
         editor.putString("tottime", totaltime);
+        editor.putString("closedate",closingdate.getText().toString());
         editor.commit();
-        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME,MODE_PRIVATE);
+        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
-        editor1.putString("closed","ok");
+        editor1.putString("closed", "ok");
+        editor1.putString("tripidC", b);
         editor1.commit();
         startActivity(new Intent(TripsheetClose.this, TripsheetImageSubmit.class));
         finish();
 
+    }
+
+    boolean isTimeAfter(Date startTime, Date endTime) {
+        if (endTime.before(startTime)) { //Same way you can check with after() method also.
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void calculateTotalkmandtime() {
@@ -289,21 +355,39 @@ public class TripsheetClose extends AppCompatActivity {
 
     }
 
+    private Boolean dateValidation() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        boolean val = false;
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = simpleDateFormat.parse(tripdate.getText().toString());
+            d2 = simpleDateFormat.parse(closingdate.getText().toString());
+            if (d1.after(d2)) {
+                showSnackbar("Please Enter Valid Closing Date");
+            }
+        } catch (ParseException parse) {
+            Log.e(TAG, "Parse Exception -" + parse);
+        }
+        return val;
+    }
+
     public boolean formValid() {
 
-        boolean error = true;
+        boolean isValid = true;
 
 
         if (closetimeHours.getText().toString().isEmpty() || Integer.parseInt(closetimeHours.getText().toString()) > 24) {
             closetimeHours.setError("hours not valid");
-            error = false;
+            isValid = false;
         } else {
             closetimeHours.setError(null);
         }
 
         if (closetimeHours.getText().toString().isEmpty() || Integer.parseInt(closetimeHours.getText().toString()) > 60) {
             closetimeHours.setError("minutes not valid");
-            error = false;
+            isValid = false;
         } else {
             closetimeHours.setError(null);
         }
@@ -317,13 +401,13 @@ public class TripsheetClose extends AppCompatActivity {
         }*/
 
         if (closingkM.getText().toString().isEmpty() || Integer.parseInt(closingkM.getText().toString()) < Integer.parseInt(startingKm_close.getText().toString())) {
-            closingkM.setError("km not valid");
-            error = false;
+            closingkM.setError("closing KM should be lesser than starting KM");
+            isValid = false;
         } else {
             closingkM.setError(null);
         }
 
-        return error;
+        return isValid;
     }
 
     @Override
@@ -399,8 +483,10 @@ public class TripsheetClose extends AppCompatActivity {
 
         }
 
-        totaltime = diffHours + ":" + diffMinutes;
+        totaltime = diffHours+":"+diffMinutes;
 
+
+        Log.e(TAG, "total time" + totaltime);
 
     }
 

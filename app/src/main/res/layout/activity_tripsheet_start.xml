@@ -4,27 +4,32 @@
     android:id="@+id/scrol"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
+    android:orientation="vertical"
     tools:context="com.ara.advent.TripsheetStart">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+
+        >
 
         <RelativeLayout
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/booking_id"
                 android:shadowColor="@color/iron"
+                android:text="@string/booking_id"
+                android:textColor="@color/golden_yellow"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -33,10 +38,11 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="48dp"
+                android:layout_marginRight="18dp"
                 android:gravity="center"
-                android:text="@string/date"
                 android:shadowColor="@color/iron"
+                android:text="@string/Starting_date"
+                android:textColor="@color/golden_yellow"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -44,20 +50,25 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+
+            >
 
             <TextView
+
                 android:id="@+id/textview_tripno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/no"
-                android:textColor="@color/iron"
+                android:textColor="@color/golden_yellow"
+
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textview_tripdate"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -66,23 +77,23 @@
                 android:gravity="center"
                 android:paddingRight="10dp"
                 android:text="@string/dd_mm_yy"
-                android:shadowColor="@color/iron"
+                android:textColor="@color/golden_yellow"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
         <TableRow
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="0.1dp">
-    </TableRow>
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
             android:text="@string/customer_name"
+            android:textColor="@color/golden_yellow"
             android:textSize="13sp" />
 
         <TextView
@@ -91,22 +102,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/customer_name"
-            android:textColor="@color/iron"
+            android:textColor="@color/golden_yellow"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
-            android:text="Contact Name : "
+            android:text="Booking Person : "
+            android:textColor="@color/golden_yellow"
             android:textSize="13sp" />
 
         <TextView
@@ -116,22 +127,22 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="@string/customer_multi_customer_name"
-            android:textColor="@color/iron"
+            android:textColor="@color/golden_yellow"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
             android:text="@string/report_to"
+            android:textColor="@color/golden_yellow"
             android:textSize="13sp" />
 
         <TextView
@@ -140,38 +151,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/report_to"
-            android:textColor="@color/iron"
+            android:textColor="@color/golden_yellow"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TableRow
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
-            android:text="@string/address"
-            android:textSize="13sp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/customer_address"
-            android:layout_marginTop="10dp"
-            android:shadowColor="@color/iron"
-            android:text="@string/address"
-            android:textSize="16sp" />
 
-        <TableRow
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -181,30 +165,84 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:shadowColor="@color/iron"
                 android:text="@string/mobile_no"
+                android:textColor="@color/golden_yellow"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/mobileNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="28dp"
                 android:gravity="center"
-                android:id="@+id/mobileNumber"
-                android:shadowColor="@color/iron"
+                android:shadowColor="@color/golden_yellow"
                 android:text="1234567890"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-        <TableRow
-            android:layout_marginTop="5dp"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:shadowColor="@color/golden_yellow"
+                android:text="@string/pick_up_time"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/pick_up_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="28dp"
+                android:gravity="center"
+                android:shadowColor="@color/golden_yellow"
+                android:text="22:33"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:shadowColor="@color/iron"
+            android:text="@string/address"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/customer_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:shadowColor="@color/iron"
+            android:text="@string/address"
+            android:textSize="16sp" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -220,24 +258,25 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tripVehName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="28dp"
                 android:gravity="center"
-                android:id="@+id/tripVehName"
                 android:shadowColor="@color/iron"
                 android:text="sample"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TableRow
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="0.1dp">
-        </TableRow>
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"></TableRow>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -248,9 +287,9 @@
                 android:id="@+id/textview_startingKm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/enter_starting_kilometer"
                 android:inputType="number"
                 android:selectAllOnFocus="true"
-                android:hint="@string/enter_starting_kilometer"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </android.support.design.widget.TextInputLayout>
@@ -267,8 +306,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="@string/starting_time"
                 android:shadowColor="@color/iron"
+                android:text="@string/starting_time"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -279,9 +318,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="@string/hh"
-                android:selectAllOnFocus="true"
                 android:inputType="number"
                 android:maxLength="2"
+                android:selectAllOnFocus="true"
                 android:shadowColor="@color/iron"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -290,10 +329,10 @@
                 android:id="@+id/st"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="0"
-                android:text=":" />
+                android:text=":"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/textview_starngtimeM"
@@ -304,8 +343,8 @@
                 android:gravity="center"
                 android:hint="@string/mm"
                 android:inputType="number"
-                android:selectAllOnFocus="true"
                 android:maxLength="2"
+                android:selectAllOnFocus="true"
                 android:shadowColor="@color/iron"
                 android:textSize="16sp"
                 android:textStyle="bold" />

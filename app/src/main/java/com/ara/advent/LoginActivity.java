@@ -1,6 +1,5 @@
 package com.ara.advent;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,14 +15,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ara.advent.Languages.LocaleHelper;
 import com.ara.advent.http.HttpCaller;
 import com.ara.advent.http.HttpRequest;
 import com.ara.advent.http.HttpResponse;
@@ -49,7 +45,6 @@ import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
 import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 import static com.ara.advent.utils.AppConstants.PREF_TYPE;
-import static com.ara.advent.utils.AppConstants.USER_TYPE;
 import static com.ara.advent.utils.AppConstants.toAppTimeFormation;
 
 public class LoginActivity extends AppCompatActivity {
@@ -63,10 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     Button _loginButton;
     @BindView(R.id.scroll_view_login)
     ScrollView _rootScrollView;
-    @BindView(R.id.userLogin)
-    CheckBox userLogin_CheckBox;
-    @BindView(R.id.DriverLogin)
-    CheckBox driverLogin_Checkbox;
+
     @BindView(R.id.multiLanguage)
     TextView multilanguage;
     @BindView(R.id.multiLanguage1)
@@ -80,31 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        userLogin_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-
-                if (isChecked) {
-                    driverLogin_Checkbox.setChecked(false);
-                    type = USER_TYPE;
-                }
-
-            }
-        });
-        driverLogin_Checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked) {
-                    userLogin_CheckBox.setChecked(false);
-                    type = DRIVER_TYPE;
-                }
-
-            }
-        });
-
+        type = DRIVER_TYPE;
         multilanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,14 +90,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void setLanguage(String language){
-        mylocale=new Locale(language);
-        Resources resources=getResources();
-        DisplayMetrics dm=resources.getDisplayMetrics();
-        Configuration conf= resources.getConfiguration();
-        conf.locale=mylocale;
-        resources.updateConfiguration(conf,dm);
-        Intent refreshIntent=new Intent(LoginActivity.this,LoginActivity.class);
+    protected void setLanguage(String language) {
+        mylocale = new Locale(language);
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration conf = resources.getConfiguration();
+        conf.locale = mylocale;
+        resources.updateConfiguration(conf, dm);
+        Intent refreshIntent = new Intent(LoginActivity.this, LoginActivity.class);
         finish();
         startActivity(refreshIntent);
     }
@@ -154,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         _loginButton.setEnabled(false);
-
+        type = DRIVER_TYPE;
         User user = new User();
         user.setUserName(_login_userName.getText().toString());
         user.setPassword(_passwordText.getText().toString());

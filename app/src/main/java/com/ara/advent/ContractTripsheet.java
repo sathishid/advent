@@ -658,6 +658,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
         datePickerDialog.show();
     }
 
+
     private Boolean dateValidation() {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy");
@@ -676,6 +677,7 @@ public class ContractTripsheet extends AppCompatActivity implements TextWatcher 
         }
         return val;
     }
+
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

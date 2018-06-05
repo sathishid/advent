@@ -1,35 +1,30 @@
 package com.ara.advent.models;
 
-import android.content.SharedPreferences;
 import android.util.Log;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-
-import com.ara.advent.utils.AppConstants;
 
 import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-import static android.content.Context.MODE_PRIVATE;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
+import static com.ara.advent.utils.AppConstants.CLOSINGDATE;
 import static com.ara.advent.utils.AppConstants.IP;
+import static com.ara.advent.utils.AppConstants.PARAM_CLOSEDATE;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSING_KM_ONCALL;
 import static com.ara.advent.utils.AppConstants.PARAM_CLOSIN_TIME_ONCALL;
-import static com.ara.advent.utils.AppConstants.PARAM_CUSTOMER_ID;
-import static com.ara.advent.utils.AppConstants.PARAM_DEF_DATE;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_FOUR;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_ONE;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_ONE_BACK;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_THREE;
-import static com.ara.advent.utils.AppConstants.PARAM_IMG_TWO;
+import static com.ara.advent.utils.AppConstants.PARKIGNBILL;
+import static com.ara.advent.utils.AppConstants.PARAM_TRIPSHEETFRONT;
+import static com.ara.advent.utils.AppConstants.PARAM_TRIPSHEETBACK;
+import static com.ara.advent.utils.AppConstants.TOLLGAETEBILL;
+import static com.ara.advent.utils.AppConstants.PARAM_PERMITBILL;
 import static com.ara.advent.utils.AppConstants.PARAM_PARKAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_PERAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_TOLLAMT;
 import static com.ara.advent.utils.AppConstants.PARAM_TRIPSHEET_ID;
-import static com.ara.advent.utils.AppConstants.TBCMOBNO;
 import static com.ara.advent.utils.AppConstants.TOTALKM;
 import static com.ara.advent.utils.AppConstants.TOTALTIME;
 import static com.ara.advent.utils.AppConstants.USERID;
@@ -44,10 +39,10 @@ public class OncallTsModel {
     String trip_Id;
     String customer_id;
     String Def_date;
-    String image_file_one;
-    String image_file_two;
-    String image_file_three;
-    String image_file_four;
+    String trip_front;
+    String parking_image;
+    String permit_image;
+    String Toll_image;
 
     public String getPark_amount() {
         return park_amount;
@@ -77,15 +72,15 @@ public class OncallTsModel {
     String pemit_amount;
     String toll_amout;
 
-    public String getImage_file_one_back() {
-        return image_file_one_back;
+    public String getTripsheet_back() {
+        return tripsheet_back;
     }
 
-    public void setImage_file_one_back(String image_file_one_back) {
-        this.image_file_one_back = image_file_one_back;
+    public void setTripsheet_back(String tripsheet_back) {
+        this.tripsheet_back = tripsheet_back;
     }
 
-    String image_file_one_back;
+    String tripsheet_back;
     String ip;
 
     public String getIp() {
@@ -114,6 +109,15 @@ public class OncallTsModel {
 
     String totalkilometer;
     String totalTime;
+    String ClosingDate;
+
+    public String getClosingDate() {
+        return ClosingDate;
+    }
+
+    public void setClosingDate(String closingDate) {
+        ClosingDate = closingDate;
+    }
 
     public String getClosingkilometer() {
         return closingkilometer;
@@ -134,12 +138,12 @@ public class OncallTsModel {
     String closingkilometer;
     String closingtime;
 
-    public String getLocalIpAddress(){
+    public String getLocalIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
-                 en.hasMoreElements();) {
+                 en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
                         return inetAddress.getHostAddress().toString();
@@ -153,28 +157,28 @@ public class OncallTsModel {
     }
 
 
-    public String getImage_file_four() {
-        return image_file_four;
+    public String getToll_image() {
+        return Toll_image;
     }
 
-    public void setImage_file_four(String image_file_four) {
-        this.image_file_four = image_file_four;
+    public void setToll_image(String toll_image) {
+        this.Toll_image = toll_image;
     }
 
-    public String getImage_file_two() {
-        return image_file_two;
+    public String getParking_image() {
+        return parking_image;
     }
 
-    public void setImage_file_two(String image_file_two) {
-        this.image_file_two = image_file_two;
+    public void setParking_image(String parking_image) {
+        this.parking_image = parking_image;
     }
 
-    public String getImage_file_three() {
-        return image_file_three;
+    public String getPermit_image() {
+        return permit_image;
     }
 
-    public void setImage_file_three(String image_file_three) {
-        this.image_file_three = image_file_three;
+    public void setPermit_image(String permit_image) {
+        this.permit_image = permit_image;
     }
 
     public String getTrip_Id() {
@@ -201,56 +205,62 @@ public class OncallTsModel {
         Def_date = def_date;
     }
 
-    public String getImage_file_one() {
-        return image_file_one;
+    public String getTrip_front() {
+        return trip_front;
     }
 
-    public void setImage_file_one(String image_file_one) {
-        this.image_file_one = image_file_one;
+    public void setTrip_front(String trip_front) {
+        this.trip_front = trip_front;
     }
 
     public MultipartBody multipartRequest() {
 
 
-        Log.e("TAg","message string id "+customer_id);
+        Log.e("TAg", "message string id " + customer_id);
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         MediaType mediaType = MediaType.parse("image/jpeg");
-        builder.addFormDataPart(PARAM_IMG_ONE,getImage_file_one(),
-                RequestBody.create(mediaType,new File(getImage_file_one())));
-        builder.addFormDataPart(PARAM_IMG_TWO,getImage_file_two(),
-                RequestBody.create(mediaType,new File(getImage_file_two())));
-        builder.addFormDataPart(PARAM_IMG_THREE,getImage_file_three(),
-                RequestBody.create(mediaType,new File(getImage_file_three())));
-        builder.addFormDataPart(PARAM_IMG_FOUR,getImage_file_four(),
-                RequestBody.create(mediaType,new File(getImage_file_four())));
-        builder.addFormDataPart(PARAM_IMG_ONE_BACK,getImage_file_one_back(),
-                RequestBody.create(mediaType,new File(getImage_file_one_back())));
-        builder.addFormDataPart(PARAM_TRIPSHEET_ID,getTrip_Id());
-        builder.addFormDataPart(USERID,String.valueOf(user.getId()));
-        builder.addFormDataPart(PARAM_CLOSING_KM_ONCALL,closingkilometer);
-        builder.addFormDataPart(PARAM_CLOSIN_TIME_ONCALL,closingtime);
-        builder.addFormDataPart(TOTALKM,getTotalkilometer());
-        builder.addFormDataPart(TOTALTIME,getTotalTime());
-        builder.addFormDataPart(IP,getLocalIpAddress());
-        builder.addFormDataPart(PARAM_PARKAMT,getPark_amount());
-        builder.addFormDataPart(PARAM_PERAMT,getPemit_amount());
-        builder.addFormDataPart(PARAM_TOLLAMT,getToll_amout());
+        builder.addFormDataPart(PARAM_TRIPSHEETFRONT, getTrip_front(),
+                RequestBody.create(mediaType, new File(getTrip_front())));
+        if (getParking_image() != null)
+            builder.addFormDataPart(PARAM_PERMITBILL, getPermit_image(),
+                    RequestBody.create(mediaType, new File(getPermit_image())));
+        if (getPermit_image() != null)
+            builder.addFormDataPart(PARKIGNBILL, getParking_image(),
+                    RequestBody.create(mediaType, new File(getParking_image())));
+        if (getToll_image() != null)
+            builder.addFormDataPart(TOLLGAETEBILL, getToll_image(),
+                    RequestBody.create(mediaType, new File(getToll_image())));
+
+        builder.addFormDataPart(PARAM_TRIPSHEETBACK, getTripsheet_back(),
+                RequestBody.create(mediaType, new File(getTripsheet_back())));
+        builder.addFormDataPart(PARAM_TRIPSHEET_ID, getTrip_Id());
+        builder.addFormDataPart(USERID, String.valueOf(user.getId()));
+        builder.addFormDataPart(PARAM_CLOSING_KM_ONCALL, closingkilometer);
+        builder.addFormDataPart(PARAM_CLOSIN_TIME_ONCALL, closingtime);
+        builder.addFormDataPart(TOTALKM, getTotalkilometer());
+        builder.addFormDataPart(TOTALTIME, getTotalTime());
+        builder.addFormDataPart(IP, getLocalIpAddress());
+        builder.addFormDataPart(CLOSINGDATE,getClosingDate());
+        builder.addFormDataPart(PARAM_PARKAMT, getPark_amount());
+        builder.addFormDataPart(PARAM_PERAMT, getPemit_amount());
+        builder.addFormDataPart(PARAM_TOLLAMT, getToll_amout());
         MultipartBody multipartBody = builder.build();
         return multipartBody;
     }
 
     @Override
     public String toString() {
-        return PARAM_TRIPSHEET_ID +"-"+getTrip_Id() +"\n"+
-                USERID  +"-"+user.getId()+"\n"+
-                PARAM_CLOSING_KM_ONCALL +"-"+closingkilometer+"\n"+
-                PARAM_CLOSIN_TIME_ONCALL+"-"+closingtime+"\n"+
-                TOTALKM+"-"+getTotalkilometer()+"\n"+
-                TOTALTIME+"-"+getTotalTime()+"\n"+
-                IP+"-"+getLocalIpAddress()+"\n"
-                +PARAM_PARKAMT+"-"+getPark_amount()+"\n"
-                +PARAM_PERAMT+"-"+getPemit_amount()+"\n"+
-                PARAM_TOLLAMT+"-"+getToll_amout();
+        return PARAM_TRIPSHEET_ID + "-" + getTrip_Id() + "\n" +
+                USERID + "-" + user.getId() + "\n" +
+                PARAM_CLOSING_KM_ONCALL + "-" + closingkilometer + "\n" +
+                PARAM_CLOSIN_TIME_ONCALL + "-" + closingtime + "\n" +
+                TOTALKM + "-" + getTotalkilometer() + "\n" +
+                TOTALTIME + "-" + getTotalTime() + "\n" +
+                IP + "-" + getLocalIpAddress() + "\n"
+                + PARAM_PARKAMT + "-" + getPark_amount() + "\n"
+                + PARAM_PERAMT + "-" + getPemit_amount() + "\n" +
+                PARAM_TOLLAMT + "-" + getToll_amout()+ "\n" +
+                CLOSINGDATE + "-" +getClosingDate() ;
     }
 }

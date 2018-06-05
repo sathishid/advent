@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">அட்வென்ட்</string>
+    <string name="app_name">Amaze</string>
     <string name="login">உள் நுழை</string>
     <string name="home_page">முகப்பு</string>
     <string name="no_account_yet">இன்னும் கணக்கு இல்லை? ஒன்றை உருவாக்கவும்</string>
@@ -42,7 +42,7 @@
     <string name="contract_trip_sheet">கான்ட்ராக்ட் ட்ரிப் சீட்t</string>
     <string name="click_here_to_notify_user">வாடிக்கையாளரை அறிவிக்க இங்கே கிளிக் செய்க.</string>
     <string name="booking_id">முன்பதிவு ஐடி</string>
-    <string name="date">தேதி</string>
+    <string name="date">இறுதி தேதி</string>
     <string name="starting_time">தொடக்க நாள்</string>
     <string name="hh_mm">மணி:நிமிடம்</string>
     <string name="starting_kilometer">கிலோமீட்டர் தொடங்கியது</string>
@@ -54,7 +54,7 @@
     <string name="enter_starting_kilometer">தொடக்க கிலோமீட்டர் உள்ளிடவும்</string>
     <string name="submit">சமர்ப்பிக்கப்பட்டது</string>
     <string name="pick_a_vehicle_type">வாகன வகையைத் தேர்ந்தெடுக்கவும் :</string>
-    <string name="address">முகவரி:</string>
+    <string name="address">முகவரி</string>
     <string name="mobile_no">அலைபேசி எண்:</string>
     <string name="report_to">முறையிடவேண்டிய நபர் </string>
     <string name="customer_multi_customer_name">மற்றொரு வாடிக்கையாளர் பெயர்</string>
@@ -70,5 +70,6 @@
     <string name="customer_name">வாடிக்கையாளர் பெயர்</string>
     <string name="amaze_travels">அமேஸ் ட்ராவல்ஸ்</string>
     <string name="Vehicle_name">வாகன வகை</string>
+    <string name="Please_enter_valid_Closing_Date">சரியான இறுதி தேதியை தேர்ந்தெடுக்கவும்</string>
 </resources>
-    <!--மொழிக்கு இங்கே கிளிக் செய்யவும் !-->
+

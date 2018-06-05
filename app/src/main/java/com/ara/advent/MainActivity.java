@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Button gotoContractTripSheet;
 
 
-    int type;
+    int type=DRIVER_TYPE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         user.setId(sharedPreferences.getInt(PARAM_USER_ID, -1));
         user.setUserName(sharedPreferences.getString(PARAM_USER_NAME, "No Name"));
         AppConstants.setUser(user);
+
         if (sharedPreferences.contains(PARAM_USER_ID) && type == DRIVER_TYPE) {
             startActivity(new Intent(MainActivity.this, TripSheetList.class));
             finish();
@@ -197,9 +198,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstants.MAIN_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+           {
                 SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-                type = sharedPreferences.getInt(PREF_TYPE, -1);
+                type = DRIVER_TYPE;
                 if (type == DRIVER_TYPE) {
                     startActivity(new Intent(MainActivity.this, TripSheetList.class));
                     finish();

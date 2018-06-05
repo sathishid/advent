@@ -1,5 +1,6 @@
 package com.ara.advent;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ import java.util.StringTokenizer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.PICKUP_TIME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
 
 public class TripsheetStart extends AppCompatActivity {
@@ -61,13 +63,15 @@ public class TripsheetStart extends AppCompatActivity {
     EditText startingkM;
     @BindView(R.id.mobileNumber)
     TextView mobileNo;
+    @BindView(R.id.pick_up_time)
+    TextView pickup_time;
     @BindView(R.id.customer_address)
     TextView cus_Address;
     @BindView(R.id.tripVehName)
     TextView vehicle_name;
 
 
-    String a;
+    String a,b;
     @BindView(R.id.Submit)
     Button Submit;
 
@@ -80,21 +84,22 @@ public class TripsheetStart extends AppCompatActivity {
         sv.setFocusableInTouchMode(true);
         sv.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
-        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+       /* SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         String ok = sharedPreferences1.getString("started", "");
         if (ok.equalsIgnoreCase("ok")) {
             startActivity(new Intent(TripsheetStart.this, TripsheetClose.class));
             finish();
-        }
+        }*/
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
         a = sharedPreferences.getString("tripsheetid", "");
-        String b = sharedPreferences.getString("tripsheetno", "");
+        b = sharedPreferences.getString("tripsheetno", "");
         String c = sharedPreferences.getString("tripsheetDate", "");
         String d = sharedPreferences.getString("tripsheetcustomername", "");
         String e = sharedPreferences.getString("tripsheetMCname", "");
         String f = sharedPreferences.getString("tripsheetreportto", "");
+        String strPickupTime=sharedPreferences.getString(PICKUP_TIME,"");
         String j = sharedPreferences.getString("trioppshettstkm", "");
         String h = sharedPreferences.getString("tripshetsttime", "");
         String i = sharedPreferences.getString("tirpsheetcusmobno", "");
@@ -110,6 +115,7 @@ public class TripsheetStart extends AppCompatActivity {
         tripdate.setText(c);
         customer.setText(d);
         customermc.setText(e);
+        pickup_time.setText(strPickupTime);
         cusreportto.setText(f);
         startingkM.setText(j);
         starttimeHours.setText(timeHour);
@@ -117,6 +123,14 @@ public class TripsheetStart extends AppCompatActivity {
         mobileNo.setText(i);
         cus_Address.setText(k);
         vehicle_name.setText(n);
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        String ok = sharedPreferences1.getString("started", "");
+        String tid = sharedPreferences1.getString("tripidS","");
+        if (ok.equalsIgnoreCase("ok") && tid.equalsIgnoreCase(b)) {
+            startActivity(new Intent(TripsheetStart.this, TripsheetClose.class));
+            finish();
+        }
 
         Log.e("TAG", "------------------------------------------------------" + a);
         if (isNetworkAvailable()) {
@@ -131,8 +145,26 @@ public class TripsheetStart extends AppCompatActivity {
                 submitMethodd();
             }
         });
+        starttimeHours.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                starttimeHours.setSelectAllOnFocus(true);
+            }
+        });
+        starttimeMinutes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                starttimeMinutes.setSelectAllOnFocus(true);
+            }
+        });
         initEdittextFocus();
 
+        startingkM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startingkM.setSelectAllOnFocus(true);
+            }
+        });
     }
 
 
@@ -213,6 +245,9 @@ public class TripsheetStart extends AppCompatActivity {
             showSnackbar("PLease Check Your Netwok Connection");
             return;
         }
+        final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setTitle("Please Wait...");
+        progressDialog.show();
 
         final String starting_time = starttimeHours.getText().toString() + ":" + starttimeMinutes.getText().toString();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.STARTINGSUBMITURL, new Response.Listener<String>() {
@@ -227,6 +262,7 @@ public class TripsheetStart extends AppCompatActivity {
                 String res = separated[1];
 
                 if (res.equalsIgnoreCase("success")) {
+                    progressDialog.dismiss();
                     SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("starttime", starting_time);
@@ -235,12 +271,15 @@ public class TripsheetStart extends AppCompatActivity {
                     SharedPreferences ses = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
                     SharedPreferences.Editor ed = ses.edit();
                     ed.putString("started", "ok");
+                    ed.putString("tripidS",b);
                     ed.commit();
                     startActivity(new Intent(TripsheetStart.this, TripsheetClose.class)
                             .putExtra("name", "TripSheet Added successfully"));
                     finish();
 
+
                 } else {
+                    progressDialog.dismiss();
                     Toast.makeText(TripsheetStart.this, "data was not sent", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -248,6 +287,7 @@ public class TripsheetStart extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("TAG", "error--------" + error);
+                progressDialog.dismiss();
             }
         }) {
             @Override

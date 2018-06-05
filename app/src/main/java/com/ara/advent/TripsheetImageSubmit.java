@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -17,7 +18,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -94,6 +93,8 @@ public class TripsheetImageSubmit extends AppCompatActivity {
     CardView CardInput_image1back;
     @BindView(R.id.input_cameraImage1back)
     ImageView input_image1back;
+    @BindView(R.id.closedate)
+    TextView closedate;
 
     String a;
     OncallTsModel oncallTsModel;
@@ -117,14 +118,17 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         String f = sharedPreferences.getString("closekm", "");
         String g = sharedPreferences.getString("totkm", "");
         String h = sharedPreferences.getString("tottime", "");
+        String i = sharedPreferences.getString("closedate","");
         tripno.setText(b);
         tripdate.setText(c);
+        closedate.setText(i);
         customer.setText(d);
         oncallTsModel.setClosingtime(e);
         oncallTsModel.setClosingkilometer(f);
         oncallTsModel.setTrip_Id(a);
         oncallTsModel.setTotalTime(h);
         oncallTsModel.setTotalkilometer(g);
+        oncallTsModel.setClosingDate(i);
         if (!isNetworkAvailable()) {
             showSnackbar("Something went wrong ,Please check your network connection");
         }
@@ -223,11 +227,11 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         oncallTsModel.setPemit_amount(permitAmount.getText().toString());
         oncallTsModel.setToll_amout(tollgateAmount.getText().toString());
 
-       PushtoServer();
+        PushtoServer();
     }
 
     private void pushToLog() {
-        Log.e(TAG,"Objet oncall ts model "+oncallTsModel);
+        Log.e(TAG, "Objet oncall ts model " + oncallTsModel);
     }
 
     private void PushtoServer() {
@@ -246,19 +250,12 @@ public class TripsheetImageSubmit extends AppCompatActivity {
                     } else {
 
                         Log.e(TAG, "Booking Ride Success------" + response.getMesssage());
-                        Snackbar bar = Snackbar.make(OntripLayout, "Tripsheet Closed Successfully", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Dismiss", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // Handle user action
-                                        startActivity(new Intent(TripsheetImageSubmit.this, TripSheetList.class)
-                                                .putExtra("OncallBooked", "Trip sheet closed successfully"));
-                                        finish();
-                                    }
-                                });
-
-                        bar.show();
-
+                        SharedPreferences sharedPreferences = getSharedPreferences("Oncall", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("OncallBooked", "success");
+                        editor.commit();
+                        startActivity(new Intent(TripsheetImageSubmit.this, TripSheetList.class));
+                        finish();
                     }
                 }
             }.execute(httpRequest);
@@ -301,40 +298,75 @@ public class TripsheetImageSubmit extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        String tempImage = "temp.png";
         if (requestCode == REQUEST_TAKE_IMAGE_ONE && resultCode == RESULT_OK) {
 
-            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_one());
-            input_image1.setImageBitmap(imageBitmap);
+            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getTrip_front());
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getTrip_front());
+            input_image1.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap One" + oncallTsModel.getTrip_front());
 
         } else if (requestCode == REQUEST_TAKE_IMAGE_TWO && resultCode == RESULT_OK) {
 
-            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_two());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_two());
-            input_image2.setImageBitmap(imageBitmap);
+            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getParking_image());
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getParking_image());
+            input_image2.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap two" + oncallTsModel.getParking_image());
 
         } else if (requestCode == REQUEST_TAKE_IMAGE_THREE && resultCode == RESULT_OK) {
 
-            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_three());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_three());
-            input_image3.setImageBitmap(imageBitmap);
+            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getPermit_image());
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getPermit_image());
+            input_image3.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap three" + oncallTsModel.getPermit_image());
+
         } else if (requestCode == REQUEST_TAKE_IMAGE_FOUR && resultCode == RESULT_OK) {
 
-            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_four());
-            compressImageFile(imageBitmap, oncallTsModel.getImage_file_four());
-            input_image4.setImageBitmap(imageBitmap);
+            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getToll_image());
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getToll_image());
+            input_image4.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap four" + oncallTsModel.getToll_image());
+
         } else if (requestCode == REQUEST_TAKE_IMAGE_ONE_BACK && resultCode == RESULT_OK) {
-            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getImage_file_one_back());
-            compressImageFile(imageBitmap,oncallTsModel.getImage_file_one_back());
-            input_image1back.setImageBitmap(imageBitmap);
+
+            Bitmap imageBitmap = BitmapFactory.decodeFile(oncallTsModel.getTripsheet_back());
+            int n = (int) (imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()));
+            int a = imageBitmap.getHeight();
+            int b = imageBitmap.getWidth();
+            Log.e(TAG, "1.Height = " + a + "width = " + b + "total resolution = " + n);
+            Bitmap scaled = Bitmap.createScaledBitmap(imageBitmap, 512, n, true);
+            compressImageFile(scaled, oncallTsModel.getTripsheet_back());
+            input_image1back.setImageBitmap(scaled);
+            Log.e(TAG, "image bitmap One back " + oncallTsModel.getTripsheet_back());
         }
     }
+
 
     public void compressImageFile(Bitmap bitmap, String fileName) {
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 12, outputStream);
 
 
             File file = new File(fileName);
@@ -367,15 +399,15 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         if (REQUEST == 1) {
-            oncallTsModel.setImage_file_one(mCurrentPhotoPath);
+            oncallTsModel.setTrip_front(mCurrentPhotoPath);
         } else if (REQUEST == 2) {
-            oncallTsModel.setImage_file_two(mCurrentPhotoPath);
+            oncallTsModel.setParking_image(mCurrentPhotoPath);
         } else if (REQUEST == 3) {
-            oncallTsModel.setImage_file_three(mCurrentPhotoPath);
+            oncallTsModel.setPermit_image(mCurrentPhotoPath);
         } else if (REQUEST == 4) {
-            oncallTsModel.setImage_file_four(mCurrentPhotoPath);
+            oncallTsModel.setToll_image(mCurrentPhotoPath);
         } else if (REQUEST == 11) {
-            oncallTsModel.setImage_file_one_back(mCurrentPhotoPath);
+            oncallTsModel.setTripsheet_back(mCurrentPhotoPath);
         }
 
         return image;
@@ -383,48 +415,44 @@ public class TripsheetImageSubmit extends AppCompatActivity {
 
     public boolean formValid() {
 
-        boolean error = true;
+        boolean isValid = true;
 
-        if (parkingAmount.getText().toString().isEmpty()) {
-            parkingAmount.setError("starting km not valid");
-            error = false;
-        } else {
+        if (!parkingAmount.getText().toString().isEmpty()) {
+            if (oncallTsModel.getParking_image() == null) {
+                showSnackbar("Take Parking bill's photo", false);
+                return false;
+            }
             parkingAmount.setError(null);
+            isValid = true;
         }
-        if (permitAmount.getText().toString().isEmpty()) {
-            permitAmount.setError("starting km not valid");
-            error = false;
-        } else {
+        if (!permitAmount.getText().toString().isEmpty()) {
+            if (oncallTsModel.getPermit_image() == null) {
+                showSnackbar("Take Permit bill's Photo.", false);
+                return false;
+            }
             permitAmount.setError(null);
+            isValid = true;
         }
-        if (tollgateAmount.getText().toString().isEmpty()) {
-            tollgateAmount.setError("starting km not valid");
-            error = false;
-        } else {
+        if (!tollgateAmount.getText().toString().isEmpty()) {
+            if (oncallTsModel.getToll_image() == null) {
+                showSnackbar("Take Tollgate Photo.", false);
+                return false;
+            }
             tollgateAmount.setError(null);
+            isValid = true;
         }
-        if (oncallTsModel.getImage_file_one() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
+
+        if (oncallTsModel.getTrip_front() == null) {
+            showSnackbar("Take Trip sheet Front Side photo.", false);
+            return false;
         }
-        if (oncallTsModel.getImage_file_two() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
-        }
-        if (oncallTsModel.getImage_file_three() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
-        } if (oncallTsModel.getImage_file_four() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
-        }
-        if (oncallTsModel.getImage_file_one_back() ==  null) {
-            showSnackbar("photo not Updated",false);
-            return  false;
+        if (oncallTsModel.getTripsheet_back() == null) {
+            showSnackbar("Take Trip sheet backside photo.", false);
+            return false;
         }
 
 
-        return error;
+        return isValid;
     }
 
     private boolean isNetworkAvailable() {

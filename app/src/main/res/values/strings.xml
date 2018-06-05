@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Advent</string>
+    <string name="app_name">Amaze</string>
     <string name="login">Login</string>
     <string name="home_page">Home</string>
     <string name="no_account_yet">No account yet? Create one</string>
@@ -40,21 +40,22 @@
     <string name="contract_trip_sheet">Contract Trip Sheet</string>
     <string name="click_here_to_notify_user">Click Here To Notify ! User.</string>
     <string name="booking_id">Booking Id</string>
-    <string name="date">Date</string>
+    <string name="date">Closing Date</string>
     <string name="starting_time">Starting Time</string>
     <string name="hh_mm">HH?MM</string>
-    <string name="starting_kilometer">Starting Kilometer</string>
+    <string name="starting_kilometer">Starting KMS</string>
+    <string name="history">History</string>
     <string name="km">KM</string>
     <string name="_1234567890">1234567890</string>
     <string name="closing_time">closing time</string>
     <string name="next">NEXT</string>
-    <string name="enter_closing_kilometer">Enter Closing Kilometer</string>
-    <string name="enter_starting_kilometer">Enter Starting Kilometer</string>
+    <string name="enter_closing_kilometer">Enter Closing KMS</string>
+    <string name="enter_starting_kilometer">Start KMS</string>
     <string name="submit">Submit</string>
     <string name="pick_a_vehicle_type">Pick a Vehicle Type :</string>
-    <string name="address">Address :</string>
+    <string name="address">Address</string>
     <string name="mobile_no">Mobile No :</string>
-    <string name="report_to">Report to</string>
+    <string name="report_to">Report Person</string>
     <string name="customer_multi_customer_name">customer multi customer name</string>
     <string name="dd_mm_yy">DD?MM?YY</string>
     <string name="no">NO</string>
@@ -71,4 +72,8 @@
     <string name="tamil">தமிழ் </string>
     <string name="english">English</string>
     <string name="Vehicle_name">Vehicle Name</string>
+    <string name="pick_up_time">Pickup Time</string>
+    <string name="Please_enter_valid_Closing_Date">Please Enter Valid Closing Date</string>
+    <string name="Starting_date">Starting date</string>
+
 </resources>
