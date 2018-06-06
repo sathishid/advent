@@ -145,18 +145,22 @@ public class TripsheetStart extends AppCompatActivity {
                 submitMethodd();
             }
         });
+
         starttimeHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 starttimeHours.setSelectAllOnFocus(true);
             }
+
         });
+
         starttimeMinutes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 starttimeMinutes.setSelectAllOnFocus(true);
             }
         });
+
         initEdittextFocus();
 
         startingkM.setOnClickListener(new View.OnClickListener() {

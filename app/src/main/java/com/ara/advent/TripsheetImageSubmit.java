@@ -128,6 +128,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         oncallTsModel.setTrip_Id(a);
         oncallTsModel.setTotalTime(h);
         oncallTsModel.setTotalkilometer(g);
+        Log.e(TAG,"total kilometer " + g);
         oncallTsModel.setClosingDate(i);
         if (!isNetworkAvailable()) {
             showSnackbar("Something went wrong ,Please check your network connection");

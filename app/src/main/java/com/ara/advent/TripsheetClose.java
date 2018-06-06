@@ -458,7 +458,7 @@ public class TripsheetClose extends AppCompatActivity {
         stime = e;
         ctime = closetimeHours.getText().toString() + ":" + closetimeMinutes.getText().toString();
         String dateStarted = c + " " + e;
-        String dateClosed = c + " " + ctime;
+        String dateClosed = closingdate.getText().toString() + " " + ctime;
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
 
