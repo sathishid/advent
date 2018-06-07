@@ -3,6 +3,7 @@ package com.ara.advent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
@@ -61,13 +62,15 @@ public class TripsheetHistory extends AppCompatActivity {
     @BindView(R.id.swipeto)
     SwipeRefreshLayout swipe;
     ArrayList<TripsheetListModel> triplistArray = new ArrayList<TripsheetListModel>();
-
+    String id ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_history);
         ButterKnife.bind(this);
-
+        SharedPreferences sharedPreferences1 = getSharedPreferences("user", MODE_PRIVATE);
+        id = sharedPreferences1.getString("uid", "");
+        Log.e(TAG,"id -- "+id);
         if (isNetworkAvailable()) {
             initViews();
         } else {
@@ -159,7 +162,7 @@ public class TripsheetHistory extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(AppConstants.PARAM_VEHICLE_ID,""+AppConstants.getUser().getId());
+                map.put(AppConstants.PARAM_VEHICLE_ID,id);
                 map.put("status","1");
                 return map;
             }

@@ -29,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.ara.advent.Adapter.TripsheetListAdapter;
 import com.ara.advent.http.MySingleton;
 import com.ara.advent.models.TripsheetListModel;
+import com.ara.advent.models.User;
 import com.ara.advent.utils.AppConstants;
 
 import org.json.JSONArray;
@@ -42,8 +43,12 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ara.advent.utils.AppConstants.DRIVER_TYPE;
+import static com.ara.advent.utils.AppConstants.PARAM_USER_ID;
+import static com.ara.advent.utils.AppConstants.PARAM_USER_NAME;
 import static com.ara.advent.utils.AppConstants.PICKUP_TIME;
 import static com.ara.advent.utils.AppConstants.PREFERENCE_NAME;
+import static com.ara.advent.utils.AppConstants.PREF_TYPE;
 import static com.ara.advent.utils.AppConstants.TBCADDRESS;
 import static com.ara.advent.utils.AppConstants.TBCMCNAME;
 import static com.ara.advent.utils.AppConstants.TBCMOBNO;
@@ -56,6 +61,7 @@ import static com.ara.advent.utils.AppConstants.TBID;
 import static com.ara.advent.utils.AppConstants.TBNO;
 import static com.ara.advent.utils.AppConstants.TBREPORTTO;
 import static com.ara.advent.utils.AppConstants.TBVEHID;
+import static com.ara.advent.utils.AppConstants.USER_TYPE;
 
 
 public class TripSheetList extends AppCompatActivity {
@@ -67,26 +73,43 @@ public class TripSheetList extends AppCompatActivity {
     @BindView(R.id.list)
     ListView Trip_list;
     ArrayList<TripsheetListModel> triplistArray = new ArrayList<TripsheetListModel>();
+    int type = DRIVER_TYPE;
+    User user;
+    String  id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheetlist);
         ButterKnife.bind(this);
-        if (!isNetworkAvailable()) {
-            showSnackbar("Please check your network connection");
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        type = sharedPreferences.getInt(PREF_TYPE, -1);
+        Log.e(TAG, "shred preferne type" + type);
+
+        if (sharedPreferences.contains(PARAM_USER_ID) && type == DRIVER_TYPE) {
+
+
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
         }
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences("user", MODE_PRIVATE);
+        id = sharedPreferences1.getString("uid", "");
+        Log.e(TAG,"id -- "+id);
         populateTripSheetData();
 
-        SharedPreferences sh = getSharedPreferences("Oncall",MODE_PRIVATE);
-        String text = sh.getString("OncallBooked","");
+        SharedPreferences sh = getSharedPreferences("Oncall", MODE_PRIVATE);
+        String text = sh.getString("OncallBooked", "");
         if (text.equalsIgnoreCase("success")) {
             Snackbar bar = Snackbar.make(li, "trip sheet Closed Successfully", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Dismiss", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             // Handle user action
-                            SharedPreferences shs = getSharedPreferences("Oncall",MODE_PRIVATE);
+                            SharedPreferences shs = getSharedPreferences("Oncall", MODE_PRIVATE);
                             SharedPreferences.Editor editor = shs.edit();
                             editor.clear();
                             editor.commit();
@@ -170,6 +193,7 @@ public class TripSheetList extends AppCompatActivity {
 
     }
 
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -187,7 +211,8 @@ public class TripSheetList extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setTitle("Please Wait...");
         progressDialog.show();
-        Log.e(TAG, "user id pointing error for 0 user ------------" + AppConstants.getUser().getId());
+
+        Log.e(TAG, "user id pointing error for 0 user ------------" + id);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConstants.TBURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -250,7 +275,7 @@ public class TripSheetList extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map map = new HashMap();
-                map.put(AppConstants.PARAM_VEHICLE_ID, "" + AppConstants.getUser().getId());
+                map.put(AppConstants.PARAM_VEHICLE_ID, "" + id);
                 map.put("status", "0");
                 return map;
             }

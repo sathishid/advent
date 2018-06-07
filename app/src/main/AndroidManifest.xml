@@ -42,28 +42,19 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".LoginActivity"
             android:label="@string/app_name" />
-        <activity android:name=".CheckInOut" />
-        <activity
-            android:name=".ContractTripsheet"
-            android:label="Contract Trip Sheet" />
         <activity
             android:name=".TripsheetImageSubmit"
             android:label="Submit Proof" />
         <activity
             android:name=".TripSheetList"
-            android:label="TripSheet List" />
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".TripsheetStart" />
         <activity android:name=".TripsheetClose" />
         <activity

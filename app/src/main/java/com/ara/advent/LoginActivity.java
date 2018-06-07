@@ -66,13 +66,14 @@ public class LoginActivity extends AppCompatActivity {
     Locale mylocale;
     int type = DRIVER_TYPE;
     String current = "en";
-
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         type = DRIVER_TYPE;
+
         multilanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +145,9 @@ public class LoginActivity extends AppCompatActivity {
                         onLoginFailed(response);
                     } else {
 
+
                         onLoginSuccess(response);
+
                     }
                 }
             }.execute(request);
@@ -204,10 +207,16 @@ public class LoginActivity extends AppCompatActivity {
             Log.i("LoginSuccess", response.getMesssage());
             SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 
+            SharedPreferences sharedPreferences1 = getSharedPreferences("user",MODE_PRIVATE);
+            SharedPreferences.Editor edit = sharedPreferences1.edit();
+            edit.putString("uid",jsonObject.getString(PARAM_USER_ID));
+            Log.e(TAG,PARAM_USER_ID+"-"+jsonObject.getString(PARAM_USER_ID));
+            edit.commit();
+            User user = AppConstants.toUser(jsonObject);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(PREF_TYPE, type);
 
-            User user = AppConstants.toUser(jsonObject);
+
             /*SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();*/
