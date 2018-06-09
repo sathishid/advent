@@ -280,7 +280,7 @@
                 android:padding="5dp"
                 android:gravity="center"
                 android:shadowColor="@color/iron"
-                android:text="sample"
+                android:text="@string/text_dateFormat"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>

@@ -109,6 +109,11 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         OntripLayout.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
         oncallTsModel = new OncallTsModel();
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences("user", MODE_PRIVATE);
+        String  id = sharedPreferences1.getString("uid", "");
+        Log.e(TAG,"id -- "+id);
+
         SharedPreferences sharedPreferences = getSharedPreferences("submit", MODE_PRIVATE);
         a = sharedPreferences.getString("tripsheetid", "");
         String b = sharedPreferences.getString("tripsheetno", "");
@@ -128,6 +133,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         oncallTsModel.setTrip_Id(a);
         oncallTsModel.setTotalTime(h);
         oncallTsModel.setTotalkilometer(g);
+        oncallTsModel.setUserid(id);
         Log.e(TAG,"total kilometer " + g);
         oncallTsModel.setClosingDate(i);
         if (!isNetworkAvailable()) {
@@ -228,6 +234,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
         oncallTsModel.setPemit_amount(permitAmount.getText().toString());
         oncallTsModel.setToll_amout(tollgateAmount.getText().toString());
 
+        pushToLog();
         PushtoServer();
     }
 
@@ -417,6 +424,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
     public boolean formValid() {
 
         boolean isValid = true;
+/*
 
         if (!parkingAmount.getText().toString().isEmpty()) {
             if (oncallTsModel.getParking_image() == null) {
@@ -442,6 +450,7 @@ public class TripsheetImageSubmit extends AppCompatActivity {
             tollgateAmount.setError(null);
             isValid = true;
         }
+*/
 
         if (oncallTsModel.getTrip_front() == null) {
             showSnackbar("Take Trip sheet Front Side photo.", false);

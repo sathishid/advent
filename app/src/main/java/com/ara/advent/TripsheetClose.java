@@ -150,8 +150,8 @@ public class TripsheetClose extends AppCompatActivity {
         String n = sharedPreferences.getString("vehname", "");
         trino.setText(b);
         tripdate.setText(c);
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        closingdate.setText(date);
+//        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//        closingdate.setText(date);
         customer.setText(d);
         startingKm_close.setText(f);
         starting_time_close.setText(e);
@@ -405,6 +405,10 @@ public class TripsheetClose extends AppCompatActivity {
             isValid = false;
         } else {
             closingkM.setError(null);
+        }
+        if (closingdate.getText().toString().equalsIgnoreCase("DD/MM/YYYY")) {
+            showSnackbar("Please Pick A Date");
+            isValid = false;
         }
 
         return isValid;

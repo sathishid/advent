@@ -36,12 +36,22 @@ import static com.ara.advent.utils.AppConstants.user;
 
 public class OncallTsModel {
 
+    String userid;
     String trip_Id;
     String customer_id;
     String Def_date;
     String trip_front;
     String parking_image;
     String permit_image;
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
     String Toll_image;
 
     public String getPark_amount() {
@@ -222,20 +232,32 @@ public class OncallTsModel {
         MediaType mediaType = MediaType.parse("image/jpeg");
         builder.addFormDataPart(PARAM_TRIPSHEETFRONT, getTrip_front(),
                 RequestBody.create(mediaType, new File(getTrip_front())));
-        if (getParking_image() != null)
+        if(getPermit_image() != null) {
             builder.addFormDataPart(PARAM_PERMITBILL, getPermit_image(),
                     RequestBody.create(mediaType, new File(getPermit_image())));
-        if (getPermit_image() != null)
+        } else {
+            builder.addFormDataPart(PARAM_PERMITBILL,"");
+        }
+
+        if (getParking_image() !=  null) {
             builder.addFormDataPart(PARKIGNBILL, getParking_image(),
                     RequestBody.create(mediaType, new File(getParking_image())));
-        if (getToll_image() != null)
-            builder.addFormDataPart(TOLLGAETEBILL, getToll_image(),
+        } else {
+            builder.addFormDataPart(PARKIGNBILL,"");
+        }
+
+        if (getToll_image() != null) {
+         builder.addFormDataPart(TOLLGAETEBILL, getToll_image(),
                     RequestBody.create(mediaType, new File(getToll_image())));
+        } else {
+            builder.addFormDataPart(TOLLGAETEBILL,"");
+        }
+
 
         builder.addFormDataPart(PARAM_TRIPSHEETBACK, getTripsheet_back(),
                 RequestBody.create(mediaType, new File(getTripsheet_back())));
         builder.addFormDataPart(PARAM_TRIPSHEET_ID, getTrip_Id());
-        builder.addFormDataPart(USERID, String.valueOf(user.getId()));
+        builder.addFormDataPart(USERID,getUserid());
         builder.addFormDataPart(PARAM_CLOSING_KM_ONCALL, closingkilometer);
         builder.addFormDataPart(PARAM_CLOSIN_TIME_ONCALL, closingtime);
         builder.addFormDataPart(TOTALKM, getTotalkilometer());
@@ -252,7 +274,7 @@ public class OncallTsModel {
     @Override
     public String toString() {
         return PARAM_TRIPSHEET_ID + "-" + getTrip_Id() + "\n" +
-                USERID + "-" + user.getId() + "\n" +
+                USERID + "-" + getUserid() + "\n" +
                 PARAM_CLOSING_KM_ONCALL + "-" + closingkilometer + "\n" +
                 PARAM_CLOSIN_TIME_ONCALL + "-" + closingtime + "\n" +
                 TOTALKM + "-" + getTotalkilometer() + "\n" +
@@ -261,6 +283,11 @@ public class OncallTsModel {
                 + PARAM_PARKAMT + "-" + getPark_amount() + "\n"
                 + PARAM_PERAMT + "-" + getPemit_amount() + "\n" +
                 PARAM_TOLLAMT + "-" + getToll_amout()+ "\n" +
-                CLOSINGDATE + "-" +getClosingDate() ;
+                CLOSINGDATE + "-" +getClosingDate()+ "\n" +
+                PARAM_TRIPSHEETFRONT+ "-" +getTrip_front()+ "\n" +
+                PARAM_TRIPSHEETBACK+ "-" +getTripsheet_back()+ "\n" +
+                PARAM_PERMITBILL+ "-" +getPermit_image()+ "\n" +
+                PARKIGNBILL+ "-" +getParking_image()+ "\n" +
+                TOLLGAETEBILL+ "-" +getToll_image();
     }
 }

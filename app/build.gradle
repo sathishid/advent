@@ -6,11 +6,11 @@ android {
         javaMaxHeapSize "4g"
     }
     defaultConfig {
-        applicationId "com.ara.advent"
+        applicationId "com.ara.Amaze"
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 3
-        versionName "3.5.4"
+        versionName "3.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
