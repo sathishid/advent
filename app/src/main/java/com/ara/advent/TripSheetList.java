@@ -84,7 +84,7 @@ public class TripSheetList extends AppCompatActivity {
         setContentView(R.layout.activity_tripsheetlist);
         ButterKnife.bind(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+       /* SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         type = sharedPreferences.getInt(PREF_TYPE, -1);
         Log.e(TAG, "shred preferne type" + type);
 
@@ -95,7 +95,7 @@ public class TripSheetList extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, AppConstants.MAIN_REQUEST_CODE);
         }
-
+*/
         SharedPreferences sharedPreferences1 = getSharedPreferences("user", MODE_PRIVATE);
         id = sharedPreferences1.getString("uid", "");
         Log.e(TAG,"id -- "+id);
@@ -300,8 +300,13 @@ public class TripSheetList extends AppCompatActivity {
     private void logout() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences sharedPreferences1 = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+        editor1.clear();
+        editor1.commit();
         editor.clear();
         editor.commit();
+        startActivity(new Intent(TripSheetList.this,LoginActivity.class));
         finish();
     }
 
